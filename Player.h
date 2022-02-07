@@ -5,7 +5,11 @@
 
 class Player {
 private:
-    int basic_test;
+    
 public:
-    int get_test();
+    Player();
+    ~Player();
+    void toDefend();
+    void toAttack();
+    void issueOrder();
 };
