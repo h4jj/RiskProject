@@ -29,13 +29,7 @@ int int_Verification(int x){
     return x;
 }
 void choice_of_orders(){
-    cout << "Which order you would like to execute (write in order of execution desired)?: /n" +
-    "1 - Deploy/n" + 
-    "2 - Advance/n" +
-    "3 - Bomb/n" + 
-    "4 - Blockade/n" +
-    "5 - Airlift/n" + 
-    "6 - negotiate/n";
+    cout << "Which order you would like to execute (write in order of execution desired)?: \n1 - Deploy\n2 - Advance\n3 - Bomb\n4 - Blockade\n5 - Airlift\n6 - negotiate";
 }
 int main(){
     cout << "How many orders would you like to execute this turn?: ";

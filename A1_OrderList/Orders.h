@@ -1,7 +1,7 @@
 class OrderList
 {
     public:
-        OrderList(int* length, Order* order[]);
+       // OrderList(int* length, Order* order[]);
     private:
 
 };
@@ -11,5 +11,5 @@ class Order
     public:
 
     private:
-        
+
 };
