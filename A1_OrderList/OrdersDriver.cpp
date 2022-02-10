@@ -43,7 +43,7 @@ int main(){
         int choice = 0;
         cin >> choice;
         choice = int_Verification(choice);
-
+        ordersNum--;
     }
     return 0;
 }
