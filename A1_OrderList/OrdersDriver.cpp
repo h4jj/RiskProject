@@ -4,7 +4,7 @@
 #include <limits>
 using namespace std;
 
-int positive_Int_Verification(int x){
+int int_Verification(int x){
     bool restart;
     //purpose to ensure the input is a positive integer
     do{
@@ -18,8 +18,8 @@ int positive_Int_Verification(int x){
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             
         }
-        if(x < 0){
-            cout << "Enter a positive number" << endl;
+        if(x < 0 || x > 7){
+            cout << "Enter a number between 0 and 6 inclusively" << endl;
             restart = true;
         }
         if(restart)
@@ -28,11 +28,28 @@ int positive_Int_Verification(int x){
     } while(restart);
     return x;
 }
-
+void choice_of_orders(){
+    cout << "Which order you would like to execute (write in order of execution desired)?: /n" +
+    "1 - Deploy/n" + 
+    "2 - Advance/n" +
+    "3 - Bomb/n" + 
+    "4 - Blockade/n" +
+    "5 - Airlift/n" + 
+    "6 - negotiate/n";
+}
 int main(){
     cout << "How many orders would you like to execute this turn?: ";
     int ordersNum = 0;
     cin >> ordersNum;
-    ordersNum = positive_Int_Verification(ordersNum);
+    ordersNum = int_Verification(ordersNum);
+    int length = ordersNum; //To keep the original length that has been provided by the player
+    //OrderList orderList = new OrderList(ordersNum,);
+    while(ordersNum > 0){
+        choice_of_orders();
+        int choice = 0;
+        cin >> choice;
+        choice = int_Verification(choice);
+
+    }
     return 0;
 }
