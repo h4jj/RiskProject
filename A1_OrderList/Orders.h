@@ -1,15 +1,18 @@
+#pragma once
+using namespace std;
+
 class OrderList
 {
 public:
-    // OrderList(int* length, Order* order[]);
-private:
+    OrderList();
+    void move();
+    void remove();
 };
 
 class Order
 {
 public:
-    void move();
-    void remove();
+
     void validate();
     void execute();
 };

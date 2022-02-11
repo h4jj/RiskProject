@@ -2,6 +2,7 @@
 #include "Orders.h"
 #include <iostream>
 #include <limits>
+
 using namespace std;
 
 int int_Verification(int x)
@@ -40,12 +41,13 @@ void choice_of_orders()
 
 int main()
 {
+    OrderList ol(vd);
+    ol.move();
     cout << "How many orders would you like to execute this turn?: ";
     int ordersNum = 0;
     cin >> ordersNum;
     ordersNum = int_Verification(ordersNum);
     int length = ordersNum; // To keep the original length that has been provided by the player
-    // OrderList orderList = new OrderList(ordersNum,);
     while (ordersNum > 0)
     {
         choice_of_orders();
