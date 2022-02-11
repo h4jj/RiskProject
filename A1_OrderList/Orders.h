@@ -7,12 +7,12 @@ public:
     OrderList();
     void move();
     void remove();
+    
 };
 
 class Order
 {
 public:
-
     void validate();
     void execute();
 };

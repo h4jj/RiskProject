@@ -1,15 +1,35 @@
+#pragma once
 #include <iostream>
 #include "Orders.h"
 
 using namespace std;
 
+OrderList::OrderList()
+{
+   
+}
 
-void move()
+void OrderList::move()
 {
     cout << "habibi" << endl;
 }
 
-void remove()
+void OrderList::remove()
 {
 
+}
+
+Order::Order()
+{
+
+}
+
+void Order::validate()
+{
+
+}
+
+void Order::execute()
+{
+    
 }

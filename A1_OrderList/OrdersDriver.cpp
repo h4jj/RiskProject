@@ -1,10 +1,11 @@
-#pragma once
 #include "Orders.h"
+#include "Orders.cpp"
 #include <iostream>
 #include <limits>
 
 using namespace std;
 
+//Purpose of this function is to make sure the input is between 0 and 6 inclusively
 int int_Verification(int x)
 {
     bool restart;
@@ -41,7 +42,7 @@ void choice_of_orders()
 
 int main()
 {
-    OrderList ol(vd);
+    OrderList ol;
     ol.move();
     cout << "How many orders would you like to execute this turn?: ";
     int ordersNum = 0;
