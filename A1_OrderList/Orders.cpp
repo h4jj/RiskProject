@@ -156,7 +156,7 @@ void OrderList::print() {
         
         Order* curr = this->head;
 
-        while(true) {
+        while(curr) {
 
             if(curr == nullptr) {
                 break;
