@@ -25,7 +25,7 @@ void OrderList::add(Order* orderObject)
         std::cout << "Initial case - empty List" << std::endl;
         this->head = orderObject;
         this->tail = orderObject;
-        std::cout << "Deploy object successfully created and added to List" << std::endl;
+        std::cout << "Order object successfully created and added to List" << std::endl;
         OrderList::orderItems++;
     } 
 
@@ -33,7 +33,7 @@ void OrderList::add(Order* orderObject)
        
         this->tail->next = orderObject;
         this->tail = orderObject;
-        std::cout << "Deploy object successfully created and added to List" << std::endl;
+        std::cout << "Order object successfully created and added to List" << std::endl;
         OrderList::orderItems++;
     }
 
