@@ -15,7 +15,7 @@ class OrderList
 public:
     static int orderItems;
     OrderList();
-    void add(int);
+    void add(Order*, int);
     void print();
 private:
     Order* head;

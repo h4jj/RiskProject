@@ -1,13 +1,17 @@
 #include "Player.h"
 
+Player::~Player() {
+    std::cout << "Player object successfully destroyed" << std::endl;
+}
+
 Player::Player() {
-    
+    std::cout << "Player object successfully created" << std::endl;
 }
 
 Player::Player(int val) {
     value = val;
 }
 
-int Player::getValue() {
-    return value;
+void Player::issueOrder() {
+    std::cout << "WORKED" << std::endl;
 }

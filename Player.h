@@ -1,12 +1,11 @@
 #pragma once
 #include <iostream>
 
-class Player {
-    public:
-        int value;
-        
+class Player {  
     public:
         Player();
-        Player(int val);
-        int getValue();
+        ~Player();
+        Player(int);
+        void issueOrder();
+        int value;
 };
