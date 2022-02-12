@@ -157,7 +157,8 @@ void OrderList::print() {
         while(curr != nullptr) {
 
             std::cout << "Order ID: " << curr->orderType << std::endl;
-            curr = curr->next;
+            curr = curr->next; 
+            std::cout << "Testing" << std::endl;
         }
     }
     else {
