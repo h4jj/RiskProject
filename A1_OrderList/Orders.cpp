@@ -85,8 +85,6 @@ void OrderList::add(int orderType)
     else {
         switch(orderType) {
 
-            
-
             case 1:
                 {
                     Deploy* deployObj = new Deploy(nullptr, 1);
@@ -156,11 +154,7 @@ void OrderList::print() {
         
         Order* curr = this->head;
 
-        while(curr) {
-
-            if(curr == nullptr) {
-                break;
-            }
+        while(curr != nullptr) {
 
             std::cout << "Order ID: " << curr->orderType << std::endl;
             curr = curr->next;
