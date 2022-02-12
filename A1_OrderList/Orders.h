@@ -1,58 +1,60 @@
 #pragma once
-using namespace std;
+#include <iostream>
 
 class Order
 {
 public:
+    Order(Order*,int);
+public:
     Order* next;
-    Order* prev;
     int orderType;
-    void validate();
-    void execute();
-    Order();
-    Order(Order*,Order*,int);
 };
 
 class OrderList
 {
 public:
+    static int orderItems;
     OrderList();
-    void add(Order, int);
-    void move();
-    void remove();
+    void add(int);
     void print();
 private:
     Order* head;
+    Order* tail;
 };
-
-
 
 class Deploy : public Order
 {
-    Deploy();
+public:
+    Deploy(Order*, int);
 };
 
 class Advance : public Order
 {
-    Advance();
+public:
+    Advance(Order*, int);
 };
 
 class Bomb : public Order
 {
-    Bomb();
+public:
+    Bomb(Order*, int);
 };
 
 class Blockade : public Order
 {
-    Blockade();
+public:
+    Blockade(Order*, int);
 };
 
 class Airlift : public Order
 {
-    Airlift();
+public:
+    Airlift(Order*, int);
 };
 
 class Negotiate : public Order
 {
-    Negotiate();
+public:
+    Negotiate(Order*, int);
 };
+
