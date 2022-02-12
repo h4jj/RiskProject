@@ -15,7 +15,8 @@ class OrderList
 public:
     static int orderItems;
     OrderList();
-    void add(Order*, int);
+    ~OrderList();
+    void add(Order*);
     void print();
 private:
     Order* head;
@@ -26,12 +27,14 @@ class Deploy : public Order
 {
 public:
     Deploy(Order*, int);
+    ~Deploy();
 };
 
 class Advance : public Order
 {
 public:
     Advance(Order*, int);
+    ~Advance();
 };
 
 class Bomb : public Order
