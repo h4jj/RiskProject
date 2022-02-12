@@ -13,7 +13,8 @@ void OrderList::add(Order o, int orderType)
     if(head == nullptr)
     {
         // If the list is empty
-        head = new Order(o);
+        head = new Order(&o, nullptr, orderType);
+        cout << "Empty case" << endl;
     } 
     else
     {
@@ -23,9 +24,34 @@ void OrderList::add(Order o, int orderType)
         {
             p = p->next; // p points to the next order
         }
-        p->next = new Order(nullptr, p, orderType); // a new order is added connected to the last 
-    }                                               // order and pointing to a nullptr
+        Order* newOrder = new Order(nullptr, p, orderType);// a new order is added connected to the last 
+        p->next = newOrder;  
+        cout << "Non-empty case" << endl;                              // order and pointing to a nullptr
+    }                                               
 }
+
+void OrderList::print()
+{
+    if(head == nullptr)
+    {
+        // If the list is empty
+        cout << "The list is empty" << endl;
+    } 
+    else
+    {
+        // If the list is not empty
+        Order* p = head; // p is to be understood as the pointer that will traverse the list
+        while(p != nullptr) // The while loop makes the p pointer visit every order
+        {
+            cout << "Order type: " << p->orderType << endl;
+            cout << "printing..." << endl;
+            p = p->next; // p points to the next order
+            
+        }
+        
+    }                                               
+}
+
 
 void OrderList::move()
 {
@@ -36,9 +62,13 @@ void OrderList::remove()
 {
 
 }
+Order::Order()
+{
+
+}
 
 Order::Order(Order* next, Order* prev, int orderType) // Order is to be taken as the node
-: next(next), prev(prev)                              // of the linked list
+: next(next), prev(prev), orderType(orderType)        // of the linked list
 {
    
 }
@@ -73,6 +103,7 @@ void Order::execute()
 {
     
 }
+
 
 
 

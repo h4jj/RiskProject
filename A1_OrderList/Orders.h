@@ -6,20 +6,21 @@ class Order
 public:
     Order* next;
     Order* prev;
+    int orderType;
     void validate();
     void execute();
+    Order();
     Order(Order*,Order*,int);
-    ~Order();
 };
 
 class OrderList
 {
 public:
     OrderList();
-    ~OrderList();
     void add(Order, int);
     void move();
     void remove();
+    void print();
 private:
     Order* head;
 };

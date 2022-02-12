@@ -49,13 +49,15 @@ int main()
     ordersNum = int_Verification(ordersNum);
     int length = ordersNum; // To keep the original length that has been provided by the player
     OrderList orderList;
+    Order order;
     while (ordersNum > 0)
     {
         choice_of_orders();
         int choice = 0;
         cin >> choice;
         choice = int_Verification(choice);
+        orderList.add(order,choice);
         ordersNum--;
     }
-    return 0;
+    orderList.print();
 }
