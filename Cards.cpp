@@ -39,4 +39,47 @@ Card::Card(int _cardType) {
 void Card::play() {
 
 }
+/* 
+===================================
+Deck class
+===================================
+ */
 
+bool fillDeck = false;
+for (int i = 0; i < deckSize; i++)
+{
+    do
+    {
+        card.cardType()
+            fillDeck = Deck(card, i);
+    } while (fillDeck == true);
+    fillDeck = false;
+    card[i] = card;
+}
+Card *draw(Deck &deck)
+{
+    int randomCard = rand() % deckSize();
+    Card *temp = deck.at(randomCard);
+    cout << randomCard << "-" << *deck.at(randomCard) << " | ";
+    deckSize--;
+    randomCard--;
+    return temp;
+}
+std::array<Card *, deckSize> deck()
+{
+
+    return Deck[deckSize--];
+    [handSize++]
+}
+/* 
+===================================
+ Hand class
+===================================
+ */
+Hand::~Hand() { std::cout << "Hand object successfully destroyed" << std::endl; }
+Hand::Hand() {} // default constructor of Hand
+
+std::array<Card *, handSize> hand()
+{
+}
+}
