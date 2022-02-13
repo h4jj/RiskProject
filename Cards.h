@@ -22,7 +22,6 @@ private:
 
 class Deck
 {
-
 public:                         
     ~Deck();                                                 
     bool fillDeck(); 

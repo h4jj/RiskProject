@@ -1,6 +1,5 @@
 #include "Cards.h"
 
-
 Card::~Card() {std::cout << "Card object successfully destroyed" << std::endl;} 
 
 Card::Card(int _cardType) {
