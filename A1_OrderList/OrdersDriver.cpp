@@ -35,7 +35,7 @@ int main()
 
     obj->print();
 
-    cout << obj->length() << endl;
+    cout << "length of the list: " << obj->length() << endl;
 
     cout << "-------------------------" << endl;
 
@@ -55,9 +55,9 @@ int main()
 
     obj->print();
 
-    cout << "-------------------------" << endl;
+    cout << "length of the list: " << obj->length() << endl;
 
-    cout << obj->length() << endl;
+    cout << "-------------------------" << endl;
 
     d->validation();
 
@@ -65,8 +65,23 @@ int main()
     
     d->execution();
 
-    delete obj;
+    Deploy* copyD = new Deploy(*d);
+
+    cout << "order type address copyD: " << &copyD->orderType << endl;
+    cout << "order type address d: " << &d->orderType << endl;
+
+    cout << "order type copyD->next: " << *copyD->next->orderType << endl;
+
+    cout << "order type address copyD: " << *copyD->orderType << endl;
+    cout << "order type address d: " << *d->orderType << endl;
+
     delete d;
+
+    cout << "order type address copyD: " << *copyD->orderType << endl;
+    cout << "order type address d: " << *d->orderType << endl;
+
+    delete obj;
+    
     delete a;
     delete b;
     delete bl;

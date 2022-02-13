@@ -9,6 +9,7 @@ public:
     int *orderType;
     void validation();
     void execution();
+    Order(const Order &o);
 };
 
 class OrderList
@@ -20,6 +21,8 @@ public:
     void remove(int);
     void move(int, int);
     int length();
+    const Order* getHead();
+    const Order* getTail();
 
 private:
     Order *head;

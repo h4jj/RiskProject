@@ -54,6 +54,18 @@ void OrderList::print()
     }
 }
 
+// Accessor for head
+const Order* OrderList::getHead()
+{
+    return head;
+}
+
+// Accessor for tail
+const Order* OrderList::getTail()
+{
+    return tail;
+}
+
 // The function moves an order from one position in the list to another
 void OrderList::move(int position, int newPosition) // position is the index of the order to move
 {                                                   // newPosition is the index the order has to be moved to
@@ -83,8 +95,6 @@ void OrderList::move(int position, int newPosition) // position is the index of 
             Order *beforeP = this->head; // Temporary pointer to that is used to traverse the list
             if (position == 1)
             {
-                cout << *(head->orderType) << endl;
-                cout << *(beforeP->next->orderType) << endl;
                 this->head = beforeP->next;
 
                 Order *holder = beforeP;
@@ -238,4 +248,11 @@ void Order::execution()
 {
     Order::validation();
     cout << *(this->orderType) << " is being executed..." << endl;
+}
+
+// Copy constructor (deep copy) of order
+Order::Order(const Order& o)
+{
+    orderType = new int(*(o.orderType));
+    next = nullptr;
 }
