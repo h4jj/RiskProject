@@ -7,6 +7,8 @@ public:
     Order(Order *, int *);
     Order *next;
     int *orderType;
+    void validation();
+    void execution();
 };
 
 class OrderList

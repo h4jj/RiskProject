@@ -113,7 +113,7 @@ void OrderList::move(int position, int newPosition) // position is the index of 
                 holder->next = beforeNP->next;
                 beforeNP->next = holder;
             }
-            else if(newPosition == 1)
+            else if (newPosition == 1)
             {
                 while (position > 2)
                 {
@@ -123,11 +123,8 @@ void OrderList::move(int position, int newPosition) // position is the index of 
                 Order *holder = beforeP->next;
                 beforeP->next = beforeP->next->next;
                 holder->next = nullptr;
-                cout << *(head->next->orderType) << endl;
-                cout << *(holder->orderType) << endl;
                 holder->next = head;
                 head = holder;
-
             }
             else
             {
@@ -207,6 +204,7 @@ void OrderList::remove(int position)
         }
     }
 }
+
 // The function return the length of the list
 int OrderList::length()
 {
@@ -227,4 +225,17 @@ int OrderList::length()
         }
         return length;
     }
+}
+
+// Validation function
+void Order::validation()
+{
+    cout << *(this->orderType) << " is being validated..." << endl;
+}
+
+// Execution function
+void Order::execution()
+{
+    Order::validation();
+    cout << *(this->orderType) << " is being executed..." << endl;
 }
