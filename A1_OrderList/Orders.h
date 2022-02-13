@@ -4,57 +4,58 @@
 class Order
 {
 public:
-    Order(Order*,int);
-public:
-    Order* next;
-    int orderType;
+    Order(Order *, int *);
+    Order *next;
+    int *orderType;
 };
 
 class OrderList
 {
 public:
-    static int orderItems;
     OrderList();
-    void add(int);
+    void add(Order *);
     void print();
+    void remove(int);
+    void move(int, int);
+    int length();
+
 private:
-    Order* head;
-    Order* tail;
+    Order *head;
+    Order *tail;
 };
 
 class Deploy : public Order
 {
 public:
-    Deploy(Order*, int);
+    Deploy(Order *, int *);
 };
 
 class Advance : public Order
 {
 public:
-    Advance(Order*, int);
+    Advance(Order *, int *);
 };
 
 class Bomb : public Order
 {
 public:
-    Bomb(Order*, int);
+    Bomb(Order *, int *);
 };
 
 class Blockade : public Order
 {
 public:
-    Blockade(Order*, int);
+    Blockade(Order *, int *);
 };
 
 class Airlift : public Order
 {
 public:
-    Airlift(Order*, int);
+    Airlift(Order *, int *);
 };
 
 class Negotiate : public Order
 {
 public:
-    Negotiate(Order*, int);
+    Negotiate(Order *, int *);
 };
-
