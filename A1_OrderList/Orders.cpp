@@ -55,13 +55,13 @@ void OrderList::print()
 }
 
 // Accessor for head
-const Order* OrderList::getHead()
+const Order *OrderList::getHead()
 {
     return head;
 }
 
 // Accessor for tail
-const Order* OrderList::getTail()
+const Order *OrderList::getTail()
 {
     return tail;
 }
@@ -250,9 +250,37 @@ void Order::execution()
     cout << *(this->orderType) << " is being executed..." << endl;
 }
 
-// Copy constructor (deep copy) of order
+// Copy constructor (deep copy) of Order
 Order::Order(const Order& o)
 {
     orderType = new int(*(o.orderType));
     next = nullptr;
+}
+
+// Copy constructor (deep copy) of OrderList
+OrderList::OrderList(const OrderList& ol)
+{
+
+    if(head == nullptr)
+    {
+        // Empty list case
+        cout << "The list is empty." << endl;
+    }
+    else
+    {   
+        // First, we set the tail and head on the first order manually (wihtout the loop)
+        Order* temp = ol.head;
+        head = new Order(*(temp));
+        tail = head;
+        Order* curr = head;
+        // Second, all the orders are copied and linked to each other
+        while(temp->next != nullptr)
+        {
+            temp = temp->next;
+            curr->next = new Order(*(temp));
+            curr = curr->next;
+            tail = curr;
+        }
+        
+    }
 }

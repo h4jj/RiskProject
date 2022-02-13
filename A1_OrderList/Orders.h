@@ -9,13 +9,14 @@ public:
     int *orderType;
     void validation();
     void execution();
-    Order(const Order &o);
+    Order(const Order& o);
 };
 
 class OrderList
 {
 public:
     OrderList();
+    OrderList(const OrderList& ol);
     void add(Order *);
     void print();
     void remove(int);

@@ -67,21 +67,36 @@ int main()
 
     Deploy* copyD = new Deploy(*d);
 
-    cout << "order type address copyD: " << &copyD->orderType << endl;
-    cout << "order type address d: " << &d->orderType << endl;
+    //cout << "order type address copyD: " << &copyD->orderType << endl;
+    //cout << "order type address d: " << &d->orderType << endl;
 
-    cout << "order type copyD->next: " << *copyD->next->orderType << endl;
+    //cout << "order type copyD->next: " << *copyD->next->orderType << endl;
 
-    cout << "order type address copyD: " << *copyD->orderType << endl;
-    cout << "order type address d: " << *d->orderType << endl;
+    //cout << "order type address copyD: " << *copyD->orderType << endl;
+    //cout << "order type address d: " << *d->orderType << endl;
 
-    delete d;
-
-    cout << "order type address copyD: " << *copyD->orderType << endl;
-    cout << "order type address d: " << *d->orderType << endl;
-
-    delete obj;
+    //cout << "order type address copyD: " << *copyD->orderType << endl;
+    //cout << "order type address d: " << *d->orderType << endl;
     
+    OrderList* copyObj = new OrderList(*(obj));
+
+    obj->print();
+
+    obj->move(1,4);
+
+    cout << "obj: " << endl;
+
+    obj->print();
+
+    cout << "-------------------------" << endl;
+
+    copyObj->print();
+
+    cout << "-------------------------" << endl;
+
+    
+    delete obj;
+    delete d;
     delete a;
     delete b;
     delete bl;
