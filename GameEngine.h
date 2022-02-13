@@ -5,31 +5,12 @@ class GameEngine
 {
 
 public:
-    GameEngine(const GameEngine &game); // constructor
-    ~GameEngine();                      // destructor
-    GameEngine &operator=(const GameEngine &);
-
+    GameEngine();                        // constructor
+    GameEngine(const GameEngine &other); //constructor
+    ~GameEngine();                       // destructor
+    void setState(string newState);      //setter
+    string getState();                   //getter
+    int listOfActions(int i);
     friend ostream &operator<<(ostream &out, const GameEngine &g);
     friend istream &operator>>(istream &in, GameEngine &g);
-
-    void start();
-    void loadMap();
-    void validateMap();
-    void addPlayers();
-    void assignReinforcement();
-    void issueOrders();
-    void executeOrders();
-};
-
-private:
-enum states
-{
-    start,
-    mapLoaded,
-    mapValidated,
-    playersAdded,
-    assignReinforcement,
-    issueOrders,
-    executeOrders,
-    win
 };

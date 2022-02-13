@@ -1,6 +1,10 @@
 #include <iostream>
 #include <ostream>
 #include <vector>
+#include <string>
+#include <fstream>
+#include <iterator>
+#include <algorithm>
 
 using namespace std;
 
@@ -43,14 +47,14 @@ class Hand
 {
 
 public:
-    Hand();                                 // default constructor
-    ~Hand();                                // destructor
-    void setHandCards(Card *aCard);         //setter for hand cards
-    vector<Card *> *Hand::getCardInHand();  // vector that pointes to the cardsInHand
-    vector<Card *> *Hand::getCardsToPlay(); // vector that pointes to the cardsToPlay
-    void printHandCards();                  // print the hand cards
-    void play(Card *aCard);                 //play the card
-    void printCardsToPlay();                //add played card to deck
+    Hand();                           // default constructor
+    ~Hand();                          // destructor
+    void setHandCards(Card *aCard);   //setter for hand cards
+    vector<Card *> *getCardInHand();  // vector that pointes to the cardsInHand
+    vector<Card *> *getCardsToPlay(); // vector that pointes to the cardsToPlay
+    void printHandCards();            // print the hand cards
+    void play(Card *aCard);           //play the card
+    void printCardsToPlay();          //add played card to deck
     void removeAllPlayedCardsFromHand();
     void removePlayedCardsFromHand(Card *aCard);
     void addPlayedCardToDeck(Deck *aDeck);
