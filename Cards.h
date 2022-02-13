@@ -1,62 +1,46 @@
+#pragma once
 #include <iostream>
-#include <ostream>
-#include <vector>
+#include <array>
 
-using namespace std;
+using std::cout;
+using std::endl;
+
+
+enum class OrderType {
+    BOMB=1,REINFORCEMENT=2,BLOCKADE=3,AIRLIFT=4,DIPLOMACY=5
+};
 
 class Card
 {
-
-public:
-    Card();                               // default constructor
-    ~Card();                              // destructor
-    void initialCardsType();              // initial card type
-    vector<string> *getPointerToVector(); // vector that pointes to the vectors
-    void printVectorCards();              //print the cards of vector
-    void setCardType(int typeValue);      //setter for card type
-    void getCardType();                   // get card type
-
+public:                           
+    ~Card();
+    Card(int);                            
+    void play();                   
 private:
-    vector<string> CardsTypes; // vector of card pointers
-    string *cardType;          //string that store card type
+    OrderType cardType;         
 };
 
 class Deck
 {
 
-public:
-    Deck();                          // default constructor
-    ~Deck();                         // destructor
-    void initialDeck();              //initial Deck to assign 25 cards, each type has 5 cards
-    void printSizeOfDeck();          //print the size of deck
-    void printDeck();                //print the cards in the deck
-    void addCardToDeck(Card *aCard); //add card to deck
-    Card *draw();                    // draw a card at random from the cards remaining in the deck and place it in their hand.
+public:                         
+    ~Deck();                                                 
+    bool fillDeck(); 
+    Card* draw();
+    static const int deckSize = 25;                    
 
 private:
-    vector<Card *> deckCards; // vector of card pointers to deck
-    Card *pointerToCard;      // pointer to card
-    Card *cardTmp;            // temp card to draw and remove a card from deck
+    std::array<Card*, deckSize> deck;
+
 };
 
-class Hand
-{
-
+class Hand {
 public:
-    Hand();                                 // default constructor
-    ~Hand();                                // destructor
-    void setHandCards(Card *aCard);         //setter for hand cards
-    vector<Card *> *Hand::getCardInHand();  // vector that pointes to the cardsInHand
-    vector<Card *> *Hand::getCardsToPlay(); // vector that pointes to the cardsToPlay
-    void printHandCards();                  // print the hand cards
-    void play(Card *aCard);                 //play the card
-    void printCardsToPlay();                //add played card to deck
-    void removeAllPlayedCardsFromHand();
-    void removePlayedCardsFromHand(Card *aCard);
-    void addPlayedCardToDeck(Deck *aDeck);
-    void clearPlayedCards();
+    Hand();
+    ~Hand();
+    static const int handSize = 5;
 
 private:
-    vector<Card *> cardsInHand; // vector that stores the cards in hand
-    vector<Card *> cardsToPlay; // vector that stores the cards to play
+    std::array<Card*, handSize> hand;
+
 };
