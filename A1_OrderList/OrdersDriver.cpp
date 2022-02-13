@@ -2,23 +2,24 @@
 
 int main()
 {
+
+    int value1 = 1, value2 = 2, value3 = 3;
+
     OrderList* obj = new OrderList();
-    
-    Deploy* depObj = new Deploy(nullptr,1);
-    Advance* advObj = new Advance(nullptr,2);
+    Deploy* depObj = new Deploy(nullptr,&value1);
+    Advance* advObj = new Advance(nullptr,&value2);
+
 
     obj->add(depObj);
     obj->add(advObj);
-    // obj->add(3);
-    // obj->add(4);
-    // obj->add(5);
-    // obj->add(6);
     
     obj->print();
     
     delete depObj;
     delete advObj;
     delete obj;
+
+    
 
     return 0;
 }
