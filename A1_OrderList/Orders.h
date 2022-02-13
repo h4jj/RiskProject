@@ -10,6 +10,7 @@ public:
     void validation();
     void execution();
     Order(const Order& o);
+    friend std::ostream& operator << (std::ostream& out, Order& o);
 };
 
 class OrderList

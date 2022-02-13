@@ -1,6 +1,7 @@
 #include "Orders.h"
 using std::cout;
 using std::endl;
+using std::ostream;
 
 Order::Order(Order *next, int *orderType) : next(next), orderType(orderType) {}
 Deploy::Deploy(Order *next, int *orderType) : Order(next, orderType) { cout << "Deploy order created" << endl; }
@@ -251,36 +252,71 @@ void Order::execution()
 }
 
 // Copy constructor (deep copy) of Order
-Order::Order(const Order& o)
+Order::Order(const Order &o)
 {
     orderType = new int(*(o.orderType));
     next = nullptr;
 }
 
 // Copy constructor (deep copy) of OrderList
-OrderList::OrderList(const OrderList& ol)
+OrderList::OrderList(const OrderList &ol)
 {
 
-    if(head == nullptr)
+    if (head == nullptr)
     {
         // Empty list case
         cout << "The list is empty." << endl;
     }
     else
-    {   
+    {
         // First, we set the tail and head on the first order manually (wihtout the loop)
-        Order* temp = ol.head;
+        Order *temp = ol.head;
         head = new Order(*(temp));
         tail = head;
-        Order* curr = head;
+        Order *curr = head;
         // Second, all the orders are copied and linked to each other
-        while(temp->next != nullptr)
+        while (temp->next != nullptr)
         {
             temp = temp->next;
             curr->next = new Order(*(temp));
             curr = curr->next;
             tail = curr;
         }
-        
     }
+}
+
+// Stream insertion operator implementation
+ostream &operator<<(ostream &out, Order &o)
+{
+    switch (*(o.orderType))
+    {
+    case 1:
+        out << "Deploy order: place some armies on one of the current player’s territories." << endl;
+        break;
+    case 2:
+        out << "Advance order: move some armies from one of the current player’s territories (source) to an adjacent territory\n"
+            << "(target). If the target territory belongs to the current player, the armies are moved to the target\n"
+            << "territory. If the target territory belongs to another player, an attack happens between the two\n"
+            << "territories." << endl;
+        break;
+    case 3:
+        out << "Bomb order: destroy half of the armies located on an opponent’s territory that is adjacent to one of the current\n"
+            << "player’s territories." << endl;
+        break;
+    case 4:
+        out << "Blockade order: triple the number of armies on one of the current player’s territories and make it a neutral territory." << endl;
+        break;
+    case 5:
+        out << "Airlift order: advance some armies from one of the current player’s territories to any another territory." << endl;
+        break;
+    case 6:
+        out << "Negotiate order: prevent attacks between the current player and another player until the end of the turn." << endl;
+        break;
+    default:
+        out << "There is a mistake, this order doesn't exist." << endl;
+    }
+    out << "Execution satus: " << endl;
+    o.execution();
+
+    return out;
 }

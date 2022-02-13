@@ -94,6 +94,7 @@ int main()
 
     cout << "-------------------------" << endl;
 
+    cout << *n;
     
     delete obj;
     delete d;
