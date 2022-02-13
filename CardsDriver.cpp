@@ -15,7 +15,7 @@ int main()
     deck1.printDeck();
 
     //draw 5 cards and add the cards to hand
-    cout << "generate 5 cards and add them to hand" << endl;
+    cout << "Generate 5 cards and add them to hand" << endl;
     for (int i = 0; i < 5; i++)
     {
         hand1.setHandCards(deck1.draw());

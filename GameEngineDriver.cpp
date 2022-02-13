@@ -2,7 +2,7 @@
 
 int main()
 {
-    //set the current state to 0 to start the game
+    //set the current and new state to 0 to start the game
     int currentState = 0;
     int newState = 0;
 

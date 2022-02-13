@@ -97,13 +97,13 @@ void Deck::initialDeck()
 //print the size of current deck
 void Deck::printSizeOfDeck()
 {
-    cout << "This deck has " << deckCards.size() << " cards. " << endl;
+    cout << "Deck has " << deckCards.size() << " cards. " << endl;
 }
 
 //print all cards of deck, it should has 25 cards, which has 5 types, each type has 5 cards.
 void Deck::printDeck()
 {
-    cout << "This deck has " << deckCards.size() << " cards. " << endl;
+    cout << "Deck has " << deckCards.size() << " cards. " << endl;
 
     for (int j = 0; j < deckCards.size(); j++)
     {
@@ -156,7 +156,7 @@ void Hand::printHandCards()
 {
     if (cardsInHand.size() > 0)
     {
-        cout << "The hand of cards has" << cardsInHand.size() << " cards " << endl;
+        cout << "Hand of cards has" << cardsInHand.size() << " cards " << endl;
         for (int k = 0; k < cardsInHand.size(); k++)
         {
             cout << "The card at " << k << " is " << *cardsInHand.at(j)->getCardType() << endl;
@@ -177,7 +177,7 @@ void Hand::printCardsToPlay()
 {
     if (cardsToPlay.size() > 0)
     {
-        cout << "Here is the order of the playcards: " << endl;
+        cout << "Order of the playcards: " << endl;
         for (int k = 0; k < cardsToPlay.size(); k++)
         {
             cout << "The card at " << k << " is " << *cardsToPlay.at(i)->getCardType() << endl;

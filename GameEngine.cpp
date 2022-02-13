@@ -1,4 +1,4 @@
-//create cases for each action to control the flow of the game. verify the input of the user. If input is unvalid, break.
+//create cases for each action to control the flow of the game. verify the input of the user. If input is unvalid, then break.
 //For each state, it takes you to the next state, redo the state or both
 // at the end the player will chose between restarting the game or ending it.
 #include <iostream>
