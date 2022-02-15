@@ -251,10 +251,6 @@ void GameEngine::takeInput() {
     }
 }
 
-void GameEngine::changeState() {
-
-}
-
 void GameEngine::start() {
 
     // main - menu
@@ -262,7 +258,5 @@ void GameEngine::start() {
         showMenu();
         takeInput();
     }
-    
-
 }
 
