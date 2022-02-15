@@ -7,6 +7,19 @@
 GameEngine::GameEngine() {std::cout << "Game Engine successfully created" << std::endl;}
 GameEngine::~GameEngine() {std::cout << "Game Engine successfully destroyed" << std::endl;}
 
+GameEngine::GameEngine(const GameEngine &game)
+{
+   this->state =game.state;
+   this->map =game.map;
+}
+ GameEngine& operator = (const GameEngine& game)
+ {
+   this->state =game.state;
+   this->map =game.map;
+    return *this;
+ }
+
+
 std::ostream& operator<<(std::ostream& out, const State state) {
     std::map<State, std::string> strings;
 
@@ -251,10 +264,6 @@ void GameEngine::takeInput() {
     }
 }
 
-void GameEngine::changeState() {
-
-}
-
 void GameEngine::start() {
 
     // main - menu
@@ -262,7 +271,5 @@ void GameEngine::start() {
         showMenu();
         takeInput();
     }
-    
-
 }
 
