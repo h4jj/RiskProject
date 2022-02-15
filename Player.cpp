@@ -8,15 +8,15 @@ Player::~Player() {
 
 // Constructor
 
-Player::Player() {
-    std::cout << "Player object successfully created" << std::endl;
+Player::Player(std::string _name) {
+    name = _name;
+    std::cout << "Player object successfully created having name: " << this->name << std::endl;
     
     hand = new Hand();
     std::cout << "hand object successfully created" << std::endl;
     
     orderListObject = new OrderList();
 
-    std::cout << "OrderList object successfully created" << std::endl;
 }
 
 // Copy Constructor

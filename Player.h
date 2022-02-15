@@ -6,7 +6,7 @@
 class Player 
 {  
 public:
-    Player(); // Constructor
+    Player(std::string); // Constructor
     ~Player(); // Destructor
     Player(const Player&); // Copy Constructor
     Player& operator=(const Player&); // assignment operator
@@ -16,4 +16,5 @@ public:
 public:
     OrderList* orderListObject; // pointer to an OrderList object that will store all Orders for a player  
     Hand* hand;   // pointer to hand object that includes a vector of cards
+    std::string name;
 };
