@@ -20,8 +20,8 @@ public:
     static int id;
     int getID();
     Territory(const Territory& t);
-    Territory operator =(const Territory& t);
-
+    Territory& operator =(const Territory& t);
+    friend ostream &operator<<(ostream &out, Territory& t);
 private:
     int terr_id;
     std::string country, continent;
@@ -34,6 +34,7 @@ public:
     Edge(Territory*, Territory*);
     ~Edge();
     Edge(const Edge& e);
+    Edge& operator =(const Edge& e);
 
 public:
     std::pair<Territory*, Territory*> AdjacencyEdges;
@@ -46,6 +47,7 @@ public:
     ~Map();
     bool validate();
     Map(const Map& m);
+    Map& operator =(const Map& m);
 
 public:
     std::vector<Territory*> Nodes; // Nodes is a pointer similar to how an array gives a pointer to the first element - Assigning a pointer value will result in **
@@ -57,4 +59,5 @@ class MapLoader {
 public:
     Map* readMap(std::string filepath);
     MapLoader(const MapLoader& ml);
+    MapLoader& operator =(const MapLoader& ml);
 };
