@@ -7,9 +7,11 @@
 GameEngine::GameEngine() {std::cout << "Game Engine successfully created" << std::endl;}
 GameEngine::~GameEngine() {std::cout << "Game Engine successfully destroyed" << std::endl;}
 
-//GameEngine::GameEngine(const GameEngine &game) : s(false), currentState(game.currentState) {
-   // if(this->debug)
-       // cout << "GameEngine copy constructor called" << endl;
+GameEngine::GameEngine(const GameEngine &game)
+{
+   this->state =game.state;
+   this->map =game.map;
+}
 
 std::ostream& operator<<(std::ostream& out, const State state) {
     std::map<State, std::string> strings;
