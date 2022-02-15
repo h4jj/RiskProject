@@ -153,7 +153,7 @@ Map* MapLoader::readMap(std::string filepath) {
     }
 
     // 3 - connect the edges
-    int countrySlot = 0;
+    int countrySlot = 0, tempCounter = 0;
 
     while(getline(stream,line)) {
         if(line.find("[borders]") != std::string::npos) {
@@ -171,37 +171,58 @@ Map* MapLoader::readMap(std::string filepath) {
             bool initialSlot = true;
             std::stringstream ss(line);
             while(getline(ss,var, ' ')) {
+
+                bool pushBack = true;
+
                 if(initialSlot) {
                     initialSlot = false;
                     continue;
                 }
                 Edge* e = new Edge(mapObject->Nodes.at(countrySlot), mapObject->Nodes.at(stoi(var)-1));
-                tempVect.push_back(e);
+ 
+                for(auto& x : tempVect) {
+                    if(e->AdjacencyEdges.first->getCountry() == x->AdjacencyEdges.first->getCountry() || e->AdjacencyEdges.first->getCountry() == x->AdjacencyEdges.second->getCountry()) {
+                        if(e->AdjacencyEdges.second->getCountry() == x->AdjacencyEdges.first->getCountry() || e->AdjacencyEdges.second->getCountry() == x->AdjacencyEdges.second->getCountry()) {
+                            pushBack = false;
+                        }
+                    }
+                }
+
+                if(pushBack) {
+                    tempVect.push_back(e);
+                    mapObject->Edges.push_back(e);
+                }
             }
             countrySlot++;
             
         }
     }
-
+    
     // 4 - Cleanup repititive edges
 
-    for(auto& x : tempVect) {
-        int counter = 0;
-        for(auto& y : tempVect) {
-            if (x != y) {
-                if(x->AdjacencyEdges.first == y->AdjacencyEdges.first || x->AdjacencyEdges.first == y->AdjacencyEdges.second) {
-                    if(x->AdjacencyEdges.second == y->AdjacencyEdges.first || x->AdjacencyEdges.second == y->AdjacencyEdges.second) {
-                        tempVect.erase(tempVect.begin() + counter);
-                    }
-                }
-            }
-            counter++;
-        }
-    }
-    
-    for(auto const& x : tempVect) {
-        mapObject->Edges.push_back(x);
-    }
+    // for(auto const& x : tempVect) {
+    //     std::cout << x->AdjacencyEdges.first->getCountry() << " " << x->AdjacencyEdges.second->getCountry() << std::endl;
+    // }
+
+    // for(auto it = tempVect.begin(); it != tempVect.end(); it++) {
+
+    //     bool PushBack = true;
+
+    //     for(auto jt = tempVect.begin(); jt != tempVect.end(); jt++) {
+    //         if(*jt != *it) {
+    //             if((*it)->AdjacencyEdges.first->getCountry() == (*jt)->AdjacencyEdges.first->getCountry() || (*it)->AdjacencyEdges.first->getCountry() == (*jt)->AdjacencyEdges.second->getCountry()) {
+    //                 if((*it)->AdjacencyEdges.second->getCountry() == (*jt)->AdjacencyEdges.first->getCountry() || (*it)->AdjacencyEdges.second->getCountry() == (*jt)->AdjacencyEdges.second->getCountry()) {                       // don't push back
+    //                     PushBack = false;
+    //                     break;
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     if(PushBack) {
+    //         mapObject->Edges.push_back(*it);
+    //     }
+    // }
 
     return mapObject;
 }

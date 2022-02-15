@@ -60,7 +60,7 @@ int main() {
     MapLoader maploader;
     Map* map = nullptr;
 
-    map = maploader.readMap("canada.map");
+    map = maploader.readMap("europe.map");
 
     std::cout << "Size of nodes: " << map->Nodes.size() << std::endl;
     std::cout << "Size of edges: " << map->Edges.size() << std::endl;
