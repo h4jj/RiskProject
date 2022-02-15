@@ -11,7 +11,7 @@ public:
     GameEngine(const GameEngine& g); //copy constructure
     GameEngine& operator = (const GameEngine& g);//assignment operator
     friend std::ostream& operator<<(std::ostream& stream, const GameEngine& g); //stream
-    
+     
     void start();
     void showMenu();
     void takeInput();
