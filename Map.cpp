@@ -2,8 +2,8 @@
 
 
 Territory::Territory(std::string _country, std::string _continent) {
-    country = _country.c_str();
-    continent = _continent.c_str();
+    country = _country;
+    continent = _continent;
     std::cout << "Territory object created" << std::endl;
 }
 
@@ -15,6 +15,10 @@ Edge::Edge(Territory* ptr1, Territory* ptr2) {
     this->AdjacencyEdges->first = ptr1;
     this->AdjacencyEdges->second = ptr2;
     std::cout << "Edge object successfully created" << std::endl;
+}
+
+Edge::Edge() {
+
 }
 
 Edge::~Edge() {

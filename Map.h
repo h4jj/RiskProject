@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include "Player.h"
 
 class Territory {
 public:
@@ -12,12 +13,14 @@ public:
     std::string getCountry();
 
 private:
-    char* continent;
-    char* country;
+    std::string* country, continent;
+    Player* playerOwner;
+    int armyNumber;
 };
 
 class Edge {
 public:
+    Edge();
     Edge(Territory*, Territory*);
     ~Edge();
 
@@ -30,10 +33,11 @@ class Map {
 public:
     Map();
     ~Map();
+    bool validate();
 
 public:
-    std::vector<Territory*> Nodes;
-    std::vector<Edge*> Edges;
+    std::vector<Territory*>* Nodes;
+    std::vector<Edge*>* Edges;
 };
 
 
