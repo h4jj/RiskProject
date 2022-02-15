@@ -6,8 +6,12 @@ enum class State {START,MAP_LOADED,MAP_VALIDATED,PLAYERS_ADDED,ASSIGN_REIN,ISSUE
 
 class GameEngine {
 public:
-    GameEngine();
+    GameEngine(); 
     ~GameEngine();
+    GameEngine(const GameEngine& g); //copy constructure
+    GameEngine& operator = (const GameEngine& g);//assignment operator
+    friend std::ostream& operator<<(std::ostream& stream, const GameEngine& g); //stream
+    
     void start();
     void showMenu();
     void takeInput();
