@@ -10,7 +10,7 @@ public:
     ~GameEngine();
     GameEngine(const GameEngine& g); //copy constructure
     GameEngine& operator = (const GameEngine& g);//assignment operator
-    friend std::ostream& operator<<(std::ostream& stream, const GameEngine& g); //stream
+    friend std::ostream& operator<<(std::ostream& out, const State state) ); //stream
      
     void start();
     void showMenu();
