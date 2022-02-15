@@ -12,6 +12,13 @@ GameEngine::GameEngine(const GameEngine &game)
    this->state =game.state;
    this->map =game.map;
 }
+ GameEngine& operator = (const GameEngine& game)
+ {
+   this->state =game.state;
+   this->map =game.map;
+    return *this;
+ }
+
 
 std::ostream& operator<<(std::ostream& out, const State state) {
     std::map<State, std::string> strings;
