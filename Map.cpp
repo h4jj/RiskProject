@@ -13,6 +13,16 @@ Territory::Territory(std::string _country, std::string _continent, Player* playe
     std::cout << "Territory object created having ID: " << terr_id << std::endl;
 }
 
+Territory::Territory(std::string _country, std::string _continent) {
+    country = _country;
+    continent = _continent;
+
+    terr_id = id;
+    id++;
+
+    std::cout << "Territory object created having ID: " << terr_id << std::endl;
+}
+
 Territory::~Territory() {
     std::cout << "territoryOwner and Territory object destroyed, rest was used for stack allocation" << std::endl;
 }
@@ -83,7 +93,117 @@ bool Map::validate() {
 }
 
 Map* MapLoader::readMap(std::string filepath) {
+
+    // 1 - create map data structure of continents
+
+    std::map<int, std::string> Continents;
+    int continentCounter = 1;
+    Map* mapObject = new Map();
+    std::ifstream stream(filepath);
+    std::string line;
+    std::string continent;
+    std::vector<Edge*> tempVect;
+    bool foundContinent = false, foundCountry = false, foundBorders = false;
+
+    while(getline(stream,line)) {
+        if(line.find("[continents]") != std::string::npos) {
+            foundContinent = true;
+            continue;
+        }
+
+        if(foundContinent) {
+            if(line.empty()) {
+                break;
+            }
+
+            std::stringstream ss(line);
+            ss >> continent;
+            Continents.insert(std::pair<int,std::string>(continentCounter, continent));
+            continentCounter++;
+        }
+    }
+
+    // 2 - link each country to a continent and create Territory objects
+
+    while(getline(stream,line)) {
+        if(line.find("[countries]") != std::string::npos) {
+            foundCountry = true;
+            continue;
+        }
+        if(foundCountry) {
+
+            if(line.empty()) {
+                foundCountry = false;
+                break;
+            }
+
+            int placeholder, continentTracker;
+            std::string country;
+            std::stringstream ss(line) ;
+            ss >> placeholder >> country >> continentTracker;
+            for(auto const& x : Continents) {
+                if(x.first == continentTracker) {
+                    Territory* t = new Territory(country, x.second);
+                    mapObject->Nodes.push_back(t);
+                    break;
+                }
+            }
+            
+        }
+    }
+
+    // 3 - connect the edges
+    int countrySlot = 0;
+
+    while(getline(stream,line)) {
+        if(line.find("[borders]") != std::string::npos) {
+            foundBorders = true;
+            continue;
+        }
+
+        if(foundBorders) {
+
+            if(line.empty()) {
+                break;
+            }
+
+            std::string var;
+            bool initialSlot = true;
+            std::stringstream ss(line);
+            while(getline(ss,var, ' ')) {
+                if(initialSlot) {
+                    initialSlot = false;
+                    continue;
+                }
+                Edge* e = new Edge(mapObject->Nodes.at(countrySlot), mapObject->Nodes.at(stoi(var)-1));
+                tempVect.push_back(e);
+            }
+            countrySlot++;
+            
+        }
+    }
+
+    // 4 - Cleanup repititive edges
+
+    for(auto& x : tempVect) {
+        int counter = 0;
+        for(auto& y : tempVect) {
+            if (x != y) {
+                if(x->AdjacencyEdges.first == y->AdjacencyEdges.first || x->AdjacencyEdges.first == y->AdjacencyEdges.second) {
+                    if(x->AdjacencyEdges.second == y->AdjacencyEdges.first || x->AdjacencyEdges.second == y->AdjacencyEdges.second) {
+                        tempVect.erase(tempVect.begin() + counter);
+                    }
+                }
+            }
+            counter++;
+        }
+    }
     
+    for(auto const& x : tempVect) {
+        mapObject->Edges.push_back(x);
+    }
+
+    return mapObject;
 }
 
 void Territory::setContinent(std::string _continent) {continent = _continent;}

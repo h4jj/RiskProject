@@ -2,11 +2,14 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <map>
+#include <sstream>
 #include "Player.h"
 
 class Territory {
 public:
     Territory(std::string, std::string, Player*, int);
+    Territory(std::string, std::string);
     ~Territory();
     void setContinent(std::string);
     void setCountry(std::string);
@@ -48,5 +51,5 @@ public:
 
 class MapLoader {
 public:
-    Map* readMap(std::string);
+    Map* readMap(std::string filepath);
 };
