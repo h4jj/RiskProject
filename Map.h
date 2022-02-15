@@ -5,12 +5,12 @@
 
 class Territory {
 public:
-    Territory(std::string, std::string);
+    Territory(std::string*, std::string*);
     ~Territory();
-    void setContinent(std::string);
-    void setCountry(std::string);
-    std::string getContinent();
-    std::string getCountry();
+    void setContinent(std::string*);
+    void setCountry(std::string*);
+    std::string* getContinent();
+    std::string* getCountry();
 
 private:
     std::string* country, continent;
@@ -43,8 +43,5 @@ public:
 
 class MapLoader {
 public:
-    void readMap(std::string);
-public:
-    Map* mapObject;
-
+    Map* readMap(std::string);
 };

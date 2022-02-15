@@ -1,7 +1,7 @@
 #include "Map.h"
 
 
-Territory::Territory(std::string _country, std::string _continent) {
+Territory::Territory(std::string* _country, std::string* _continent) {
     country = _country;
     continent = _continent;
     std::cout << "Territory object created" << std::endl;
@@ -33,7 +33,7 @@ Map::~Map() {
     std::cout << "Map object destroyed" << std::endl;
 }
 
-void Territory::setContinent(std::string _continent) {continent = _continent;}
-void Territory::setCountry(std::string _country) {country = _country;}
-std::string Territory::getContinent() {return continent;}
-std::string Territory::getCountry() {return country;}
+void Territory::setContinent(std::string* _continent) {continent = _continent;}
+void Territory::setCountry(std::string* _country) {country = _country;}
+std::string* Territory::getContinent() {return continent;}
+std::string* Territory::getCountry() {return country;}
