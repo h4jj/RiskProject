@@ -1,10 +1,9 @@
 #include "Map.h"
 
 
-Territory::Territory(std::string _country, std::string _continent, Player* player, int _armyCount) {
+Territory::Territory(std::string _country, std::string _continent, int _armyCount) {
     country = _country;
     continent = _continent;
-    territoryOwner = player;
     armyCount = &_armyCount;
 
     terr_id = id;
@@ -24,7 +23,7 @@ Territory::Territory(std::string _country, std::string _continent) {
 }
 
 Territory::~Territory() {
-    std::cout << "territoryOwner and Territory object destroyed, rest was used for stack allocation" << std::endl;
+    std::cout << "Territory object destroyed, rest was used for stack allocation so no need to manually deallocate" << std::endl;
 }
 
 int Territory::id = 0;
@@ -99,11 +98,20 @@ Map* MapLoader::readMap(std::string filepath) {
     std::map<int, std::string> Continents;
     int continentCounter = 1;
     Map* mapObject = new Map();
-    std::ifstream stream(filepath);
     std::string line;
     std::string continent;
     std::vector<Edge*> tempVect;
+    std::ifstream stream(filepath);
     bool foundContinent = false, foundCountry = false, foundBorders = false;
+
+    if(!stream) {
+        std::cout << "File does not exist" << std::endl;
+        return nullptr;
+    }
+    else {
+        std::cout << "File is valid" << std::endl;
+    }
+    
 
     while(getline(stream,line)) {
         if(line.find("[continents]") != std::string::npos) {
@@ -123,6 +131,11 @@ Map* MapLoader::readMap(std::string filepath) {
         }
     }
 
+    if(!foundContinent) {
+        std::cout << "File has invalid format - Unable to continue - returning nullptr" << std::endl;
+        return nullptr;
+    }
+
     // 2 - link each country to a continent and create Territory objects
 
     while(getline(stream,line)) {
@@ -133,7 +146,6 @@ Map* MapLoader::readMap(std::string filepath) {
         if(foundCountry) {
 
             if(line.empty()) {
-                foundCountry = false;
                 break;
             }
 
@@ -150,6 +162,11 @@ Map* MapLoader::readMap(std::string filepath) {
             }
             
         }
+    }
+
+    if(!foundCountry) {
+        std::cout << "File has invalid format - Unable to continue - returning nullptr" << std::endl;
+        return nullptr;
     }
 
     // 3 - connect the edges
@@ -199,6 +216,11 @@ Map* MapLoader::readMap(std::string filepath) {
             
         }
     }
+
+    if(!foundBorders) {
+        std::cout << "File has invalid format - Unable to continue - returning nullptr" << std::endl;
+        return nullptr;
+    }
     
     return mapObject;
 }
@@ -207,6 +229,5 @@ void Territory::setContinent(std::string _continent) {continent = _continent;}
 void Territory::setCountry(std::string _country) {country = _country;}
 std::string Territory::getContinent() {return continent;}
 std::string Territory::getCountry() {return country;}
-Player* Territory::getTerritoryOwner() {return territoryOwner;}
 int* Territory::getArmyCount() {return armyCount;}
 int Territory::getID() {return terr_id;}

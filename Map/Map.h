@@ -6,6 +6,7 @@
 #include <sstream>
 #include "Player.h"
 
+
 class Territory {
 public:
     Territory(std::string, std::string, Player*, int);

@@ -3,13 +3,13 @@ using std::cout;
 using std::endl;
 using std::ostream;
 
-Order::Order(Order *next, int *orderType) : next(next), orderType(orderType) {}
-Deploy::Deploy(Order *next, int *orderType) : Order(next, orderType) { cout << "Deploy order created" << endl; }
-Advance::Advance(Order *next, int *orderType) : Order(next, orderType) { cout << "Advance order created" << endl; }
-Bomb::Bomb(Order *next, int *orderType) : Order(next, orderType) { cout << "Bomb order created" << endl; }
-Blockade::Blockade(Order *next, int *orderType) : Order(next, orderType) { cout << "Blockade order created" << endl; }
-Airlift::Airlift(Order *next, int *orderType) : Order(next, orderType) { cout << "Airlift order created" << endl; }
-Negotiate::Negotiate(Order *next, int *orderType) : Order(next, orderType) { cout << "Negotiate order created" << endl; }
+Order::Order(Order *next, int orderType) : next(next), orderType(&orderType) {}
+Deploy::Deploy(Order *next, int orderType) : Order(next, orderType) { cout << "Deploy order created" << endl; }
+Advance::Advance(Order *next, int orderType) : Order(next, orderType) { cout << "Advance order created" << endl; }
+Bomb::Bomb(Order *next, int orderType) : Order(next, orderType) { cout << "Bomb order created" << endl; }
+Blockade::Blockade(Order *next, int orderType) : Order(next, orderType) { cout << "Blockade order created" << endl; }
+Airlift::Airlift(Order *next, int orderType) : Order(next, orderType) { cout << "Airlift order created" << endl; }
+Negotiate::Negotiate(Order *next, int orderType) : Order(next, orderType) { cout << "Negotiate order created" << endl; }
 OrderList::OrderList() : head(nullptr), tail(nullptr) { cout << "Empty OrderList Successfully Created" << endl; }
 
 void OrderList::add(Order *o)

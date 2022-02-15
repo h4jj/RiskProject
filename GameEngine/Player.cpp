@@ -9,7 +9,7 @@ Player::~Player() {
 // Constructor
 
 Player::Player(std::string _name) {
-    name = _name;
+    name = &_name;
     std::cout << "Player object successfully created having name: " << this->name << std::endl;
     
     hand = new Hand();
@@ -39,14 +39,52 @@ Player& Player::operator=(const Player& p) {
 
 // Method to return list of arbitrary territories
 
-void Player::toAttack() {
+std::list<Territory*> Player::toAttack() {
+    if(this->territories.size() != 0) {
+        std::list<Territory*> randTerritories;
+        int even = 0;
 
+        for(auto const& x : this->territories) {
+            if(even%2==0){
+                randTerritories.push_back(x);
+            }
+            even++;
+        }
+        
+        return randTerritories;
+    }
+    else {
+        std::cout << "Player does not own any territories" << std::endl;
+    }
+
+    std::list<Territory*> emptyList;
+
+    return emptyList;
 }
 
 // Method to return list of arbitrary territories
 
-void Player::toDefend() {
+std::list<Territory*> Player::toDefend() {
+    if(this->territories.size() != 0) {
+        std::list<Territory*> randTerritories;
+        int odd = 1;
 
+        for(auto const& x : this->territories) {
+            if(odd%2==0){
+                randTerritories.push_back(x);
+            }
+            odd++;
+        }
+        
+        return randTerritories;
+    }
+    else {
+        std::cout << "Player does not own any territories" << std::endl;
+    }
+
+    std::list<Territory*> emptyList;
+
+    return emptyList;
 }
 
 // takes order type as input

@@ -4,7 +4,7 @@
 class Order
 {
 public:
-    Order(Order *, int *);
+    Order(Order *, int);
     Order *next;
     int *orderType;
     void validation();
@@ -34,35 +34,35 @@ private:
 class Deploy : public Order
 {
 public:
-    Deploy(Order *, int *);
+    Deploy(Order *, int);
 };
 
 class Advance : public Order
 {
 public:
-    Advance(Order *, int *);
+    Advance(Order *, int);
 };
 
 class Bomb : public Order
 {
 public:
-    Bomb(Order *, int *);
+    Bomb(Order *, int);
 };
 
 class Blockade : public Order
 {
 public:
-    Blockade(Order *, int *);
+    Blockade(Order *, int);
 };
 
 class Airlift : public Order
 {
 public:
-    Airlift(Order *, int *);
+    Airlift(Order *, int);
 };
 
 class Negotiate : public Order
 {
 public:
-    Negotiate(Order *, int *);
+    Negotiate(Order *, int);
 };
