@@ -19,6 +19,8 @@ public:
     int* getArmyCount();
     static int id;
     int getID();
+    Territory(const Territory& t);
+    Territory operator =(const Territory& t);
 
 private:
     int terr_id;
@@ -31,6 +33,7 @@ class Edge {
 public:
     Edge(Territory*, Territory*);
     ~Edge();
+    Edge(const Edge& e);
 
 public:
     std::pair<Territory*, Territory*> AdjacencyEdges;
@@ -42,6 +45,7 @@ public:
     Map();
     ~Map();
     bool validate();
+    Map(const Map& m);
 
 public:
     std::vector<Territory*> Nodes; // Nodes is a pointer similar to how an array gives a pointer to the first element - Assigning a pointer value will result in **
@@ -52,4 +56,5 @@ public:
 class MapLoader {
 public:
     Map* readMap(std::string filepath);
+    MapLoader(const MapLoader& ml);
 };

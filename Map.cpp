@@ -203,6 +203,16 @@ Map* MapLoader::readMap(std::string filepath) {
     return mapObject;
 }
 
+Territory::Territory(const Territory& t){}
+
+Edge::Edge(const Edge& e){}
+
+Map::Map(const Map& m){}
+
+MapLoader::MapLoader(const MapLoader& ml){}
+
+
+
 void Territory::setContinent(std::string _continent) {continent = _continent;}
 void Territory::setCountry(std::string _country) {country = _country;}
 std::string Territory::getContinent() {return continent;}
