@@ -14,10 +14,15 @@ GameEngine::GameEngine(const GameEngine &game)
 }
  GameEngine& operator = (const GameEngine& game)
  {
-   this->state =game.state;
-   this->map =game.map;
-    return *this;
+   if(this != &game)
+   {
+      this->state =game.state;
+      this->map =game.map;
+
+   return *this;
+   } 
  }
+
 
 
 std::ostream& operator<<(std::ostream& out, const State state) {
