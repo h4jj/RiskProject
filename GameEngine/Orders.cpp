@@ -1,9 +1,12 @@
 #include "Orders.h"
+
 using std::cout;
 using std::endl;
 using std::ostream;
 
-Order::Order(Order *next, int orderType) : next(next), orderType(&orderType) {}
+Order::Order() {}
+Deploy::Deploy() : Order() {};
+Order::Order(Order *next, int orderType) : next(next), orderType(orderType) {}
 Deploy::Deploy(Order *next, int orderType) : Order(next, orderType) { cout << "Deploy order created" << endl; }
 Advance::Advance(Order *next, int orderType) : Order(next, orderType) { cout << "Advance order created" << endl; }
 Bomb::Bomb(Order *next, int orderType) : Order(next, orderType) { cout << "Bomb order created" << endl; }
@@ -44,7 +47,7 @@ void OrderList::print()
         while (curr != nullptr)
         {
 
-            std::cout << "Order ID: " << *(curr->orderType) << std::endl;
+            std::cout << "Order ID: " << curr->orderType << std::endl;
             curr = curr->next;
         }
     }
@@ -241,20 +244,20 @@ int OrderList::length()
 // Validation function
 void Order::validation()
 {
-    cout << *(this->orderType) << " is being validated..." << endl;
+    cout << orderType << " is being validated..." << endl;
 }
 
 // Execution function
 void Order::execution()
 {
     Order::validation();
-    cout << *(this->orderType) << " is being executed..." << endl;
+    cout << orderType << " is being executed..." << endl;
 }
 
 // Copy constructor (deep copy) of Order
 Order::Order(const Order &o)
 {
-    orderType = new int(*(o.orderType));
+    orderType = o.orderType;
     next = nullptr;
 }
 
@@ -267,28 +270,28 @@ OrderList::OrderList(const OrderList &ol)
         // Empty list case
         cout << "The list is empty." << endl;
     }
-    else
-    {
-        // First, we set the tail and head on the first order manually (wihtout the loop)
-        Order *temp = ol.head;
-        head = new Order(*(temp));
-        tail = head;
-        Order *curr = head;
-        // Second, all the orders are copied and linked to each other
-        while (temp->next != nullptr)
-        {
-            temp = temp->next;
-            curr->next = new Order(*(temp));
-            curr = curr->next;
-            tail = curr;
-        }
-    }
+    // else
+    // {
+    //     // First, we set the tail and head on the first order manually (wihtout the loop)
+    //     Order *temp = ol.head;
+    //     head = new Order(*(temp));
+    //     tail = head;
+    //     Order *curr = head;
+    //     // Second, all the orders are copied and linked to each other
+    //     while (temp->next != nullptr)
+    //     {
+    //         temp = temp->next;
+    //         curr->next = new Order(*(temp));
+    //         curr = curr->next;
+    //         tail = curr;
+    //     }
+    // }
 }
 
 // Stream insertion operator implementation
 ostream &operator<<(ostream &out, Order &o)
 {
-    switch (*(o.orderType))
+    switch (o.orderType)
     {
     case 1:
         out << "Deploy order: place some armies on one of the current player’s territories." << endl;
@@ -319,4 +322,110 @@ ostream &operator<<(ostream &out, Order &o)
     o.execution();
 
     return out;
+}
+
+void Deploy::execute() {
+    
+    bool isValid = false;
+    Territory* t = nullptr;
+    if(player != nullptr) {
+        for(const auto& _t : player->territories) {
+            if(_t->getCountry() == territory) {
+                isValid = true;
+                t = _t;
+                break;
+            } 
+        }
+
+        if(!isValid){
+            std::cout << "You do not own this territory, please try a different one" << std::endl;
+            return;
+        }
+
+        t->setArmyCount(armyCount);
+        std::cout << armyCount << " troops deployed to " << t->getCountry() << std::endl;
+    }
+    else {
+        std::cout << "Deploy ordered not properly configured" << std::endl;
+    }   
+}
+
+void Advance::execute() {
+    // std::cout << "t1: " << t1 << std::endl;
+    // if(player != nullptr) {
+
+    // }
+}
+
+void Blockade::execute() {
+
+    Territory* t = nullptr;
+    int index = 0;
+
+    for(const auto& _t : player->territories) {
+        if(_t->getCountry() == t1) {
+            t = _t;
+            break;
+        }
+        index++;
+    }
+
+    if(t == nullptr) {
+        std::cout << "Order is invalid, you do not own this territory" << std::endl;
+        return;
+    }
+
+    t->setArmyCount(t->getArmyCount() * 2);
+    neutralPlayer = new Player("neutral player");
+    neutralPlayer->territories.push_back(t);
+    player->territories.erase(player->territories.begin() + index);
+
+    std::cout << "Army count at territory " << t->getCountry() << " has increased from " << t->getArmyCount() / 2 << " to " << t->getArmyCount() << " and is now owned by the neutral player" << std::endl;
+    return;
+}
+
+void Bomb::execute() {
+
+    Territory* t = nullptr;
+
+    for(const auto& _t : player->territories) {
+        if(_t->getCountry() == t1) {
+            t = _t; 
+            break;
+        }
+    }
+
+    if(t != nullptr) {
+        std::cout << "Order is invalid, you own this territory" << std::endl;
+        return;
+    }
+
+
+}
+
+void Airlift::execute() {
+
+    Territory *source = nullptr, *target = nullptr;
+
+    for(const auto& t : player->territories) {
+        if(t->getCountry() == t1) {
+            source = t;
+        }
+        else if(t->getCountry() == t2) {
+            target = t;
+        }
+    }
+
+    if(source == nullptr || target == nullptr ) {
+        std::cout << "Order is invalid, you do not own both territories" << std::endl;
+        return;
+    }
+
+    source->setArmyCount(source->getArmyCount() - armyCount);
+    target->setArmyCount(target->getArmyCount() + armyCount);
+    std::cout << armyCount << " troops successfully deployed from " << source->getCountry() << " to " << target->getArmyCount() << std::endl;
+}
+
+void Negotiate::execute() {
+
 }

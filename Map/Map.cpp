@@ -13,6 +13,23 @@ Territory::Territory(std::string _country, std::string _continent, Player* playe
     std::cout << "Territory object created having ID: " << terr_id << std::endl;
 }
 
+Territory::Territory(const Territory& t) {
+    this->terr_id = t.terr_id;
+    this->country = t.country;
+    this->continent = t.continent;
+    this->armyCount = new int(*(t.armyCount));
+    this->territoryOwner = new Player(*(t.territoryOwner->name));
+}
+
+Territory& Territory::operator=(const Territory& t) {
+    this->terr_id = t.terr_id;
+    this->country = t.country;
+    this->continent = t.continent;
+    this->armyCount = t.armyCount;
+    this->territoryOwner = t.territoryOwner;
+    return *this;
+}
+
 Territory::Territory(std::string _country, std::string _continent) {
     country = _country;
     continent = _continent;
@@ -37,6 +54,17 @@ Edge::Edge(Territory* ptr1, Territory* ptr2) {
 
 Edge::~Edge() {
     std::cout << "Edge object successfully destroyed" << std::endl;
+}
+
+Edge::Edge(const Edge& e) {
+    this->AdjacencyEdges.first = new Territory(e.AdjacencyEdges.first->getCountry(), e.AdjacencyEdges.first->getContinent());
+    this->AdjacencyEdges.second = new Territory(e.AdjacencyEdges.second->getCountry(), e.AdjacencyEdges.second->getContinent());
+}
+
+Edge& Edge::operator=(const Edge& e) {
+    this->AdjacencyEdges.first = e.AdjacencyEdges.first;
+    this->AdjacencyEdges.second = e.AdjacencyEdges.second;
+    return *this;
 }
 
 Map::Map() {
@@ -78,7 +106,7 @@ bool Map::validate() {
         }
     }
 
-    std::cout << "TRUE" << std::endl;
+    std::cout << "Graph is connected: TRUE" << std::endl;
     return true;
 
     // 2 - Check continents are connected subgraphs
@@ -90,6 +118,31 @@ bool Map::validate() {
 
     // since there is only one possible continent value for each territory then each country cannot belong to more than one continent
     
+}
+
+
+Map::Map(const Map& m) {
+    for(auto const& item : m.Nodes) {
+        Territory* t = new Territory(item->getCountry(), item->getContinent());
+        this->Nodes.push_back(t);
+    }
+
+    for(auto const& item : m.Edges) {
+        Edge* e = new Edge(new Territory(item->AdjacencyEdges.first->getCountry(), item->AdjacencyEdges.first->getContinent()), new Territory(item->AdjacencyEdges.second->getCountry(), item->AdjacencyEdges.second->getContinent()));
+        this->Edges.push_back(e);
+    }
+}
+
+Map& Map::operator=(const Map& m) {
+    for(auto const& item : m.Nodes) {
+        this->Nodes.push_back(item);
+    }
+
+    for(auto const& item : m.Edges) {
+        this->Edges.push_back(item);
+    }
+
+    return *this;
 }
 
 Map* MapLoader::readMap(std::string filepath) {

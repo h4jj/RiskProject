@@ -4,6 +4,8 @@
 
 Player::~Player() {
     std::cout << "Player object successfully destroyed" << std::endl;
+    delete this->orderListObject;
+    delete this->hand;
 }
 
 // Constructor

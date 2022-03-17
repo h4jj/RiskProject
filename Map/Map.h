@@ -11,6 +11,8 @@ class Territory {
 public:
     Territory(std::string, std::string, Player*, int);
     Territory(std::string, std::string);
+    Territory(const Territory&);
+    Territory& operator=(const Territory&);
     ~Territory();
     void setContinent(std::string);
     void setCountry(std::string);
@@ -31,6 +33,8 @@ private:
 class Edge {
 public:
     Edge(Territory*, Territory*);
+    Edge(const Edge&);
+    Edge& operator=(const Edge&);
     ~Edge();
 
 public:
@@ -41,6 +45,8 @@ class Map {
 
 public:
     Map();
+    Map(const Map&);
+    Map& operator=(const Map&);
     ~Map();
     bool validate();
 

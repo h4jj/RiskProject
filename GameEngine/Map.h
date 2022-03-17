@@ -16,14 +16,15 @@ public:
     void setCountry(std::string);
     std::string getContinent();
     std::string getCountry();
-    int* getArmyCount();
+    int getArmyCount();
+    void setArmyCount(int);
     static int id;
     int getID();
 
 private:
     int terr_id;
     std::string country, continent;
-    int* armyCount;
+    int armyCount;
 };
 
 class Edge {

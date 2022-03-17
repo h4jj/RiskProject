@@ -4,7 +4,7 @@ int main() {
 
     GameEngine gameEng;
 
-    gameEng.start();
+    gameEng.startupPhase();
 
     return 0;
 }

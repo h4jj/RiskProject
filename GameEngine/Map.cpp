@@ -4,7 +4,7 @@
 Territory::Territory(std::string _country, std::string _continent, int _armyCount) {
     country = _country;
     continent = _continent;
-    armyCount = &_armyCount;
+    armyCount = _armyCount;
 
     terr_id = id;
     id++;
@@ -24,6 +24,10 @@ Territory::Territory(std::string _country, std::string _continent) {
 
 Territory::~Territory() {
     std::cout << "Territory object destroyed, rest was used for stack allocation so no need to manually deallocate" << std::endl;
+}
+
+void Territory::setArmyCount(int army) {
+    armyCount = army;
 }
 
 int Territory::id = 0;
@@ -229,5 +233,5 @@ void Territory::setContinent(std::string _continent) {continent = _continent;}
 void Territory::setCountry(std::string _country) {country = _country;}
 std::string Territory::getContinent() {return continent;}
 std::string Territory::getCountry() {return country;}
-int* Territory::getArmyCount() {return armyCount;}
+int Territory::getArmyCount() {return armyCount;}
 int Territory::getID() {return terr_id;}
