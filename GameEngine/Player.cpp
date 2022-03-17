@@ -16,7 +16,7 @@ Player::Player(std::string _name) {
     std::cout << "hand object successfully created" << std::endl;
     
     orderListObject = new OrderList();
-    int reinforcementPool;
+    
 
 }
 
