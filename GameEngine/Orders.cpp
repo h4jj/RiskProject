@@ -351,10 +351,98 @@ void Deploy::execute() {
 }
 
 void Advance::execute() {
-    // std::cout << "t1: " << t1 << std::endl;
-    // if(player != nullptr) {
+    
+    Territory *terr1 = nullptr, *terr2 = nullptr;
+    
+    for(const auto& _t : src->territories) {
+        if(_t->getCountry() == t1) {
+            terr1 = _t;
+            break;
+        }
+    }
 
-    // }
+    if(terr1 == nullptr) {
+        std::cout << "Order is invalid, you do not own source territory" << std::endl;
+        return;
+    }
+
+    for(const auto& t : src->territories) {
+        for(const auto& edge : edges) {
+            if(edge->AdjacencyEdges.first == t || edge->AdjacencyEdges.second == t) {
+                if(edge->AdjacencyEdges.first->getCountry() == t2) {
+                    terr2 = edge->AdjacencyEdges.first;
+                    break;
+                }
+                else if(edge->AdjacencyEdges.second->getCountry() == t2) {
+                    terr2 = edge->AdjacencyEdges.second;
+                    break;
+                }
+            }
+        }
+
+        if(terr2 != nullptr) break;
+    }
+
+    if(terr2 != nullptr) {
+        bool playerOwner = false;
+        for(const auto& t : src->territories) {
+            if(terr2 == t) {
+                playerOwner = true;
+                break;
+            }
+        }
+
+        if(playerOwner) {
+            terr1->setArmyCount(terr1->getArmyCount() - armyCount);
+            terr2->setArmyCount(terr2->getArmyCount() + armyCount);
+        }
+        else {
+
+            int tempValue = armyCount;
+
+            while(terr1->getArmyCount() != 0 || terr2->getArmyCount() != 0) {
+                std::random_device                  rand_dev;
+                std::mt19937                        generator(rand_dev());
+                std::uniform_int_distribution<int>  distr(0,1);
+
+                int number1 = distr(generator);
+
+                if(number1 < 0.6) {
+                    terr2->setArmyCount(terr2->getArmyCount() - 1);
+                }
+
+                int number2 = distr(generator);
+
+                if(number2 < 0.7) {
+                    armyCount -= 1;
+                }
+            }
+
+            if(terr2->getArmyCount() == 0) {
+                terr1->setArmyCount(terr1->getArmyCount() - armyCount);
+                src->territories.push_back(terr2);
+                
+                int index = 0;
+                for(const auto t : target->territories) {
+                    if(t == terr2) break;
+                    index++;
+                }
+
+                target->territories.erase(target->territories.begin() + index);
+            
+            }
+            else {
+                terr1->setArmyCount(terr1->getArmyCount() - tempValue);
+            }
+        }
+    }
+    else {
+        std::cout << "Territories are not adjacent, order is invalid" << std::endl;
+        return;
+    }
+
+
+
 }
 
 void Blockade::execute() {
@@ -388,7 +476,7 @@ void Bomb::execute() {
 
     Territory* t = nullptr;
 
-    for(const auto& _t : player->territories) {
+    for(const auto& _t : owner->territories) {
         if(_t->getCountry() == t1) {
             t = _t; 
             break;
@@ -399,6 +487,34 @@ void Bomb::execute() {
         std::cout << "Order is invalid, you own this territory" << std::endl;
         return;
     }
+
+    Territory* target = nullptr;
+
+    for(const auto& t : owner->territories) {
+        for(const auto& edge : edges) {
+            if(edge->AdjacencyEdges.first == t || edge->AdjacencyEdges.second == t) {
+                if(edge->AdjacencyEdges.first->getCountry() == t1) {
+                    target = edge->AdjacencyEdges.first;
+                    break;
+                }
+                else if(edge->AdjacencyEdges.second->getCountry() == t1) {
+                    target = edge->AdjacencyEdges.second;
+                    break;
+                }
+            }
+        }
+
+        if(target != nullptr) break;
+    }
+
+    if(target != nullptr) {
+        target->setArmyCount(target->getArmyCount() / 2);
+    }
+    else {
+        std::cout << "Territories are not adjacent, cannot issue bomb order" << std::endl;
+        return;
+    }
+
 
 
 }
@@ -427,5 +543,15 @@ void Airlift::execute() {
 }
 
 void Negotiate::execute() {
+
+    if(target == src) {
+        std::cout << "Invalid order, target selected is the same as source" << std::endl;
+        return;
+    }
+
+    src->unAttackableName = target->name;
+    target->unAttackableName = src->name;
+
+    return;
 
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
-#include <vector>
+#include <queue>
+#include "Orders.h"
 
 using std::cout;
 using std::endl;
@@ -25,7 +26,7 @@ class Hand {
 
 public:
     static const int handSize = 5;
-    std::vector<Card*> handVector;
+    std::queue<Card*> handVector;
 
 };
 

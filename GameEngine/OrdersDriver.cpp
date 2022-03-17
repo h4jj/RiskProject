@@ -12,13 +12,8 @@ int main()
     gameEng->showAvailableMaps();
     gameEng->pickMap();
     Player* p1 = new Player("Ahmad");
-    order.player = p1;
-    std::string config1;
-
-
-    order.execute();
-
-    while(true);
+    Player* p2 = new Player("Mostafa");
+    Player* p3 = new Player("Marieme");
 
     return 0;
 }

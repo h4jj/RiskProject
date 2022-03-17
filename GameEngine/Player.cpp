@@ -91,6 +91,8 @@ std::list<Territory*> Player::toDefend() {
 // creates Order object based on input given to issueOrder() method
 // DEPLOY=1,ADVANCE=2,BOMB=3,BLOCKADE=4,AIRLIFT=5,NEGOTIATE=6
 
+void Player::setUnattackable(std::string val) {unAttackableName = val;}
+
 void Player::issueOrder(int orderType) {
 
     switch(orderType) {

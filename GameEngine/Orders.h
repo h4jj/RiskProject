@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <random>
 #include "Player.h"
 
 class Player;
@@ -51,8 +52,9 @@ class Advance : public Order
 {
 public:
     int armyCount;
-    Player* player;
+    Player *src, *target;
     std::string t1,t2;
+    std::vector<Edge*> edges;
     virtual void execute();
     Advance(Order *, int);
 };
@@ -60,7 +62,8 @@ public:
 class Bomb : public Order
 {
 public:
-    Player* player;
+    std::vector<Edge*> edges;
+    Player *owner, *opponent;
     std::string t1;
     virtual void execute();
     Bomb(Order *, int);
@@ -90,4 +93,5 @@ class Negotiate : public Order
 public:
     virtual void execute();
     Negotiate(Order *, int);
+    Player *src, *target;
 };

@@ -38,7 +38,7 @@ Card::Card(int _cardType) {
 }
 
 void Card::play() {
-
+    
 }
 
 
@@ -58,7 +58,7 @@ void Deck::draw(Hand* handObject) {
         srand(time(0));
         int randNumber = rand() % deck.size();
 
-        handObject->handVector.push_back(this->deck[randNumber]);
+        handObject->handVector.push(this->deck[randNumber]);
 
         std::cout << "New Card successfully added to hand vector; Length of hand is: " << handObject->handVector.size() << std::endl; 
 
