@@ -16,6 +16,8 @@ Player::Player(std::string _name) {
     std::cout << "hand object successfully created" << std::endl;
     
     orderListObject = new OrderList();
+    reinforcementPool = 0;
+
     
 
 }
@@ -26,6 +28,8 @@ Player::Player(const Player& p) {
     std::cout << "Copy constructor successfully called" << std::endl;
     this->orderListObject =  new OrderList(*(p.orderListObject));
     this->hand = new Hand(*(p.hand));
+    this->reinforcementPool = new ReinforcementPool(*(p.reinforcementPool));
+
 }
 
 // Assignment Operator
@@ -34,6 +38,8 @@ Player& Player::operator=(const Player& p) {
     std::cout << "Assignment operator successfully called" << std::endl;
     this->orderListObject =  new OrderList(*(p.orderListObject));
     this->hand = new Hand(*(p.hand));
+    this->reinforcementPool = new ReinforcementPool(*(p.reinforcementPool));
+
 
     return *this;
 }
