@@ -2,6 +2,7 @@
 #include <iostream>
 #include <random>
 #include "Player.h"
+#include "Map.h"
 
 class Player;
 
