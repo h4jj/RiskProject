@@ -1,13 +1,36 @@
 #include "CommandProcessing.h"
 
-void Command::saveEffect(string eff) {
-    effect = eff;
+void Command::Notify(ILoggable *c){
+    std::cout << "...........................";
+    Observer *o;
+    o->Update(c);
+
 }
 
+string Command::stringToLog(){
+    std::cout << "Command's effect: " << effect << std::endl;
+    return "Command's effect: " + effect + ".\n";
+}
+
+void Command::saveEffect(string eff) {
+    effect = eff;
+    Notify(this);
+}
+
+void CommandProcessing::Notify(ILoggable *cp){
+    Observer *o;
+    o->Update(cp);
+}
+
+string CommandProcessing::stringToLog(){
+    std::cout << "Command: " << commandColl.back()->command << std::endl;
+    return "Command: " + commandColl.back()->command + ".\n";
+}
 void CommandProcessing::saveCommand(string word) {
     Command* cmd = new Command(word);
     commandColl.push(cmd);
     std::cout << "Command saved, length of collection is: " << commandColl.size() << std::endl;
+    Notify(this);    
 }
 
 void CommandProcessing::readCommand() {
