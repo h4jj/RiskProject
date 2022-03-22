@@ -2,9 +2,8 @@
 #include "LogObserver.h"
 
 void Command::Notify(ILoggable *c){
-    std::cout << "...........................";
-    Observer *o;
-    o->Update(c);
+    LogObserver lo;
+    lo.Update(c);
 }
 
 string Command::stringToLog(){
@@ -88,7 +87,14 @@ void CommandProcessing::validate(Command& cmd, State state) {
 
     }
 }
-
+void FileCommandProcessorAdapter::Notify(ILoggable *fpa){
+    LogObserver lo;
+    lo.Update(fpa);
+}
+string FileCommandProcessorAdapter::stringToLog(){
+    std::cout << "Command read on file: " << commandColl.back()->command << "." << std::endl;
+    return "Command read on file: " + commandColl.back()->command + ".\n";
+}
 void FileCommandProcessorAdapter::readCommand() {
     
     std::fstream file("commands.txt", std::ios::in);

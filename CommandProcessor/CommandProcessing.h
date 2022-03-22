@@ -36,6 +36,8 @@ protected:
 class FileCommandProcessorAdapter : public CommandProcessing{
 public:
     virtual void getCommand();
+    void Notify(ILoggable *) override;
+    string stringToLog() override;
 private:
     virtual void readCommand();
 };
