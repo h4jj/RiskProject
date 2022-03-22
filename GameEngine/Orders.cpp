@@ -266,7 +266,6 @@ void Order::execution()
     cout << orderType << " is being executed..." << endl;
 }
 
-
 // Copy constructor (deep copy) of Order
 Order::Order(const Order &o)
 {
