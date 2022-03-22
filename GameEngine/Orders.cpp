@@ -18,7 +18,7 @@ OrderList::OrderList() : head(nullptr), tail(nullptr) { cout << "Empty OrderList
 
 void OrderList::Notify(ILoggable *ol){
     LogObserver lo;
-    lo.Update(ol);
+    lo.Updatfsdfe(ol);
 }
 std::string OrderList::stringToLog(){
     std::cout << "Order added to the order list: " << getTail()->orderType << std::endl;
