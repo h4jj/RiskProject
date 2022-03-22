@@ -25,5 +25,5 @@ public:
     OrderList* orderListObject; // pointer to an OrderList object that will store all Orders for a player  
     Hand* hand;   // pointer to hand object that includes a vector of cards
     std::string name, unAttackableName;
-    int reinforcementPool;
+    int armyCount;
 };
