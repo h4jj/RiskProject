@@ -1,10 +1,10 @@
 #include "CommandProcessing.h"
+#include "LogObserver.h"
 
 void Command::Notify(ILoggable *c){
     std::cout << "...........................";
     Observer *o;
     o->Update(c);
-
 }
 
 string Command::stringToLog(){
@@ -18,8 +18,8 @@ void Command::saveEffect(string eff) {
 }
 
 void CommandProcessing::Notify(ILoggable *cp){
-    Observer *o;
-    o->Update(cp);
+    LogObserver lo;
+    lo.Update(cp);
 }
 
 string CommandProcessing::stringToLog(){
@@ -30,7 +30,7 @@ void CommandProcessing::saveCommand(string word) {
     Command* cmd = new Command(word);
     commandColl.push(cmd);
     std::cout << "Command saved, length of collection is: " << commandColl.size() << std::endl;
-    Notify(this);    
+    Notify(this);
 }
 
 void CommandProcessing::readCommand() {
