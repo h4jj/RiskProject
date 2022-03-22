@@ -3,10 +3,11 @@
 #include <random>
 #include "Player.h"
 #include "Map.h"
+#include "LoggingObserver.h"
 
 class Player;
 
-class Order
+class Order : public ILoggable, public Subject
 {
 public:
     Order();
@@ -18,9 +19,11 @@ public:
     virtual void execute() = 0;
     Order(const Order& o);
     friend std::ostream& operator << (std::ostream& out, Order& o);
+    void Notify(ILoggable *) override;
+    std::string stringToLog() override;
 };
 
-class OrderList
+class OrderList : public ILoggable, public Subject
 {
 public:
     OrderList();
@@ -32,6 +35,8 @@ public:
     int length();
     const Order* getHead();
     const Order* getTail();
+    void Notify(ILoggable *) override;
+    std::string stringToLog() override;
 
 private:
     Order *head;
@@ -47,6 +52,8 @@ public:
     virtual void execute();
     Deploy();
     Deploy(Order *, int);
+    void Notify(ILoggable *) override;
+    std::string stringToLog() override;
 };
 
 class Advance : public Order
@@ -58,6 +65,8 @@ public:
     std::vector<Edge*> edges;
     virtual void execute();
     Advance(Order *, int);
+    void Notify(ILoggable *) override;
+    std::string stringToLog() override;
 };
 
 class Bomb : public Order
@@ -68,6 +77,8 @@ public:
     std::string t1;
     virtual void execute();
     Bomb(Order *, int);
+    void Notify(ILoggable *) override;
+    std::string stringToLog() override;
 };
 
 class Blockade : public Order
@@ -77,6 +88,8 @@ public:
     std::string t1;
     virtual void execute();
     Blockade(Order *, int);
+    void Notify(ILoggable *) override;
+    std::string stringToLog() override;
 };
 
 class Airlift : public Order
@@ -87,6 +100,8 @@ public:
     int armyCount;
     virtual void execute();
     Airlift(Order *, int);
+    void Notify(ILoggable *) override;
+    std::string stringToLog() override;
 };
 
 class Negotiate : public Order
@@ -95,4 +110,6 @@ public:
     virtual void execute();
     Negotiate(Order *, int);
     Player *src, *target;
+    void Notify(ILoggable *) override;
+    std::string stringToLog() override;
 };

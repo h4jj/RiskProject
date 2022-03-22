@@ -1,4 +1,5 @@
 #include "Orders.h"
+#include "LogObserver.h"
 
 using std::cout;
 using std::endl;
@@ -15,6 +16,14 @@ Airlift::Airlift(Order *next, int orderType) : Order(next, orderType) { cout << 
 Negotiate::Negotiate(Order *next, int orderType) : Order(next, orderType) { cout << "Negotiate order created" << endl; }
 OrderList::OrderList() : head(nullptr), tail(nullptr) { cout << "Empty OrderList Successfully Created" << endl; }
 
+void OrderList::Notify(ILoggable *ol){
+    LogObserver lo;
+    lo.Update(ol);
+}
+std::string OrderList::stringToLog(){
+    std::cout << "Order added to the order list: " << getTail()->orderType << std::endl;
+    return "Order added to the order list: " + getTail()->orderType + ".\n";
+}
 void OrderList::add(Order *o)
 {
     if (head == nullptr && tail == nullptr)
@@ -33,6 +42,7 @@ void OrderList::add(Order *o)
     }
 
     std::cout << "List has " << OrderList::length() << " Order objects" << std::endl;
+    Notify(this);
 }
 
 // The functions prints every members of the list
@@ -253,6 +263,7 @@ void Order::execution()
     Order::validation();
     cout << orderType << " is being executed..." << endl;
 }
+
 
 // Copy constructor (deep copy) of Order
 Order::Order(const Order &o)
