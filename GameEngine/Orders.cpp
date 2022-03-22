@@ -20,6 +20,7 @@ void OrderList::Notify(ILoggable *ol){
     LogObserver lo;
     lo.Update(ol);
 }
+
 std::string OrderList::stringToLog(){
     std::cout << "Order added to the order list: " << getTail()->orderType << std::endl;
     std::string orderNumber = tail->orderType + "";
