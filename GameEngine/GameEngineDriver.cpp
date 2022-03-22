@@ -1,4 +1,5 @@
 #include "GameEngine.cpp"
+#include "LogObserver.cpp"
 
 int main() {
 

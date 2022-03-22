@@ -3,6 +3,7 @@
 #include "Player.cpp"
 #include "Orders.cpp"
 #include "Cards.cpp"
+#include "LogObserver.h"
 
 GameEngine::GameEngine() {std::cout << "Game Engine successfully created" << std::endl;}
 GameEngine::~GameEngine() {std::cout << "Game Engine successfully destroyed" << std::endl;}
@@ -45,6 +46,7 @@ std::ostream& operator<<(std::ostream& out, const State state) {
 
 GameEngine::GameEngine(const GameEngine& g) {
     this->state = g.state;
+    transition();
     this->map = new Map(*(g.map));
     for(const auto& p : g.Players) {
         Player* player = new Player(*p);
@@ -151,6 +153,7 @@ void GameEngine::takeInput() {
 
             switch(this->state) {
                 case State::START: {
+                    transition();
                     if(input.compare("LoadMap") == 0 && this->map == nullptr) {
                         while(true) {
                             showAvailableMaps();
@@ -166,6 +169,7 @@ void GameEngine::takeInput() {
 
                         std::cout << "Map successfully loaded" << std::endl;
                         this->state = State::MAP_LOADED;
+                        transition();
                         break;
                         
                     }
@@ -181,6 +185,7 @@ void GameEngine::takeInput() {
                         if(this->map->validate()) {
                             std::cout << endl;
                             this->state = State::MAP_VALIDATED;
+                            transition();
                         }
                         else {
                             std::cout << "Map is not valid" << std::endl; 
@@ -269,6 +274,7 @@ void GameEngine::takeInput() {
                             std::cout << "Player " << player->name << " army count: " << player->armyCount << std::endl;
                         }
                         this->state = State::ASSIGN_REIN;
+                        transition();
                         this->phase = Phase::PLAY;
                         break;
                     }
@@ -362,6 +368,41 @@ void GameEngine::takeInput() {
         //         }
         //     }
         // }
+}
+void GameEngine::Notify(ILoggable *ge){
+    LogObserver lo;
+    lo.Update(ge);
+}
+std::string GameEngine::stringToLog(){
+    cout << "New State: " << this->state << "." << std::endl;
+    std::string s;
+    switch(this->state){
+        case State::START:
+            s = "START";
+            break;
+        case State::MAP_VALIDATED:
+            s = "MAP_VALIDATED";
+            break;
+        case State::PLAYERS_ADDED:
+            s = "PLAYER_ADDED";
+            break;
+        case State::ASSIGN_REIN:
+            s = "ASSGIN_REIN";
+            break;
+        case State::ISSUE_ORDERS:
+            s = "ISSUE_ORDERS";
+            break;
+        case State::EXEC_ORDERS:
+            s = "EXEC_ORDERS";
+            break;
+        default:
+            s = "^";
+            break;
+    }
+    return "Current state: " + s + ".\n";
+}
+void GameEngine::transition(){
+    Notify(this);
 }
 
 void GameEngine::startupPhase() {
