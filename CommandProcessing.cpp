@@ -1,5 +1,4 @@
 #include "CommandProcessing.h"
-#include "LogObserver.h"
 
 void Command::Notify(ILoggable *c){
     LogObserver lo;

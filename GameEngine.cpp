@@ -3,7 +3,6 @@
 #include "Player.cpp"
 #include "Orders.cpp"
 #include "Cards.cpp"
-#include "LogObserver.h"
 
 GameEngine::GameEngine() {std::cout << "Game Engine successfully created" << std::endl;}
 GameEngine::~GameEngine() {std::cout << "Game Engine successfully destroyed" << std::endl;}
@@ -46,7 +45,6 @@ std::ostream& operator<<(std::ostream& out, const State state) {
 
 GameEngine::GameEngine(const GameEngine& g) {
     this->state = g.state;
-    transition();
     this->map = new Map(*(g.map));
     for(const auto& p : g.Players) {
         Player* player = new Player(*p);
@@ -147,13 +145,11 @@ void GameEngine::takeInput() {
 
         case Phase::STARTUP: {
             std::string input;
-
             std::cout << "> ";
             std::cin >> input;
 
             switch(this->state) {
                 case State::START: {
-                    transition();
                     if(input.compare("LoadMap") == 0 && this->map == nullptr) {
                         while(true) {
                             showAvailableMaps();
@@ -179,7 +175,6 @@ void GameEngine::takeInput() {
                     }
                 }
                 case State::MAP_LOADED: {
-            
                     if(input.compare("ValidateMap") == 0) {
                         std::cout << "Map Validity: ";
                         if(this->map->validate()) {
@@ -295,79 +290,6 @@ void GameEngine::takeInput() {
         }
 
     }
-        // switch(this->state) {
-        //     case State::ASSIGN_REIN: {
-        //         if(input.compare("IssueOrder") == 0) {
-        //             this->state = State::ISSUE_ORDERS;
-        //         }
-        //         else {
-        //             std::cout << "The only available command in this state is IssueOrder" << std::endl;
-        //         }
-
-        //         break;
-        //     }
-
-        //     case State::ISSUE_ORDERS: {
-
-        //         if(input.compare("IssueOrder") == 0) {
-        //             std::cout << "Issuing more Orders" << std::endl;
-        //         }
-        //         else if(input.compare("EndIssueOrder") == 0) {
-        //             std::cout << "Ending Issue Orders" << std::endl;
-        //             this->state = State::EXEC_ORDERS;
-        //         }
-        //         else {
-        //             std::cout << "The only available commands are - IssueOrder and EndIssueOrder" << std::endl;
-        //         }
-
-        //         break;
-        //     }
-
-        //     case State::EXEC_ORDERS: {
-
-        //         if(input.compare("ExecuteOrder") == 0){
-        //             std::cout << "Executing Order" << std::endl;
-        //         }
-        //         else if(input.compare("EndExecuteOrder") == 0) {
-        //             std::cout << "Ending Order execution" << std::endl;
-        //             this->state = State::ASSIGN_REIN;
-        //         }
-        //         else if(input.compare("Win") == 0) {
-        //             std::cout << "Congrats you won!" << std::endl;
-        //             this->state = State::WIN;
-        //         }
-        //         else {
-        //             std::cout << "Incorrect input please try again" << std::endl;
-        //         }
-
-        //         break;
-        //     }
-
-        //     case State::WIN: {
-        //         if(input.compare("Play") == 0) {
-        //             std::cout << "Going back to start state" << std::endl;
-        //             for(auto& p : this->Players) {
-        //                 delete p;
-        //                 p = NULL;
-        //             }
-        //             delete this->map;
-        //             this->map = nullptr;
-        //             this->state = State::START;
-        //         }
-        //         else if(input.compare("End") == 0) {
-        //             for(auto& p : this->Players) {
-        //                 delete p;
-        //                 p = NULL;
-        //             }
-        //             delete this->map;
-        //             std::cout << "Exiting Game now" << std::endl;
-        //             exit(0);
-        //         }
-        //         else{
-        //             std::cout << "Incorrect input please try again" << std::endl;
-        //         }
-        //     }
-        // }
 }
 void GameEngine::Notify(ILoggable *ge){
     LogObserver lo;
@@ -379,6 +301,9 @@ std::string GameEngine::stringToLog(){
     switch(this->state){
         case State::START:
             s = "START";
+            break;
+        case State::MAP_LOADED:
+            s = "MAP_LOADED";
             break;
         case State::MAP_VALIDATED:
             s = "MAP_VALIDATED";
@@ -395,8 +320,8 @@ std::string GameEngine::stringToLog(){
         case State::EXEC_ORDERS:
             s = "EXEC_ORDERS";
             break;
-        default:
-            s = "^";
+        case State::WIN:
+            s = "WIN";
             break;
     }
     return "Current state: " + s + ".\n";
@@ -406,7 +331,7 @@ void GameEngine::transition(){
 }
 
 void GameEngine::startupPhase() {
-
+    transition();
     // main - menu
     while(true) {
         showMenu();

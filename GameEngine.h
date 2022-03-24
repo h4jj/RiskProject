@@ -3,8 +3,8 @@
 #include "Map.h"
 #include <random>
 #include "LoggingObserver.h"
+#include "CommandProcessing.h"
 
-enum class State {START,MAP_LOADED,MAP_VALIDATED,PLAYERS_ADDED,ASSIGN_REIN,ISSUE_ORDERS,EXEC_ORDERS,WIN};
 enum class Phase {STARTUP, PLAY};
 
 class GameEngine : public ILoggable, public Subject{
