@@ -1,5 +1,12 @@
 #include "Player.h"
 
+void Player::temporaryFunction(){
+    Order *ol = orderListObject->getHead();
+    while(ol->next != nullptr){
+        ol->execute();
+        ol = ol->next;
+    }
+}
 // Destructor
 
 Player::~Player() {

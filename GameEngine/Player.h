@@ -20,6 +20,7 @@ public:
     std::list<Territory*> toDefend(); // Returns a list of arbitrary Territories
     void issueOrder(int); // creates an Order object and adds it to orderListObject below
     void setUnattackable(std::string);
+    void temporaryFunction();//Added to original work
 public:
     std::vector<Territory*> territories;
     OrderList* orderListObject; // pointer to an OrderList object that will store all Orders for a player  

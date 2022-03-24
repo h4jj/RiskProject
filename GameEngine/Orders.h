@@ -19,8 +19,8 @@ public:
     virtual void execute() = 0;
     Order(const Order& o);
     friend std::ostream& operator << (std::ostream& out, Order& o);
-    void Notify(ILoggable *) override;
-    std::string stringToLog() override;
+    virtual void Notify(ILoggable *) = 0;
+    virtual std::string stringToLog() = 0;
 };
 
 class OrderList : public ILoggable, public Subject

@@ -1,5 +1,6 @@
 #include "Orders.h"
 #include "LogObserver.h"
+#include <sstream>
 
 using std::cout;
 using std::endl;
@@ -23,8 +24,11 @@ void OrderList::Notify(ILoggable *ol){
 
 std::string OrderList::stringToLog(){
     std::cout << "Order added to the order list: " << getTail()->orderType << std::endl;
-    std::string orderNumber = tail->orderType + "";
-    return "Order added to the order list: " + orderNumber + ".\n";
+    std::string str;
+    std::stringstream ss;
+    ss << getTail()->orderType;
+    ss >> str;
+    return "Order added to the order list: " + str + ".\n";
 }
 void OrderList::add(Order *o)
 {
@@ -336,6 +340,56 @@ ostream &operator<<(ostream &out, Order &o)
     return out;
 }
 
+void Deploy::Notify(ILoggable *d){
+    LogObserver lo;
+    lo.Update(d);
+}
+void Advance::Notify(ILoggable *a){
+    LogObserver lo;
+    lo.Update(a);
+}
+void Blockade::Notify(ILoggable *b){
+    LogObserver lo;
+    lo.Update(b);
+}
+void Bomb::Notify(ILoggable *bo){
+    LogObserver lo;
+    lo.Update(bo);
+}
+void Airlift::Notify(ILoggable *al){
+    LogObserver lo;
+    lo.Update(al);
+}
+void Negotiate::Notify(ILoggable *n){
+    LogObserver lo;
+    lo.Update(n);
+}
+
+std::string Deploy::stringToLog(){
+    std::cout << "Deploy order executed." << std::endl;
+    return "Deploy order executed.\n";
+}
+std::string Advance::stringToLog(){
+    std::cout << "Advance order executed." << std::endl;
+    return "Advance order executed.\n";
+}
+std::string Blockade::stringToLog(){
+    std::cout << "Blockade order executed." << std::endl;
+    return "Blockafe order executed.\n";
+}
+std::string Bomb::stringToLog(){
+    std::cout << "Bomb order executed." << std::endl;
+    return "Bomb order executed.\n";
+}
+std::string Airlift::stringToLog(){
+    std::cout << "Airlift order executed." << std::endl;
+    return "Airlift order executed.\n";
+}
+std::string Negotiate::stringToLog(){
+    std::cout << "Negotiate order executed." << std::endl;
+    return "Negotiate order executed.\n";
+}
+
 void Deploy::execute() {
     
     bool isValid = false;
@@ -356,6 +410,7 @@ void Deploy::execute() {
 
         t->setArmyCount(armyCount);
         std::cout << armyCount << " troops deployed to " << t->getCountry() << std::endl;
+        Notify(this);
     }
     else {
         std::cout << "Deploy ordered not properly configured" << std::endl;
@@ -447,6 +502,7 @@ void Advance::execute() {
                 terr1->setArmyCount(terr1->getArmyCount() - tempValue);
             }
         }
+        Notify(this);
     }
     else {
         std::cout << "Territories are not adjacent, order is invalid" << std::endl;
@@ -481,6 +537,7 @@ void Blockade::execute() {
     player->territories.erase(player->territories.begin() + index);
 
     std::cout << "Army count at territory " << t->getCountry() << " has increased from " << t->getArmyCount() / 2 << " to " << t->getArmyCount() << " and is now owned by the neutral player" << std::endl;
+    Notify(this);
     return;
 }
 
@@ -521,6 +578,7 @@ void Bomb::execute() {
 
     if(target != nullptr) {
         target->setArmyCount(target->getArmyCount() / 2);
+        Notify(this);
     }
     else {
         std::cout << "Territories are not adjacent, cannot issue bomb order" << std::endl;
@@ -552,6 +610,7 @@ void Airlift::execute() {
     source->setArmyCount(source->getArmyCount() - armyCount);
     target->setArmyCount(target->getArmyCount() + armyCount);
     std::cout << armyCount << " troops successfully deployed from " << source->getCountry() << " to " << target->getArmyCount() << std::endl;
+    Notify(this);
 }
 
 void Negotiate::execute() {
@@ -563,7 +622,7 @@ void Negotiate::execute() {
 
     src->unAttackableName = target->name;
     target->unAttackableName = src->name;
-
+    Notify(this);
     return;
 
 }
