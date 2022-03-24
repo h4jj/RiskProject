@@ -108,13 +108,52 @@ void GameEngine::pickMap() {
     else {
         std::cout << "Incorrect input please try again" << std::endl;
     }
+
+    this->map->buildContinentVector();
+    std::cout << "Successfully built continent vector, looping over it now: \n";
+
+    for(auto con : this->map->continentVector) {
+        std::cout << "Continent: " << con.continent_name << " , size: " << con.territories.size() << '\n';
+        for(const auto terr : con.territories) {
+            std::cout << terr->getCountry() << " ";
+        }
+        std::cout << '\n';
+    } 
 }
 
 void GameEngine::reinforcementPhase() {
-    
+    for(const auto& player : Players) {
+
+        //1- check if player owns entire continent        
+
+        for(const auto con : this->map->continentVector) {
+            int counter = 0;
+            for(const auto terr : con.territories) {
+                for(const auto terrPlayer : player->territories) {
+                    if(terr->getCountry() == terrPlayer->getCountry()) {
+                        counter++;
+                    }
+                }
+            }
+
+            if(counter == con.territories.size()) {
+                player->reinforcementPool += con.control_bonus;
+            }
+        }
+
+        if(player->territories.size() <= 9) {
+            player->reinforcementPool += 3;
+        }
+        else {
+            player->reinforcementPool += floor(player->territories.size() / 3);
+        }
+    }
+
 }
 void GameEngine::issueOrdersPhase() {
-
+    for(const auto& player : Players) {
+        // player->issueOrder(1);
+    }
 }
 void GameEngine::executeOrdersPhase() {
 
@@ -122,20 +161,10 @@ void GameEngine::executeOrdersPhase() {
 
 void GameEngine::mainGameLoop() {
     std::cout << "Entering main game loop..." << std::endl;
-    while(true) {
-        std::cout << "Player count: " << this->Players.size() << std::endl;
-        for(const auto& player : this->Players) {
-            // reinforcementPhase();
-            std::cout << player->name << " has " << player->territories.size() << " territories" << std::endl;
-        }
-        exit(0);
-        // for(const auto& player : this->Players) {
-        //     issueOrdersPhase();
-        // }   
-        // for(const auto& player : this->Players) {
-        //     executeOrdersPhase();
-        // }      
-    }
+
+    reinforcementPhase();
+    issueOrdersPhase();
+    executeOrdersPhase();
 }
 
 
@@ -265,8 +294,8 @@ void GameEngine::takeInput() {
                         for(auto& player : this->Players) {
                             deck->draw(player->hand);
                             deck->draw(player->hand);
-                            player->armyCount = 50;
-                            std::cout << "Player " << player->name << " army count: " << player->armyCount << std::endl;
+                            player->reinforcementPool = 50;
+                            std::cout << "Player " << player->name << " army count: " << player->reinforcementPool << std::endl;
                         }
                         this->state = State::ASSIGN_REIN;
                         this->phase = Phase::PLAY;
