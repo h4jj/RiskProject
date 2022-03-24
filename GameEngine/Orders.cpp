@@ -391,7 +391,7 @@ std::string Negotiate::stringToLog(){
 }
 
 void Deploy::execute() {
-    
+    std::cout << "entered in deploy execute" << std::endl << std::endl;
     bool isValid = false;
     Territory* t = nullptr;
     if(player != nullptr) {
@@ -414,6 +414,7 @@ void Deploy::execute() {
     }
     else {
         std::cout << "Deploy ordered not properly configured" << std::endl;
+        Notify(this);//Placed here for testing only
     }   
 }
 

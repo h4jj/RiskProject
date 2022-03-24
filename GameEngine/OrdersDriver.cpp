@@ -18,10 +18,7 @@ int main()
     p1->issueOrder(4);
     p1->issueOrder(5);
     p1->issueOrder(6);
-    Order *ol = p1->orderListObject->head;
-    while(ol->next != nullptr){
-        ol->execute();
-        ol = ol->next;
-    }
+    Order *r = new Deploy(nullptr, 1);
+    r->execute();
     return 0;
 }
