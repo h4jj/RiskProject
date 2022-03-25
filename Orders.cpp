@@ -391,6 +391,7 @@ std::string Negotiate::stringToLog(){
 }
 
 void Deploy::execute() {
+    Notify(this);
     std::cout << "entered in deploy execute" << std::endl << std::endl;
     bool isValid = false;
     Territory* t = nullptr;
@@ -502,7 +503,6 @@ void Advance::execute() {
                 terr1->setArmyCount(terr1->getArmyCount() - tempValue);
             }
         }
-        Notify(this);
     }
     else {
         std::cout << "Territories are not adjacent, order is invalid" << std::endl;
@@ -537,7 +537,6 @@ void Blockade::execute() {
     player->territories.erase(player->territories.begin() + index);
 
     std::cout << "Army count at territory " << t->getCountry() << " has increased from " << t->getArmyCount() / 2 << " to " << t->getArmyCount() << " and is now owned by the neutral player" << std::endl;
-    Notify(this);
     return;
 }
 
@@ -578,7 +577,6 @@ void Bomb::execute() {
 
     if(target != nullptr) {
         target->setArmyCount(target->getArmyCount() / 2);
-        Notify(this);
     }
     else {
         std::cout << "Territories are not adjacent, cannot issue bomb order" << std::endl;
@@ -610,7 +608,6 @@ void Airlift::execute() {
     source->setArmyCount(source->getArmyCount() - armyCount);
     target->setArmyCount(target->getArmyCount() + armyCount);
     std::cout << armyCount << " troops successfully deployed from " << source->getCountry() << " to " << target->getArmyCount() << std::endl;
-    Notify(this);
 }
 
 void Negotiate::execute() {
@@ -622,7 +619,6 @@ void Negotiate::execute() {
 
     src->unAttackableName = target->name;
     target->unAttackableName = src->name;
-    Notify(this);
     return;
 
 }

@@ -2,7 +2,9 @@
 
 LogObserver::LogObserver(){}
 
-
+LogObserver::LogObserver(LogObserver &lo){
+    //No need for an implementation since lo is holding nothing
+}
 
 void LogObserver::Update(ILoggable *lo){
     std::cout << "in update" << std::endl;
