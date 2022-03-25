@@ -410,16 +410,15 @@ void Deploy::execute() {
 
         t->setArmyCount(armyCount);
         std::cout << armyCount << " troops deployed to " << t->getCountry() << std::endl;
-        Notify(this);
+        
     }
     else {
         std::cout << "Deploy ordered not properly configured" << std::endl;
-        Notify(this);//Placed here for testing only
     }   
 }
 
 void Advance::execute() {
-    
+    Notify(this);
     Territory *terr1 = nullptr, *terr2 = nullptr;
     
     for(const auto& _t : src->territories) {
@@ -515,7 +514,7 @@ void Advance::execute() {
 }
 
 void Blockade::execute() {
-
+    Notify(this);
     Territory* t = nullptr;
     int index = 0;
 
@@ -543,7 +542,7 @@ void Blockade::execute() {
 }
 
 void Bomb::execute() {
-
+    Notify(this);
     Territory* t = nullptr;
 
     for(const auto& _t : owner->territories) {
@@ -591,7 +590,7 @@ void Bomb::execute() {
 }
 
 void Airlift::execute() {
-
+    Notify(this);
     Territory *source = nullptr, *target = nullptr;
 
     for(const auto& t : player->territories) {
@@ -615,7 +614,7 @@ void Airlift::execute() {
 }
 
 void Negotiate::execute() {
-
+    Notify(this);
     if(target == src) {
         std::cout << "Invalid order, target selected is the same as source" << std::endl;
         return;

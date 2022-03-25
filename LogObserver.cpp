@@ -2,6 +2,8 @@
 
 LogObserver::LogObserver(){}
 
+
+
 void LogObserver::Update(ILoggable *lo){
     std::cout << "in update" << std::endl;
     std::string s = lo->stringToLog();
