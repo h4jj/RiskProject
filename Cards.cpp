@@ -1,5 +1,6 @@
 #include "Cards.h"
 #include <stdlib.h>
+#include <time.h>
 
 Card::~Card() {std::cout << "Card object successfully destroyed" << std::endl;} 
 

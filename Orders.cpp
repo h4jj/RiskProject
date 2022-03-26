@@ -392,6 +392,7 @@ std::string Negotiate::stringToLog(){
 
 void Deploy::execute() {
     Notify(this);
+    return;//Temporary
     std::cout << "entered in deploy execute" << std::endl << std::endl;
     bool isValid = false;
     Territory* t = nullptr;
@@ -421,7 +422,7 @@ void Deploy::execute() {
 void Advance::execute() {
     Notify(this);
     Territory *terr1 = nullptr, *terr2 = nullptr;
-    
+    return;//Temporary
     for(const auto& _t : src->territories) {
         if(_t->getCountry() == t1) {
             terr1 = _t;
@@ -515,6 +516,7 @@ void Advance::execute() {
 
 void Blockade::execute() {
     Notify(this);
+    return;//Temporary
     Territory* t = nullptr;
     int index = 0;
 
@@ -542,6 +544,7 @@ void Blockade::execute() {
 
 void Bomb::execute() {
     Notify(this);
+    return;//Temporary
     Territory* t = nullptr;
 
     for(const auto& _t : owner->territories) {
@@ -589,6 +592,7 @@ void Bomb::execute() {
 
 void Airlift::execute() {
     Notify(this);
+    return;//Temporary
     Territory *source = nullptr, *target = nullptr;
 
     for(const auto& t : player->territories) {
@@ -612,6 +616,7 @@ void Airlift::execute() {
 
 void Negotiate::execute() {
     Notify(this);
+    return;//Temporary
     if(target == src) {
         std::cout << "Invalid order, target selected is the same as source" << std::endl;
         return;
