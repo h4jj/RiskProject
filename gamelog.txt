@@ -20,3 +20,11 @@ Order added to the order list: 5.
 Order added to the order list: 6.
 Deploy order executed.
 Advance order executed.
+Order added to the order list: 1.
+Order added to the order list: 2.
+Order added to the order list: 3.
+Order added to the order list: 4.
+Order added to the order list: 5.
+Order added to the order list: 6.
+Deploy order executed.
+Advance order executed.
