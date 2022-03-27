@@ -9,4 +9,6 @@ class LogObserver : public Observer{
         LogObserver();
         LogObserver(LogObserver&);
         void Update(ILoggable *) override;
+        friend std::ostream& operator<<(std::ostream &, const LogObserver *);
+        LogObserver& operator= (const LogObserver &);
 };
