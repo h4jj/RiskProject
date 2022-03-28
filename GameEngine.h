@@ -2,11 +2,12 @@
 #include "Player.h"
 #include "Map.h"
 #include <random>
+#include "LoggingObserver.h"
 
 enum class State {START,MAP_LOADED,MAP_VALIDATED,PLAYERS_ADDED,ASSIGN_REIN,ISSUE_ORDERS,EXEC_ORDERS,WIN};
 enum class Phase {STARTUP, PLAY};
 
-class GameEngine {
+class GameEngine : public Subject, public ILoggable {
 public:
     GameEngine();
     ~GameEngine();
@@ -24,6 +25,9 @@ public:
     void executeOrdersPhase();
     GameEngine& operator=(const GameEngine&);
     GameEngine(const GameEngine&);
+    void transition();
+    std::string stringToLog() override;
+    void Notify(ILoggable *) override;
 public:
     //modify copy constructor and assignment operator
     Phase phase = Phase::STARTUP;

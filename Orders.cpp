@@ -1,4 +1,6 @@
 #include "Orders.h"
+#include <sstream>
+#include "LogObserver.cpp"
 
 using std::cout;
 using std::endl;
@@ -14,6 +16,17 @@ Airlift::Airlift(Order *next, int orderType) : Order(next, orderType) { cout << 
 Negotiate::Negotiate(Order *next, int orderType) : Order(next, orderType) { cout << "Negotiate order created" << endl; }
 OrderList::OrderList() : head(nullptr), tail(nullptr) { cout << "Empty OrderList Successfully Created" << endl; }
 
+std::string OrderList::stringToLog(){
+    std::stringstream ss;
+    std::string s;
+    ss << tail->orderType;
+    ss >> s;
+    return "Order added to the order list: " + s + ".\n";
+}
+void OrderList::Notify(ILoggable *ol){
+    LogObserver lo;
+    lo.Update(ol);
+}
 void OrderList::add(Order *o)
 {
     if (head == nullptr && tail == nullptr)
@@ -32,6 +45,7 @@ void OrderList::add(Order *o)
     }
 
     std::cout << "List has " << OrderList::length() << " Order objects" << std::endl;
+    Notify(this);
 }
 
 // The functions prints every members of the list
@@ -323,6 +337,50 @@ ostream &operator<<(ostream &out, Order &o)
     return out;
 }
 
+void Deploy::Notify(ILoggable *d){
+    LogObserver lo;
+    lo.Update(d);
+}
+void Advance::Notify(ILoggable *a){
+    LogObserver lo;
+    lo.Update(a);
+}
+void Blockade::Notify(ILoggable *b){
+    LogObserver lo;
+    lo.Update(b);
+}
+void Bomb::Notify(ILoggable *bo){
+    LogObserver lo;
+    lo.Update(bo);
+}
+void Airlift::Notify(ILoggable *al){
+    LogObserver lo;
+    lo.Update(al);
+}
+void Negotiate::Notify(ILoggable *n){
+    LogObserver lo;
+    lo.Update(n);
+}
+
+std::string Deploy::stringToLog(){
+    return "Deploy order executed.\n";
+}
+std::string Advance::stringToLog(){
+    return "Advance order executed.\n";
+}
+std::string Blockade::stringToLog(){
+    return "Blockafe order executed.\n";
+}
+std::string Bomb::stringToLog(){
+    return "Bomb order executed.\n";
+}
+std::string Airlift::stringToLog(){
+    return "Airlift order executed.\n";
+}
+std::string Negotiate::stringToLog(){
+    return "Negotiate order executed.\n";
+}
+
 void Deploy::execute() {
     std::cout << "Executing deploy order" << std::endl;
     bool isValid = false;
@@ -344,6 +402,7 @@ void Deploy::execute() {
         t->setArmyCount(armyCount);
         std::cout << armyCount << " troops deployed to " << t->getCountry() << std::endl;
         std::cout << "Total troops available on territory are: " << t->getArmyCount() << std::endl;
+        Notify(this);
     }
     else {
         std::cout << "Deploy ordered not properly configured" << std::endl;
@@ -365,7 +424,7 @@ void Advance::execute() {
         std::cout << "Order is invalid, you do not own source territory, returning" << std::endl;
         return;
     }
-
+    Notify(this);
     for(const auto& t : src->territories) {
         for(const auto& edge : edges) {
             if(edge->AdjacencyEdges.first == t || edge->AdjacencyEdges.second == t) {
@@ -504,7 +563,7 @@ void Blockade::execute() {
         std::cout << "Order is invalid, you do not own this territory" << std::endl;
         return;
     }
-
+    Notify(this);
     t->setArmyCount(t->getArmyCount() * 2);
     neutralPlayer = new Player("neutral player");
     neutralPlayer->territories.push_back(t);
@@ -551,6 +610,7 @@ void Bomb::execute() {
 
     if(target != nullptr) {
         target->setArmyCount(target->getArmyCount() / 2);
+        Notify(this);
     }
     else {
         std::cout << "Territories are not adjacent, cannot issue bomb order" << std::endl;
@@ -578,7 +638,7 @@ void Airlift::execute() {
         std::cout << "Order is invalid, you do not own both territories" << std::endl;
         return;
     }
-
+    Notify(this);
     source->setArmyCount(source->getArmyCount() - armyCount);
     target->setArmyCount(target->getArmyCount() + armyCount);
     std::cout << armyCount << " troops successfully deployed from " << source->getCountry() << " to " << target->getArmyCount() << std::endl;
@@ -590,7 +650,7 @@ void Negotiate::execute() {
         std::cout << "Invalid order, target selected is the same as source" << std::endl;
         return;
     }
-
+    Notify(this);
     src->unAttackableName = target->name;
     target->unAttackableName = src->name;
 

@@ -1,7 +1,16 @@
 #include "CommandProcessing.h"
+#include "LogObserver.cpp"
 
+string Command::stringToLog(){
+    return "Command effect: " + effect + ".\n";
+}
+void Command::Notify(ILoggable *c){
+    LogObserver lo;
+    lo.Update(c);
+}
 void Command::saveEffect(string eff) {
     effect = eff;
+    Notify(this);
 }
 
 CommandProcessing::CommandProcessing(const CommandProcessing& obj) {
@@ -13,11 +22,20 @@ CommandProcessing& CommandProcessing::operator=(const CommandProcessing& obj) {
     return *this;
 }
 
+string CommandProcessing::stringToLog(){
+    return "Command saved: " + commandColl.back()->command + ".\n"; 
+}
+void CommandProcessing::Notify(ILoggable *cp){
+    LogObserver lo;
+    lo.Update(cp);
+}
+
 void CommandProcessing::saveCommand(string word) {
     Command* cmd = new Command(word);
     commandColl.push(cmd);
     std::cout << "Command: " << cmd->command << " saved" << std::endl;
     std::cout << "Command saved, length of collection is: " << commandColl.size() << std::endl;
+    Notify(this);
 }
 
 void CommandProcessing::readCommand() {
@@ -102,6 +120,14 @@ FileCommandProcessorAdapter::FileCommandProcessorAdapter(const FileCommandProces
 
 FileCommandProcessorAdapter& FileCommandProcessorAdapter::operator=(const FileCommandProcessorAdapter& obj) {
     return *this;
+}
+
+string FileCommandProcessorAdapter::stringToLog(){
+    return "Command read from file: " + commandColl.back()->command + ".\n";
+}
+void FileCommandProcessorAdapter::Notify(ILoggable *fpa){
+    LogObserver lo;
+    lo.Update(fpa);
 }
 
 void FileCommandProcessorAdapter::readCommand() {

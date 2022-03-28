@@ -3,6 +3,7 @@
 #include "Player.cpp"
 #include "Orders.cpp"
 #include "Cards.cpp"
+#include "LogObserver.cpp"
 
 GameEngine::GameEngine() {std::cout << "Game Engine successfully created" << std::endl;}
 GameEngine::~GameEngine() {std::cout << "Game Engine successfully destroyed" << std::endl;}
@@ -216,6 +217,44 @@ void GameEngine::mainGameLoop() {
     }
 }
 
+std::string GameEngine::stringToLog(){
+    cout << "New State: " << this->state << "." << std::endl;
+    std::string s;
+    switch(this->state){
+        case State::START:
+            s = "START";
+            break;
+        case State::MAP_LOADED:
+            s = "MAP_LOADED";
+            break;
+        case State::MAP_VALIDATED:
+            s = "MAP_VALIDATED";
+            break;
+        case State::PLAYERS_ADDED:
+            s = "PLAYER_ADDED";
+            break;
+        case State::ASSIGN_REIN:
+            s = "ASSGIN_REIN";
+            break;
+        case State::ISSUE_ORDERS:
+            s = "ISSUE_ORDERS";
+            break;
+        case State::EXEC_ORDERS:
+            s = "EXEC_ORDERS";
+            break;
+        case State::WIN:
+            s = "WIN";
+            break;
+    }
+    return "Current state: " + s + ".\n";
+}
+void GameEngine::Notify(ILoggable *g){
+    LogObserver lo;
+    lo.Update(g);
+}
+void GameEngine::transition(){
+    Notify(this);
+}
 
 void GameEngine::takeInput() {
 
@@ -244,6 +283,7 @@ void GameEngine::takeInput() {
 
                         std::cout << "Map successfully loaded" << std::endl;
                         this->state = State::MAP_LOADED;
+                        transition();
                         break;
                         
                     }
@@ -259,6 +299,7 @@ void GameEngine::takeInput() {
                         if(this->map->validate()) {
                             std::cout << endl;
                             this->state = State::MAP_VALIDATED;
+                            transition();
                         }
                         else {
                             std::cout << "Map is not valid" << std::endl; 
@@ -348,6 +389,7 @@ void GameEngine::takeInput() {
                             std::cout << "Player " << player->name << " army count: " << player->reinforcementPool << std::endl;
                         }
                         this->state = State::ASSIGN_REIN;
+                        transition();
                         this->phase = Phase::PLAY;
                         break;
                     }
@@ -365,6 +407,7 @@ void GameEngine::takeInput() {
             while(state != State::WIN) {
                 mainGameLoop();
             }
+            transition();
             std::cout << "Player: " << Players.at(0)->name << " has won the game!" << std::endl;
             std::cout << "Would you like to play again? (y/n)" <<std::endl;
             char ans;
@@ -373,6 +416,7 @@ void GameEngine::takeInput() {
 
             if(ans == 'y') {
                 state = State::START;
+                transition();
                 phase = Phase::STARTUP;
             }
             else {
@@ -464,7 +508,7 @@ void GameEngine::takeInput() {
 
 
 void GameEngine::startupPhase() {
-
+    transition();
     // main - menu
     while(true) {
         showMenu();

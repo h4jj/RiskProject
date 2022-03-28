@@ -4,10 +4,11 @@
 #include <queue>
 #include "Player.h"
 #include "Map.h"
+#include "LoggingObserver.h"
 
 class Player;
 
-class Order
+class Order : public Subject, public ILoggable
 {
 public:
     Order();
@@ -19,9 +20,11 @@ public:
     virtual void execute() = 0;
     Order(const Order& o);
     friend std::ostream& operator << (std::ostream& out, Order& o);
+    std::string stringToLog() override;
+    void Notify(ILoggable *) override;
 };
 
-class OrderList
+class OrderList : public Subject, public ILoggable
 {
 public:
     OrderList();
@@ -34,6 +37,8 @@ public:
     const Order* getHead();
     const Order* getTail();
     std::queue<Order*> orderQueue;
+    std::string stringToLog() override;
+    void Notify(ILoggable *) override;
 private:
 
     Order *head;
@@ -49,6 +54,8 @@ public:
     virtual void execute();
     Deploy() = default;
     Deploy(Order *, int);
+    std::string stringToLog() override;
+    void Notify(ILoggable *) override;
 };
 
 class Advance : public Order
@@ -61,6 +68,8 @@ public:
     virtual void execute();
     Advance(Order *, int);
     Advance() = default;
+    std::string stringToLog() override;
+    void Notify(ILoggable *) override;
 };
 
 class Bomb : public Order
@@ -72,6 +81,8 @@ public:
     virtual void execute();
     Bomb(Order *, int);
     Bomb() = default;
+    std::string stringToLog() override;
+    void Notify(ILoggable *) override;
 };
 
 class Blockade : public Order
@@ -82,6 +93,8 @@ public:
     virtual void execute();
     Blockade(Order *, int);
     Blockade() = default;
+    std::string stringToLog() override;
+    void Notify(ILoggable *) override;
 };
 
 class Airlift : public Order
@@ -93,6 +106,8 @@ public:
     virtual void execute();
     Airlift() = default;
     Airlift(Order *, int);
+    std::string stringToLog() override;
+    void Notify(ILoggable *) override;
 };
 
 class Negotiate : public Order
@@ -102,4 +117,6 @@ public:
     Negotiate(Order *, int);
     Negotiate() = default;
     Player *src, *target;
+    std::string stringToLog() override;
+    void Notify(ILoggable *) override;
 };
