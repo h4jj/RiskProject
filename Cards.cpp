@@ -1,6 +1,5 @@
 #include "Cards.h"
 #include <stdlib.h>
-#include <time.h>
 
 Card::~Card() {std::cout << "Card object successfully destroyed" << std::endl;} 
 
@@ -38,8 +37,42 @@ Card::Card(int _cardType) {
     std::cout << "Card object of type " << (int)cardType << " successfully created" << std::endl;
 }
 
-void Card::play() {
-    
+Order* Card::play() {
+    switch(cardType) {
+        case OrderType::AIRLIFT: {
+            Airlift* order = new Airlift();
+            order->orderType = (int)OrderType::AIRLIFT;
+            std::cout << "Airlift order created" << std::endl;
+            return order;
+        }
+        case OrderType::BLOCKADE: {
+            Blockade* order = new Blockade();
+            order->orderType = (int)OrderType::BLOCKADE;
+            std::cout << "Blockade order created" << std::endl;
+            return order;
+        }
+        case OrderType::BOMB: {
+            Bomb* order = new Bomb();
+            order->orderType = (int)OrderType::BOMB;
+            std::cout << "Bomb order created" << std::endl;
+            return order;
+        }
+        case OrderType::DIPLOMACY: {
+            Negotiate* order = new Negotiate();
+            order->orderType = (int)OrderType::DIPLOMACY;
+            std::cout << "Negotiate order created" << std::endl;
+            return order;
+        }
+        case OrderType::REINFORCEMENT: {
+
+            break;
+        }
+        default: {
+            std::cout << "Invalid card type could not play" << std::endl;
+        }
+    }
+
+    return nullptr;
 }
 
 

@@ -1,6 +1,5 @@
 #include "CommandProcessing.h"
 #include "CommandProcessing.cpp"
-#include "LogObserver.cpp"
 
 int main() {
 

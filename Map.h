@@ -36,14 +36,22 @@ public:
     std::pair<Territory*, Territory*> AdjacencyEdges;
 };
 
+struct Continent {
+    std::string continent_name;
+    std::vector<Territory*> territories;
+    int control_bonus = 0;
+};
+
 class Map {
 
 public:
     Map();
     ~Map();
     bool validate();
-
+    void buildContinentVector();
 public:
+    std::map<int, std::string> continents;
+    std::vector<Continent> continentVector;
     std::vector<Territory*> Nodes; // Nodes is a pointer similar to how an array gives a pointer to the first element - Assigning a pointer value will result in **
     std::vector<Edge*> Edges; // Edges is a pointer similar to how an array gives a pointer to the first element - Assigning a pointer value will result in **
 };

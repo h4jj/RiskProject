@@ -1,13 +1,10 @@
 #include "Orders.h"
-#include "LogObserver.h"
-#include <sstream>
 
 using std::cout;
 using std::endl;
 using std::ostream;
 
 Order::Order() {}
-Deploy::Deploy() : Order() {};
 Order::Order(Order *next, int orderType) : next(next), orderType(orderType) {}
 Deploy::Deploy(Order *next, int orderType) : Order(next, orderType) { cout << "Deploy order created" << endl; }
 Advance::Advance(Order *next, int orderType) : Order(next, orderType) { cout << "Advance order created" << endl; }
@@ -17,19 +14,6 @@ Airlift::Airlift(Order *next, int orderType) : Order(next, orderType) { cout << 
 Negotiate::Negotiate(Order *next, int orderType) : Order(next, orderType) { cout << "Negotiate order created" << endl; }
 OrderList::OrderList() : head(nullptr), tail(nullptr) { cout << "Empty OrderList Successfully Created" << endl; }
 
-void OrderList::Notify(ILoggable *ol){
-    LogObserver lo;
-    lo.Update(ol);
-}
-
-std::string OrderList::stringToLog(){
-    std::cout << "Order added to the order list: " << getTail()->orderType << std::endl;
-    std::string str;
-    std::stringstream ss;
-    ss << getTail()->orderType;
-    ss >> str;
-    return "Order added to the order list: " + str + ".\n";
-}
 void OrderList::add(Order *o)
 {
     if (head == nullptr && tail == nullptr)
@@ -48,7 +32,6 @@ void OrderList::add(Order *o)
     }
 
     std::cout << "List has " << OrderList::length() << " Order objects" << std::endl;
-    Notify(this);
 }
 
 // The functions prints every members of the list
@@ -340,60 +323,8 @@ ostream &operator<<(ostream &out, Order &o)
     return out;
 }
 
-void Deploy::Notify(ILoggable *d){
-    LogObserver lo;
-    lo.Update(d);
-}
-void Advance::Notify(ILoggable *a){
-    LogObserver lo;
-    lo.Update(a);
-}
-void Blockade::Notify(ILoggable *b){
-    LogObserver lo;
-    lo.Update(b);
-}
-void Bomb::Notify(ILoggable *bo){
-    LogObserver lo;
-    lo.Update(bo);
-}
-void Airlift::Notify(ILoggable *al){
-    LogObserver lo;
-    lo.Update(al);
-}
-void Negotiate::Notify(ILoggable *n){
-    LogObserver lo;
-    lo.Update(n);
-}
-
-std::string Deploy::stringToLog(){
-    std::cout << "Deploy order executed." << std::endl;
-    return "Deploy order executed.\n";
-}
-std::string Advance::stringToLog(){
-    std::cout << "Advance order executed." << std::endl;
-    return "Advance order executed.\n";
-}
-std::string Blockade::stringToLog(){
-    std::cout << "Blockade order executed." << std::endl;
-    return "Blockafe order executed.\n";
-}
-std::string Bomb::stringToLog(){
-    std::cout << "Bomb order executed." << std::endl;
-    return "Bomb order executed.\n";
-}
-std::string Airlift::stringToLog(){
-    std::cout << "Airlift order executed." << std::endl;
-    return "Airlift order executed.\n";
-}
-std::string Negotiate::stringToLog(){
-    std::cout << "Negotiate order executed." << std::endl;
-    return "Negotiate order executed.\n";
-}
-
 void Deploy::execute() {
-    Notify(this);
-    return;//Temporary
-    std::cout << "entered in deploy execute" << std::endl << std::endl;
+    std::cout << "Executing deploy order" << std::endl;
     bool isValid = false;
     Territory* t = nullptr;
     if(player != nullptr) {
@@ -412,7 +343,7 @@ void Deploy::execute() {
 
         t->setArmyCount(armyCount);
         std::cout << armyCount << " troops deployed to " << t->getCountry() << std::endl;
-        
+        std::cout << "Total troops available on territory are: " << t->getArmyCount() << std::endl;
     }
     else {
         std::cout << "Deploy ordered not properly configured" << std::endl;
@@ -420,9 +351,9 @@ void Deploy::execute() {
 }
 
 void Advance::execute() {
-    Notify(this);
+    std::cout << "Executing advance order" << std::endl;
     Territory *terr1 = nullptr, *terr2 = nullptr;
-    return;//Temporary
+
     for(const auto& _t : src->territories) {
         if(_t->getCountry() == t1) {
             terr1 = _t;
@@ -431,7 +362,7 @@ void Advance::execute() {
     }
 
     if(terr1 == nullptr) {
-        std::cout << "Order is invalid, you do not own source territory" << std::endl;
+        std::cout << "Order is invalid, you do not own source territory, returning" << std::endl;
         return;
     }
 
@@ -453,6 +384,7 @@ void Advance::execute() {
     }
 
     if(terr2 != nullptr) {
+        std::cout << "Target territory is correct and territories are adjacent" << std::endl;
         bool playerOwner = false;
         for(const auto& t : src->territories) {
             if(terr2 == t) {
@@ -460,48 +392,89 @@ void Advance::execute() {
                 break;
             }
         }
-
+        int tempValue = armyCount;
         if(playerOwner) {
             terr1->setArmyCount(terr1->getArmyCount() - armyCount);
             terr2->setArmyCount(terr2->getArmyCount() + armyCount);
         }
         else {
 
-            int tempValue = armyCount;
+            
+            std::cout << "Attack between " << terr1->getCountry() << " and " << terr2->getCountry() << " is initiating" << std::endl;
+            std::cout << "t1: " << terr1->getArmyCount() << std::endl;
+            std::cout << "t2: " << terr2->getArmyCount() << std::endl;
 
-            while(terr1->getArmyCount() != 0 || terr2->getArmyCount() != 0) {
-                std::random_device                  rand_dev;
-                std::mt19937                        generator(rand_dev());
-                std::uniform_int_distribution<int>  distr(0,1);
+            std::random_device                  rand_dev;
+            std::mt19937                        generator(rand_dev());
+            std::uniform_real_distribution<float>  distr(0,1);
+            // exit(0);
+            while(true) {
 
-                int number1 = distr(generator);
-
-                if(number1 < 0.6) {
-                    terr2->setArmyCount(terr2->getArmyCount() - 1);
+                if(armyCount <= 0) {
+                    std::cout << terr1->getCountry() << " has been defeated" << std::endl;
+                    break;
+                }
+                else if(terr2->getArmyCount() <= 0) {
+                    std::cout << terr2->getCountry() << " has been defeated" << std::endl;
+                    break;
                 }
 
-                int number2 = distr(generator);
-
+                float number1 = distr(generator);
+                
+                if(number1 < 0.6) {
+                    terr2->setArmyCount(terr2->getArmyCount() - 1);
+                    std::cout << "1 troop killed at " << terr2->getCountry() << ", amount of troops left is: " << terr2->getArmyCount() << std::endl;
+                }
+                float number2 = distr(generator);
                 if(number2 < 0.7) {
+                    std::cout << "1 troop killed at " << terr1->getCountry() << ", amount of troops left is: " << armyCount << std::endl;
                     armyCount -= 1;
                 }
             }
 
             if(terr2->getArmyCount() == 0) {
+                std::cout << "Player: " << src->name << " has conquered " << terr2->getCountry() << " and now owns it" << std::endl;
                 terr1->setArmyCount(terr1->getArmyCount() - armyCount);
+                std::cout << "Current troops on " << terr1->getCountry() << " are: " << terr1->getArmyCount() << std::endl;
+                std::cout << "Current troops on " << terr2->getCountry() << " are: " << terr2->getArmyCount() << std::endl;
                 src->territories.push_back(terr2);
                 
                 int index = 0;
-                for(const auto t : target->territories) {
-                    if(t == terr2) break;
-                    index++;
-                }
 
-                target->territories.erase(target->territories.begin() + index);
-            
+                target = nullptr;
+
+                for(const auto p : src->gEng->Players) {
+                    if(p->name == src->name) continue;
+                    
+                    for(const auto t : p->territories) {
+                        std::cout << "SIZE OF TERRS: " << p->territories.size() << std::endl;
+                        std::cout << "t->getCountry: " << t->getCountry() << std::endl;
+                        std::cout << "terr2->getCountry: " << terr2->getCountry() << std::endl;
+                        if(t->getCountry() == terr2->getCountry()) {
+                            target = p;
+                            std::cout << "Target player found: " << target->name << std::endl;
+                            break;
+                        }
+                        index++;
+                    }
+
+                    if(target != nullptr) {
+                        break;
+                    }
+                }
+                
+                if(target != nullptr) {
+                    std::cout << "Successfully erased territory from player vector" << std::endl;
+                    target->territories.erase(target->territories.begin() + index);
+                }
+                
+                std::cout << "Returning to reinforcement phase" << std::endl;
             }
             else {
+                std::cout << "Player: " << src->name << " was unable to conquer " << terr2->getCountry() << std::endl;
                 terr1->setArmyCount(terr1->getArmyCount() - tempValue);
+                std::cout << "Current troops on " << terr1->getCountry() << " are: " << terr1->getArmyCount() << std::endl;
+                std::cout << "Current troops on " << terr2->getCountry() << " are: " << terr2->getArmyCount() << std::endl;
             }
         }
     }
@@ -515,8 +488,7 @@ void Advance::execute() {
 }
 
 void Blockade::execute() {
-    Notify(this);
-    return;//Temporary
+    std::cout << "Executing blockade order" << std::endl;
     Territory* t = nullptr;
     int index = 0;
 
@@ -543,8 +515,7 @@ void Blockade::execute() {
 }
 
 void Bomb::execute() {
-    Notify(this);
-    return;//Temporary
+    std::cout << "Executing bomb order" << std::endl;
     Territory* t = nullptr;
 
     for(const auto& _t : owner->territories) {
@@ -591,8 +562,7 @@ void Bomb::execute() {
 }
 
 void Airlift::execute() {
-    Notify(this);
-    return;//Temporary
+    std::cout << "Executing airlift order" << std::endl;
     Territory *source = nullptr, *target = nullptr;
 
     for(const auto& t : player->territories) {
@@ -615,8 +585,7 @@ void Airlift::execute() {
 }
 
 void Negotiate::execute() {
-    Notify(this);
-    return;//Temporary
+    std::cout << "Executing negotiate order" << std::endl;
     if(target == src) {
         std::cout << "Invalid order, target selected is the same as source" << std::endl;
         return;
@@ -624,6 +593,7 @@ void Negotiate::execute() {
 
     src->unAttackableName = target->name;
     target->unAttackableName = src->name;
+
     return;
 
 }
