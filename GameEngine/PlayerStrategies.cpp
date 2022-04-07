@@ -23,9 +23,10 @@ PlayerStrategy& PlayerStrategy::operator=(const PlayerStrategy& ps) {
     return *this;
 }
 
-//
-//Human
-//
+/******************************************************
+ * HUMAN STRATEGY
+ *****************************************************/
+//requires user interactions to make decisions
 
 //constructor
 HumanPlayerStrategy::HumanPlayerStrategy(){}
@@ -46,9 +47,15 @@ HumanPlayerStrategy& HumanPlayerStrategy::operator=(const HumanPlayerStrategy& h
     return *this;
 }
 
-//
-//Aggressive
-//
+void  HumanPlayerStrategy::issueOrder() {}
+std::vector<Territory*> HumanPlayerStrategy::toAttack(){}
+std::vector<Territory*> HumanPlayerStrategy::toDefend(){}
+
+/******************************************************
+ * AGGRESSIVE STRATEGY
+ *****************************************************/
+//computer player that focuses on attack (deploys or advances armies on its strongest
+//country, then always advances to enemy territories until it cannot do so anymore)
 
 //constructor
 AggressivePlayerStrategy::AggressivePlayerStrategy(){}
@@ -69,9 +76,15 @@ AggressivePlayerStrategy& AggressivePlayerStrategy::operator=(const AggressivePl
     return *this;
 }
 
-//
-//Benevolent
-//
+void AggressivePlayerStrategy::issueOrder() {}
+std::vector<Territory*> AggressivePlayerStrategy::toAttack(){}
+std::vector<Territory*> AggressivePlayerStrategy::toDefend(){}
+
+/******************************************************
+ * BENEVOLENT STRATEGY
+ *****************************************************/
+// computer player that focuses on protecting its weak countries (deploys or advances armies
+// on its weakest countries, never advances to enemy territories).
 
 //constructor
 BenevolentPlayerStrategy::BenevolentPlayerStrategy(){}
@@ -91,9 +104,16 @@ BenevolentPlayerStrategy& BenevolentPlayerStrategy::operator=(const BenevolentPl
     //player = bs.player;
     return *this;
 }
-//
-//Neutral
-//
+void BenevolentPlayerStrategy::issueOrder() {}
+std::vector<Territory*> BenevolentPlayerStrategy::toAttack(){}
+std::vector<Territory*> BenevolentPlayerStrategy::toDefend(){}
+
+
+/******************************************************
+ * NEUTRAL STRATEGY
+ *****************************************************/
+//computer player that never issues any order. If a Neutral player is attacked, it becomes an
+//Aggressive player. 
 
 //constructor
 NeutralPlayerStrategy::NeutralPlayerStrategy(){}
@@ -113,9 +133,18 @@ NeutralPlayerStrategy& NeutralPlayerStrategy::operator=(const NeutralPlayerStrat
     //player = ns.player;
     return *this;
 }
-//
-//Cheater
-//
+void NeutralPlayerStrategy::issueOrder() {
+    cout << "The neutral player does nothing." << endl;
+}
+std::vector<Territory*> NeutralPlayerStrategy::toAttack(){}
+std::vector<Territory*> NeutralPlayerStrategy::toDefend(){}
+
+
+/******************************************************
+ * CHEATER STRATEGY
+ *****************************************************/
+//computer player that automatically conquers all territories that are adjacent to its own
+//territories (only once per turn).
 
 //constructor
 CheaterPlayerStrategy::CheaterPlayerStrategy(){}
@@ -135,3 +164,6 @@ CheaterPlayerStrategy& CheaterPlayerStrategy::operator=(const CheaterPlayerStrat
     //player = cs.player;
     return *this;
 }
+void CheaterPlayerStrategy::issueOrder() {}
+std::vector<Territory*> CheaterPlayerStrategy::toAttack(){}
+std::vector<Territory*> CheaterPlayerStrategy::toDefend(){}
