@@ -136,8 +136,22 @@ NeutralPlayerStrategy& NeutralPlayerStrategy::operator=(const NeutralPlayerStrat
 void NeutralPlayerStrategy::issueOrder() {
     cout << "The neutral player does nothing." << endl;
 }
-std::vector<Territory*> NeutralPlayerStrategy::toAttack(){}
-std::vector<Territory*> NeutralPlayerStrategy::toDefend(){}
+
+
+std::vector<Territory*> NeutralPlayerStrategy::toAttack(){
+
+    std::vector<Territory*> terr{ nullptr };
+    cout << "Neutral does not attack" << endl;
+	return terr;
+}
+
+std::vector<Territory*> NeutralPlayerStrategy::toDefend(){
+
+    std::vector<Territory*> terr{ nullptr };
+    cout << "Neutral does not defend" << endl;
+	return terr;
+
+}
 
 
 /******************************************************
@@ -164,6 +178,27 @@ CheaterPlayerStrategy& CheaterPlayerStrategy::operator=(const CheaterPlayerStrat
     //player = cs.player;
     return *this;
 }
-void CheaterPlayerStrategy::issueOrder() {}
-std::vector<Territory*> CheaterPlayerStrategy::toAttack(){}
-std::vector<Territory*> CheaterPlayerStrategy::toDefend(){}
+void CheaterPlayerStrategy::issueOrder() {
+    std::vector<Territory*> toDefendVect = this->toDefend();
+    std::vector<Territory*> toAttackVect = this->toAttack();
+   
+}
+
+std::vector<Territory*> CheaterPlayerStrategy::toAttack(){
+    std::vector<Territory*> toAttackVect;
+
+    //for loop for all the list of territories owned
+         //for loop for all the adjacent territories
+         //if the owner of adjacent territory is not player -> toAttackVec.push_back()
+    
+    return toAttackVect;
+}
+std::vector<Territory*> CheaterPlayerStrategy::toDefend(){
+
+    std::vector<Territory*> toDefendVect;
+
+    //for loop to push all the list of territories owned in toDefendVec
+    
+    return toDefendVect;
+     
+}
