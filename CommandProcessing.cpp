@@ -41,10 +41,28 @@ void CommandProcessing::saveCommand(string word) {
 void CommandProcessing::readCommand() {
     string word;
     std::cout << "Input Command > ";
-    std::cin >> word;
+    std::getline(std::cin >> std::ws, word);
+    
     saveCommand(word);
 }
 
+string CommandProcessing::tournamentMode(string word){
+    string tournamentMode[9];
+    std::stringstream ss(word);
+    int i = 0;
+    while(ss.good() && i < 9){
+        ss >> tournamentMode[i];
+        i++;
+    }
+    if(tournamentMode[0].compare("tournament") == 0 && i == 9
+    && tournamentMode[1].compare("-M")){
+        std::cout << "Tournament Mode activated" << std::endl;
+    }
+    //for(i = 0; i < 9; i++){
+    //    std::cout << tournamentMode[i] << std::endl;
+    //}
+    return word;
+}
 void CommandProcessing::getCommand() {
     readCommand();
 }

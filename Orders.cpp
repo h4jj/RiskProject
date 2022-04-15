@@ -1,6 +1,6 @@
 #include "Orders.h"
 #include <sstream>
-#include "LogObserver.cpp"
+#include "LogObserver.h"
 
 using std::cout;
 using std::endl;
