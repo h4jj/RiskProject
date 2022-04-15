@@ -1,5 +1,5 @@
 #include "CommandProcessing.h"
-#include "LogObserver.cpp"
+#include "LogObserver.h"
 
 string Command::stringToLog(){
     return "Command effect: " + effect + ".\n";
@@ -78,8 +78,9 @@ void CommandProcessing::validate(Command& cmd, State state) {
     std::cout << "Current state is: MAP LOADED" <<std::endl;
     switch(state) {
         case State::START: {
-            if(cmd.command != "loadmap") {
+            if(cmd.command != "loadmap" || cmd.command != "tournament") {
                 cmd.effect = "Error, cannot use this command in current state";
+                std::cout << "we here now" << std::endl;
                 break;
             }
             else {
@@ -88,7 +89,7 @@ void CommandProcessing::validate(Command& cmd, State state) {
             }
         }
         case State::MAP_LOADED: {
-            if(cmd.command != "loadmap" && cmd.command != "validatemap") {
+            if(cmd.command != "loadmap" || cmd.command != "tournament" || cmd.command != "validatemap") {
                 cmd.effect = "Error, cannot use this command in current state";
                 break;
             }
