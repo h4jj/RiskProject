@@ -10,3 +10,11 @@ Bomb order executed.
 Blockafe order executed.
 Airlift order executed.
 Negotiate order executed.
+Current state: START.
+Command: loadmap.
+Command: tournament.
+Command: tournament.
+Command: tournament.
+Command: tournament.
+Command: tournament.
+Command: sdf.

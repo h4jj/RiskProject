@@ -22,7 +22,6 @@ void LogObserver::Update(ILoggable *lo){
     std::ofstream file ("gamelog.txt", std::fstream::app);
     if(file.is_open()){
         file << s;
-        std::cout << "Hello" << std::endl;
     } else{
         std::cout << "Couldn't access file gamelog.txt" << std::endl;
     }

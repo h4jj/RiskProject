@@ -1,4 +1,5 @@
 #include "CommandProcessing.h"
+#include "LogObserver.h"
 
 void Command::Notify(ILoggable *c){
     LogObserver lo;
@@ -52,13 +53,14 @@ Command* CommandProcessing::popCommand() {
 void CommandProcessing::validate(Command& cmd, State state) {
     switch(state) {
         case State::START: {
-            if(cmd.command != "loadmap") {
+            if(cmd.command != "loadmap" || cmd.command != "tournament") {
                 cmd.effect = "Error, cannot use this command in current state";
+                std::cout << "we here now" << std::endl;
                 break;
             }
         }
         case State::MAP_LOADED: {
-            if(cmd.command != "loadmap" || cmd.command != "validatemap") {
+            if(cmd.command != "loadmap" || cmd.command != "tournament" || cmd.command != "validatemap") {
                 cmd.effect = "Error, cannot use this command in current state";
                 std::cout << "HERE";
                 break;
