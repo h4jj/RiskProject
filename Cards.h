@@ -16,8 +16,8 @@ class Card
 public:                           
     ~Card();
     Card(int);                            
-    void play();                   
-private:
+    Order* play();                   
+public:
     OrderType cardType;         
 };
 

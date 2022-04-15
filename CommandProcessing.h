@@ -10,23 +10,27 @@ using std::string;
 
 enum class State {START,MAP_LOADED,MAP_VALIDATED,PLAYERS_ADDED,ASSIGN_REIN,ISSUE_ORDERS,EXEC_ORDERS,WIN};
 
-class Command : public ILoggable, public Subject{
+class Command : public Subject, public ILoggable {
 public:
     Command();
     Command(string cmd) : command(cmd) {}; 
     string command, effect;
-    void saveEffect(string); 
+    void saveEffect(string);
+    string stringToLog() override;
     void Notify(ILoggable *) override;
-    string stringToLog() override;   
 };
 
-class CommandProcessing : public ILoggable, public Subject{
+class CommandProcessing : public Subject, public ILoggable {
 public:
+    CommandProcessing() = default;
+    ~CommandProcessing() {};
+    CommandProcessing(const CommandProcessing&);
+    CommandProcessing& operator=(const CommandProcessing&);
     virtual void getCommand();
     void validate(Command&, State);
     Command* popCommand();
-    void Notify(ILoggable *) override;
     string stringToLog() override;
+    void Notify(ILoggable *) override;
 protected:
     virtual void readCommand();
     void saveCommand(string);
@@ -35,9 +39,13 @@ protected:
 
 class FileCommandProcessorAdapter : public CommandProcessing{
 public:
+    FileCommandProcessorAdapter() = default;
+    ~FileCommandProcessorAdapter() {};
+    FileCommandProcessorAdapter(const FileCommandProcessorAdapter&);
+    FileCommandProcessorAdapter& operator=(const FileCommandProcessorAdapter&);
     virtual void getCommand();
-    void Notify(ILoggable *) override;
     string stringToLog() override;
+    void Notify(ILoggable *) override;
 private:
     virtual void readCommand();
 };

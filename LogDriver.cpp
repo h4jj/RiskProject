@@ -65,12 +65,6 @@ int main(){
         Player* p1 = new Player("Ahmad");
         Player* p2 = new Player("Mostafa");
         Player* p3 = new Player("Marieme");
-        p1->issueOrder(1);//Puts order with orderType from 1 to 6 in the orderList (and in the gameLog.txt file)
-        p1->issueOrder(2);
-        p1->issueOrder(3);
-        p1->issueOrder(4);
-        p1->issueOrder(5);
-        p1->issueOrder(6);
         Deploy *d = new Deploy(nullptr, 1);
         d->execute();//Execute a deploy command
         Advance *a = new Advance(nullptr, 2);

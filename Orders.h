@@ -1,13 +1,14 @@
 #pragma once
 #include <iostream>
 #include <random>
+#include <queue>
 #include "Player.h"
 #include "Map.h"
 #include "LoggingObserver.h"
 
 class Player;
 
-class Order : public ILoggable, public Subject
+class Order : public Subject, public ILoggable
 {
 public:
     Order();
@@ -19,11 +20,11 @@ public:
     virtual void execute() = 0;
     Order(const Order& o);
     friend std::ostream& operator << (std::ostream& out, Order& o);
-    virtual void Notify(ILoggable *) = 0;
-    virtual std::string stringToLog() = 0;
+    std::string stringToLog() override;
+    void Notify(ILoggable *) override;
 };
 
-class OrderList : public ILoggable, public Subject
+class OrderList : public Subject, public ILoggable
 {
 public:
     OrderList();
@@ -35,10 +36,11 @@ public:
     int length();
     const Order* getHead();
     const Order* getTail();
-    void Notify(ILoggable *) override;
+    std::queue<Order*> orderQueue;
     std::string stringToLog() override;
-
+    void Notify(ILoggable *) override;
 private:
+
     Order *head;
     Order *tail;
 };
@@ -50,35 +52,37 @@ public:
     Player* player = nullptr;
     std::string territory;
     virtual void execute();
-    Deploy();
+    Deploy() = default;
     Deploy(Order *, int);
-    void Notify(ILoggable *) override;
     std::string stringToLog() override;
+    void Notify(ILoggable *) override;
 };
 
 class Advance : public Order
 {
 public:
     int armyCount;
-    Player *src, *target;
+    Player *src = nullptr, *target = nullptr;
     std::string t1,t2;
     std::vector<Edge*> edges;
     virtual void execute();
     Advance(Order *, int);
-    void Notify(ILoggable *) override;
+    Advance() = default;
     std::string stringToLog() override;
+    void Notify(ILoggable *) override;
 };
 
 class Bomb : public Order
 {
 public:
     std::vector<Edge*> edges;
-    Player *owner, *opponent;
+    Player *owner;
     std::string t1;
     virtual void execute();
     Bomb(Order *, int);
-    void Notify(ILoggable *) override;
+    Bomb() = default;
     std::string stringToLog() override;
+    void Notify(ILoggable *) override;
 };
 
 class Blockade : public Order
@@ -88,8 +92,9 @@ public:
     std::string t1;
     virtual void execute();
     Blockade(Order *, int);
-    void Notify(ILoggable *) override;
+    Blockade() = default;
     std::string stringToLog() override;
+    void Notify(ILoggable *) override;
 };
 
 class Airlift : public Order
@@ -99,9 +104,10 @@ public:
     std::string t1,t2;
     int armyCount;
     virtual void execute();
+    Airlift() = default;
     Airlift(Order *, int);
-    void Notify(ILoggable *) override;
     std::string stringToLog() override;
+    void Notify(ILoggable *) override;
 };
 
 class Negotiate : public Order
@@ -109,7 +115,8 @@ class Negotiate : public Order
 public:
     virtual void execute();
     Negotiate(Order *, int);
+    Negotiate() = default;
     Player *src, *target;
-    void Notify(ILoggable *) override;
     std::string stringToLog() override;
+    void Notify(ILoggable *) override;
 };

@@ -17,7 +17,6 @@ LogObserver& LogObserver::operator= (const LogObserver &lo){
 }
 
 void LogObserver::Update(ILoggable *lo){
-    std::cout << "in Update(ILoggable *);" << std::endl;
     std::string s = lo->stringToLog();
     std::ofstream file ("gamelog.txt", std::fstream::app);
     if(file.is_open()){

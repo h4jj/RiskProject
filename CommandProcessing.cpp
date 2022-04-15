@@ -1,33 +1,43 @@
 #include "CommandProcessing.h"
+<<<<<<< HEAD
 #include "LogObserver.h"
+=======
+#include "LogObserver.cpp"
+>>>>>>> bc12fe929d284fbf4b0fbbdb0484beeeb86f4f21
 
+string Command::stringToLog(){
+    return "Command effect: " + effect + ".\n";
+}
 void Command::Notify(ILoggable *c){
     LogObserver lo;
     lo.Update(c);
 }
-
-string Command::stringToLog(){
-    std::cout << "Command's effect: " << effect << std::endl;
-    return "Command's effect: " + effect + ".\n";
-}
-
 void Command::saveEffect(string eff) {
     effect = eff;
     Notify(this);
 }
 
+CommandProcessing::CommandProcessing(const CommandProcessing& obj) {
+    this->commandColl = obj.commandColl;
+}
+
+CommandProcessing& CommandProcessing::operator=(const CommandProcessing& obj) {
+    this->commandColl = obj.commandColl;
+    return *this;
+}
+
+string CommandProcessing::stringToLog(){
+    return "Command saved: " + commandColl.back()->command + ".\n"; 
+}
 void CommandProcessing::Notify(ILoggable *cp){
     LogObserver lo;
     lo.Update(cp);
 }
 
-string CommandProcessing::stringToLog(){
-    std::cout << "Command: " << commandColl.back()->command << std::endl;
-    return "Command: " + commandColl.back()->command + ".\n";
-}
 void CommandProcessing::saveCommand(string word) {
     Command* cmd = new Command(word);
     commandColl.push(cmd);
+    std::cout << "Command: " << cmd->command << " saved" << std::endl;
     std::cout << "Command saved, length of collection is: " << commandColl.size() << std::endl;
     Notify(this);
 }
@@ -51,6 +61,7 @@ Command* CommandProcessing::popCommand() {
 }
 
 void CommandProcessing::validate(Command& cmd, State state) {
+    std::cout << "Current state is: MAP LOADED" <<std::endl;
     switch(state) {
         case State::START: {
             if(cmd.command != "loadmap" || cmd.command != "tournament") {
@@ -58,11 +69,22 @@ void CommandProcessing::validate(Command& cmd, State state) {
                 std::cout << "we here now" << std::endl;
                 break;
             }
+            else {
+                cmd.effect = "Command is valid, moving to next state";
+                break;
+            }
         }
         case State::MAP_LOADED: {
+<<<<<<< HEAD
             if(cmd.command != "loadmap" || cmd.command != "tournament" || cmd.command != "validatemap") {
+=======
+            if(cmd.command != "loadmap" && cmd.command != "validatemap") {
+>>>>>>> bc12fe929d284fbf4b0fbbdb0484beeeb86f4f21
                 cmd.effect = "Error, cannot use this command in current state";
-                std::cout << "HERE";
+                break;
+            }
+            else {
+                cmd.effect = "Command is valid, moving to next state";
                 break;
             }
         }
@@ -71,16 +93,28 @@ void CommandProcessing::validate(Command& cmd, State state) {
                 cmd.effect = "Error, cannot use this command in current state";
                 break;
             }
+            else {
+                cmd.effect = "Command is valid, moving to next state";
+                break;
+            }
         }
         case State::PLAYERS_ADDED: {
-            if(cmd.command != "addplayer" || cmd.command != "gamestart") {
+            if(cmd.command != "addplayer" && cmd.command != "gamestart") {
                 cmd.effect = "Error, cannot use this command in current state";
+                break;
+            }
+            else {
+                cmd.effect = "Command is valid, moving to next state";
                 break;
             }
         }
         case State::WIN: {
-            if(cmd.command != "replay" || cmd.command != "quit") {
+            if(cmd.command != "replay" && cmd.command != "quit") {
                 cmd.effect = "Error, cannot use this command in current state";
+                break;
+            }
+            else {
+                cmd.effect = "Command is valid, moving to next state";
                 break;
             }
         }
@@ -88,14 +122,23 @@ void CommandProcessing::validate(Command& cmd, State state) {
 
     }
 }
+
+FileCommandProcessorAdapter::FileCommandProcessorAdapter(const FileCommandProcessorAdapter& obj) : CommandProcessing() {
+
+}
+
+FileCommandProcessorAdapter& FileCommandProcessorAdapter::operator=(const FileCommandProcessorAdapter& obj) {
+    return *this;
+}
+
+string FileCommandProcessorAdapter::stringToLog(){
+    return "Command read from file: " + commandColl.back()->command + ".\n";
+}
 void FileCommandProcessorAdapter::Notify(ILoggable *fpa){
     LogObserver lo;
     lo.Update(fpa);
 }
-string FileCommandProcessorAdapter::stringToLog(){
-    std::cout << "Command read on file: " << commandColl.back()->command << "." << std::endl;
-    return "Command read on file: " + commandColl.back()->command + ".\n";
-}
+
 void FileCommandProcessorAdapter::readCommand() {
     
     std::fstream file("commands.txt", std::ios::in);

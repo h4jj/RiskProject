@@ -3,17 +3,19 @@
 #include "Map.h"
 #include <random>
 #include "LoggingObserver.h"
-#include "CommandProcessing.h"
 
+enum class State {START,MAP_LOADED,MAP_VALIDATED,PLAYERS_ADDED,ASSIGN_REIN,ISSUE_ORDERS,EXEC_ORDERS,WIN};
 enum class Phase {STARTUP, PLAY};
 
-class GameEngine : public ILoggable, public Subject{
+class GameEngine : public Subject, public ILoggable {
 public:
     GameEngine();
     ~GameEngine();
     void startupPhase();
+    void startupPhaseTest();
     void showMenu();
     void takeInput();
+    void takeInputTest();
     void changeState();
     void showAvailableMaps();
     void pickMap();
@@ -21,15 +23,16 @@ public:
     void reinforcementPhase();
     void issueOrdersPhase();
     void executeOrdersPhase();
-    void transition();//Added to original work
     GameEngine& operator=(const GameEngine&);
     GameEngine(const GameEngine&);
-    void Notify(ILoggable *) override;
+    void transition();
     std::string stringToLog() override;
+    void Notify(ILoggable *) override;
 public:
     //modify copy constructor and assignment operator
     Phase phase = Phase::STARTUP;
     State state = State::START;
     Map* map = nullptr;
     std::vector<Player*> Players;
+    Player* neutralPlayer;
 };
