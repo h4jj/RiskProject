@@ -1,6 +1,7 @@
 #include "CommandProcessing.h"
 #include "CommandProcessing.cpp"
 #include "LogObserver.cpp"
+
 int main() {
 
     while(true) {
@@ -17,7 +18,9 @@ int main() {
             Command* cmd = object.popCommand();
             object.validate(*cmd, State::MAP_LOADED);
             std::cout << "Command Effect: " << cmd->effect << std::endl;
-            
+            if(cmd->effect.compare("tournament")){
+                
+            }
         }
         else if(word == "file") {
             FileCommandProcessorAdapter obj;

@@ -18,3 +18,29 @@ P: Aggressive
 G: 4
 D: 30
 Command read from file: tournament.
+Command saved: quit.
+Tournament Mode
+M: canada.map,
+P: Aggressive
+G: 4
+D: 34
+Command saved: tournament.
+Command saved: tournament.
+Command saved: tournament M canada.map, europe.map.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Tournament Mode
+M: canada.map,
+P: Aggressive,
+G: 4
+D: 34
+Command saved: tournament.
+Command read from file: invalid.
+Tournament Mode
+M: canada.map
+P: Aggressive,
+G: 4
+D: 30
+Command read from file: tournament.
