@@ -1,6 +1,7 @@
 #pragma once
 #include "Player.h"
 #include "Map.h"
+#include "Orders.h"
 #include <random>
 #include "LoggingObserver.h"
 

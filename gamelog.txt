@@ -86,3 +86,10 @@ Command read from file: tournament.
 Command read from file: tournament.
 Command read from file: tournament.
 Command read from file: tournament.
+Command read from file: tournament.
+Command saved: f.
+Command read from file: tournament.
+Command read from file: tournament.
+Command read from file: tournament.
+Command saved: tournament.
+Command read from file: tournament.

@@ -1,6 +1,7 @@
 #include "CommandProcessing.h"
 #include "LogObserver.h"
 
+
 string Command::stringToLog()
 {
     return "Command effect: " + effect + ".\n";
@@ -15,7 +16,9 @@ void Command::saveEffect(string eff)
     effect = eff;
     Notify(this);
 }
-
+CommandProcessing::CommandProcessing(){
+    tournamentModeArray = new string[9];
+}
 CommandProcessing::CommandProcessing(const CommandProcessing &obj)
 {
     this->commandColl = obj.commandColl;
@@ -51,7 +54,6 @@ void CommandProcessing::readCommand()
     string word;
     std::cout << "Input Command > ";
     std::getline(std::cin >> std::ws, word);
-    string* tournamentModeArray = new string[9];
     tournamentModeArray = tournamentMode(word, tournamentModeArray);
     for(int i = 0; i < 9; i++){
         std::cout << (tournamentModeArray[i]) << " ";
@@ -396,7 +398,9 @@ void CommandProcessing::validate(Command &cmd, State state)
         cmd.effect = "State entered is not a valid state";
     }
 }
-
+FileCommandProcessorAdapter::FileCommandProcessorAdapter(){
+    tournamentModeArray = new string[9];
+}
 FileCommandProcessorAdapter::FileCommandProcessorAdapter(const FileCommandProcessorAdapter &obj) : CommandProcessing()
 {
 }
@@ -421,7 +425,7 @@ void FileCommandProcessorAdapter::readCommand()
 
     std::fstream file("commands.txt", std::ios::in);
     string word;
-    file >> word;
+    getline(file, word);
     string* tournamentModeArray = new string[9];
     tournamentModeArray = tournamentMode(word, tournamentModeArray);
     saveCommand(tournamentModeArray[0]);

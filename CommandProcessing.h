@@ -24,7 +24,7 @@ public:
 
 class CommandProcessing : public Subject, public ILoggable {
 public:
-    CommandProcessing() = default;
+    CommandProcessing();//Modified
     ~CommandProcessing() {};
     CommandProcessing(const CommandProcessing&);
     CommandProcessing& operator=(const CommandProcessing&);
@@ -39,11 +39,13 @@ protected:
     virtual void readCommand();
     void saveCommand(string);
     queue<Command*> commandColl;
+private:
+    string* tournamentModeArray;
 };
 
 class FileCommandProcessorAdapter : public CommandProcessing{
 public:
-    FileCommandProcessorAdapter() = default;
+    FileCommandProcessorAdapter();//Modified
     ~FileCommandProcessorAdapter() {};
     FileCommandProcessorAdapter(const FileCommandProcessorAdapter&);
     FileCommandProcessorAdapter& operator=(const FileCommandProcessorAdapter&);
@@ -53,4 +55,5 @@ public:
 private:
     virtual string* tournamentMode(string, string*);
     virtual void readCommand();
+    string* tournamentModeArray;
 };
