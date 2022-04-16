@@ -39,52 +39,17 @@ Player& Player::operator=(const Player& p) {
 
 // Method to return list of arbitrary territories
 
-std::list<Territory*> Player::toAttack() {
-    if(this->territories.size() != 0) {
-        std::list<Territory*> randTerritories;
-        int even = 0;
+std::vector<Territory*> Player::toAttack(PlayerStrategy* ps) {
+    
+    std::vector<Territory*> toAttackVect = ps->toAttack();
 
-        for(auto const& x : this->territories) {
-            if(even%2==0){
-                randTerritories.push_back(x);
-            }
-            even++;
-        }
-        
-        return randTerritories;
-    }
-    else {
-        std::cout << "Player does not own any territories" << std::endl;
-    }
-
-    std::list<Territory*> emptyList;
-
-    return emptyList;
+    return toAttackVect;
 }
 
 // Method to return list of arbitrary territories
 
-std::list<Territory*> Player::toDefend() {
-    if(this->territories.size() != 0) {
-        std::list<Territory*> randTerritories;
-        int odd = 1;
-
-        for(auto const& x : this->territories) {
-            if(odd%2==0){
-                randTerritories.push_back(x);
-            }
-            odd++;
-        }
-        
-        return randTerritories;
-    }
-    else {
-        std::cout << "Player does not own any territories" << std::endl;
-    }
-
-    std::list<Territory*> emptyList;
-
-    return emptyList;
+std::vector<Territory*> Player::toDefend(PlayerStrategy* ps) {
+    return ps->toDefend();
 }
 
 // takes order type as input
@@ -93,45 +58,25 @@ std::list<Territory*> Player::toDefend() {
 
 void Player::setUnattackable(std::string val) {unAttackableName = val;}
 
-void Player::issueOrder(int orderType) {
+void Player::printTerritories() {
+    std::cout << std::endl;
+    std::cout << "Player: " << this->name << std::endl; 
+    std::cout << "list of territories size: " << territories.size() << std::endl;
+    for(const auto t : territories) {
+        std::cout << t->getCountry() << " ";
+    }
+    std::cout << std::endl;
+}
 
-    switch(orderType) {
-        case 1:
-            {
-                Deploy* depObj = new Deploy(nullptr, orderType);
-                this->orderListObject->add(depObj);
-                break;
-            }
-        case 2:
-            {
-                Advance* advObj = new Advance(nullptr, orderType);
-                this->orderListObject->add(advObj);
-                break;
-            }
-        case 3:
-            {
-                Bomb* bombObj = new Bomb(nullptr, orderType);
-                this->orderListObject->add(bombObj);
-                break;
-            }
-        case 4:
-            {
-                Blockade* blockadeObj = new Blockade(nullptr, orderType);
-                this->orderListObject->add(blockadeObj);
-                break;
-            }
-        case 5:
-            {
-                Airlift* airliftObj = new Airlift(nullptr, orderType);
-                this->orderListObject->add(airliftObj);
-                break;
-            }
-        case 6:
-            {
-                Negotiate* negotiateObj = new Negotiate(nullptr, orderType);
-                this->orderListObject->add(negotiateObj);
-                break;
-            }
-        default: std::cout << "Invalid Order Type" << std::endl;
+void printVect(std::vector<Territory*> terrVect) {
+    int counter = 1;
+    for(const auto terr : terrVect) {
+        std::cout << counter<<")" <<terr->getCountry() << std::endl;
+        counter++;
     }
 }
+
+void Player::issueOrder(PlayerStrategy* ps) { 
+    ps->issueOrder();
+}
+

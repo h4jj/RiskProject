@@ -156,7 +156,7 @@ void GameEngine::reinforcementPhase() {
 void GameEngine::issueOrdersPhase() {
     for(const auto& player : Players) {
         std::cout << "ISSUING ORDER FOR PLAYER: " << player->name << std::endl;
-        player->issueOrder(player->ps);
+        player->issueOrder();
     }
 }
 
