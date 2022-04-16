@@ -187,9 +187,20 @@ void CheaterPlayerStrategy::issueOrder() {
 std::vector<Territory*> CheaterPlayerStrategy::toAttack(){
     std::vector<Territory*> toAttackVect;
 
+    
+
     //for loop for all the list of territories owned
-         //for loop for all the adjacent territories
+    for (auto i = player->territories.begin(); i != player->territories.end(); i++) {
+        //for loop for all the adjacent territories
+        for (auto j = (player-> adjacentTerrsAttackable;(*i).begin()); j != player-> adjacentTerrsAttackable;(*(i)).end(); j++) {
          //if the owner of adjacent territory is not player -> toAttackVec.push_back()
+         if ((*j)->owner != player) {
+				toAttackVect.push_back(*j);
+				(*j)->owner->territories.erase(j);
+			}
+        }
+    }
+         
     
     return toAttackVect;
 }
@@ -199,6 +210,10 @@ std::vector<Territory*> CheaterPlayerStrategy::toDefend(){
 
     //for loop to push all the list of territories owned in toDefendVec
     
+    for (auto i = player->territories.begin(); i != player->territories.end(); i++) {
+		toDefendVect.push_back(*i);
+	}
+       
     return toDefendVect;
      
 }
