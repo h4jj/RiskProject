@@ -60,7 +60,14 @@ void CommandProcessing::readCommand()
     }
     saveCommand(tournamentModeArray[0]);
 }
-
+string* CommandProcessing::returnTournamentPara(){
+    tournamentPara = new string[4];
+    tournamentPara[0] = tournamentModeArray[2] + ", ";
+    tournamentPara[1] = tournamentModeArray[4] + ", ";
+    tournamentPara[2] = tournamentModeArray[6];
+    tournamentPara[3] = tournamentModeArray[8];
+    return tournamentPara;
+}
 string* CommandProcessing::tournamentMode(string word, string* tournamentMode)
 {
     int counter = 0;
@@ -458,6 +465,15 @@ void FileCommandProcessorAdapter::readCommand()
     string* tournamentModeArray = new string[9];
     tournamentModeArray = tournamentMode(word, tournamentModeArray);
     saveCommand(tournamentModeArray[0]);
+}
+
+string* FileCommandProcessorAdapter::returnTournamentPara(){
+    tournamentPara = new string[4];
+    tournamentPara[0] = tournamentModeArray[2] + ", ";
+    tournamentPara[1] = tournamentModeArray[4] + ", ";
+    tournamentPara[2] = tournamentModeArray[6];
+    tournamentPara[3] = tournamentModeArray[8];
+    return tournamentPara;
 }
 
 string* FileCommandProcessorAdapter::tournamentMode(string word, string* tournamentMode)

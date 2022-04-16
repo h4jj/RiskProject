@@ -119,7 +119,14 @@ void GameEngine::issueOrdersPhase() {
 void GameEngine::executeOrdersPhase() {
 
 }
+void tournamentGameLoop(std::string* para){
+    std::string m = para[0];
+    std::string p = para[1];
+    std::string g = para[2];
+    std::string d = para[3];
 
+
+}
 void GameEngine::mainGameLoop() {
     std::cout << "Entering main game loop..." << std::endl;
     while(true) {

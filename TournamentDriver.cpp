@@ -1,5 +1,6 @@
 #include "CommandProcessing.h"
 #include "CommandProcessing.cpp"
+#include "GameEngine.cpp"
 #include "LogObserver.cpp"
 
 int main() {
@@ -19,7 +20,8 @@ int main() {
             object.validate(*cmd, State::MAP_LOADED);
             std::cout << "Command Effect: " << cmd->effect << std::endl;
             if(cmd->effect.compare("tournament")){
-                
+                GameEngine ge;
+                ge.tournamentGameLoop(object.returnTournamentPara());
             }
         }
         else if(word == "file") {

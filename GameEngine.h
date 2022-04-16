@@ -17,6 +17,7 @@ public:
     void showAvailableMaps();
     void pickMap();
     void mainGameLoop();
+    void tournamentGameLoop(std::string*);
     void reinforcementPhase();
     void issueOrdersPhase();
     void executeOrdersPhase();
