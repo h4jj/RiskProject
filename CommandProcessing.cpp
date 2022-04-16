@@ -51,16 +51,24 @@ void CommandProcessing::readCommand()
     string word;
     std::cout << "Input Command > ";
     std::getline(std::cin >> std::ws, word);
-    word = tournamentMode(word);
-    saveCommand(word);
+    string* tournamentModeArray = new string[9];
+    tournamentModeArray = tournamentMode(word, tournamentModeArray);
+    for(int i = 0; i < 9; i++){
+        std::cout << (tournamentModeArray[i]) << " ";
+    }
+    saveCommand(tournamentModeArray[0]);
 }
 
-string CommandProcessing::tournamentMode(string word)
+string* CommandProcessing::tournamentMode(string word, string* tournamentMode)
 {
-    string tournamentMode[9];
+    bool valid = true;
+    bool finish = false;
+    string initialWord = word;
     int index = 0;
     int parsing = 0;
+    string maps;
     string delimiter = " -";
+    string delimiter2 = ", ";
     while (parsing != -1)
     {
         switch (parsing)
@@ -80,7 +88,8 @@ string CommandProcessing::tournamentMode(string word)
             break;
         case 1:
             tournamentMode[index] = word[0];
-            if(tournamentMode[index] != "M"){
+            if (tournamentMode[index] != "M")
+            {
                 word = "invalid";
                 std::cout << "input invalid, should be -M instead of -" << tournamentMode[index] << std::endl;
                 parsing = -1;
@@ -89,19 +98,217 @@ string CommandProcessing::tournamentMode(string word)
             parsing++;
             break;
         case 2:
+            valid = true;
             tournamentMode[index] = word.substr(2, word.find(delimiter));
-            string maps = tournamentMode[index];
-            while(word.find(delimiter) == -1){
-                if(maps.substr(0, maps.find(", ")).compare("canada.map") != 0
-                || maps.substr(0, maps.find(", ")).compare("europe.map") != 0);
+            maps = tournamentMode[index];
+            delimiter2 = ", ";
+            while (!finish)
+            {
+
+                if (maps.substr(0, maps.find(delimiter2)).compare("canada.map") == 0 || maps.substr(0, maps.find(delimiter2)).compare("europe.map") == 0)
+                {
+                    maps.erase(0, maps.find(delimiter2) + delimiter2.length());
+                    if (maps.find(delimiter2) == std::string::npos)
+                    {
+                        if (maps.compare("canada.map -") == 0 || maps.compare("europe.map -") == 0)
+                        {
+                            finish = true;
+                            valid = true;
+                        }
+                        else
+                        {
+                            word = "invalid";
+                            parsing = -1;
+                            std::cout << "input invalid, the maps are not loaded" << std::endl;
+                            valid = false;
+                            finish = true;
+                            break;
+                        }
+                    }
+                    valid = true;
+                }
+                else if (maps.find(delimiter2) == std::string::npos)
+                {
+                    if (maps.compare("canada.map -") == 0 || maps.compare("europe.map -") == 0)
+                    {
+                        finish = true;
+                        valid = true;
+                    }
+                    else
+                    {
+                        word = "invalid";
+                        parsing = -1;
+                        std::cout << "input invalid, the maps are not loaded" << std::endl;
+                        valid = false;
+                        finish = true;
+                        break;
+                    }
+                }
+                else
+                {
+                    std::cout << maps.substr(0, maps.find(delimiter2));
+                    word = "invalid";
+                    parsing = -1;
+                    std::cout << "input invalid, the maps are not loaded" << std::endl;
+                    valid = false;
+                    break;
+                }
+                if (valid)
+                {
+                    parsing++;
+                    index++;
+                    word.erase(0, word.find(delimiter) + delimiter.length());
+                    finish = true;
+                }
+            }
+            break;
+        case 3:
+            tournamentMode[index] = word[0];
+            if (tournamentMode[index] != "P")
+            {
+                word = "invalid";
+                std::cout << "input invalid, should be -P instead of -" << tournamentMode[index] << std::endl;
+                parsing = -1;
+            }
+            index++;
+            parsing++;
+            break;
+        case 4:
+            finish = false;
+            valid = true;
+            tournamentMode[index] = word.substr(2, word.find(delimiter));
+            maps = tournamentMode[index];
+            delimiter2 = ", ";
+            while (!finish)
+            {
+                if (maps.substr(0, maps.find(delimiter2)).compare("Aggressive") == 0 || maps.substr(0, maps.find(delimiter2)).compare("Benevolant") == 0 || maps.substr(0, maps.find(delimiter2)).compare("Neutral") == 0 || maps.substr(0, maps.find(delimiter2)).compare("Cheater") == 0)
+                {
+                    maps.erase(0, maps.find(delimiter2) + delimiter2.length());
+                    if (maps.find(delimiter2) == std::string::npos)
+                    {
+                        if (maps.compare("Aggressive -") == 0 || maps.compare("Benevolant -") == 0 || maps.compare("Neutral -") == 0 || maps.compare("Cheater -") == 0)
+                        {
+                            finish = true;
+                            valid = true;
+                        }
+                        else
+                        {
+                            word = "invalid";
+                            parsing = -1;
+                            std::cout << "input invalid, " << tournamentMode[index] << " is not a player strategy" << std::endl;
+                            valid = false;
+                            finish = true;
+                            break;
+                        }
+                    }
+                    valid = true;
+                }
+                else if (maps.find(delimiter2) == std::string::npos)
+                {
+                    if (maps.compare("Aggressive -") == 0 || maps.compare("Benevolant -") == 0 || maps.compare("Neutral -") == 0 || maps.compare("Cheater -") == 0)
+                    {
+                        finish = true;
+                        valid = true;
+                    }
+                    else
+                    {
+                        word = "invalid";
+                        parsing = -1;
+                        std::cout << "input invalid, " << tournamentMode[index] << " is not a player strategy" << std::endl;
+                        valid = false;
+                        finish = true;
+                        break;
+                    }
+                }
+                else
+                {
+                    std::cout << maps.substr(0, maps.find(delimiter2));
+                    word = "invalid";
+                    parsing = -1;
+                    std::cout << "input invalid, " << tournamentMode[index] << " is not a player strategy" << std::endl;
+                    valid = false;
+                    break;
+                }
+                if (valid)
+                {
+                    parsing++;
+                    index++;
+                    word.erase(0, word.find(delimiter) + delimiter.length());
+                    finish = true;
+                }
+            }
+            break;
+        case 5:
+            tournamentMode[index] = word[0];
+            if (tournamentMode[index] != "G")
+            {
+                word = "invalid";
+                std::cout << "input invalid, should be -G instead of -" << tournamentMode[index] << std::endl;
+                parsing = -1;
+            }
+            index++;
+            parsing++;
+            break;
+        case 6:
+            tournamentMode[index] = word.substr(2, word.find(delimiter));
+            try{
+                if(stoi(tournamentMode[index]) < 1 || stoi(tournamentMode[index]) > 5){
+                    std::cout << "Tournament mode requires minimum 1 game and maximum 5 games. You entered: " << tournamentMode[index] << std::endl;
+                    word = "invalid";
+                    parsing = -1;
+                } else {
+                    parsing++;
+                    index++;
+                    word.erase(0, word.find(delimiter) + delimiter.length());
+                }
+            } catch (const std::invalid_argument& ia){
+                std::cout << "You wrote: " << tournamentMode[index] << " instead of an integer between 1 and 5 inclusively" << std::endl;
+                word = "invalid";
+                parsing = -1;
+            }
+            break;
+        case 7: 
+            tournamentMode[index] = word[0];
+            if (tournamentMode[index] != "D")
+            {
+                word = "invalid";
+                std::cout << "input invalid, should be -D instead of -" << tournamentMode[index] << std::endl;
+                parsing = -1;
+            }
+            index++;
+            parsing++;
+            break;
+            break;
+        case 8:
+            tournamentMode[index] = word.substr(2, word.find(delimiter));
+            try{
+                if(stoi(tournamentMode[index]) < 10 || stoi(tournamentMode[index]) > 50){
+                    std::cout << "Tournament mode requires minimum 10 turns and maximum 50 turns. You entered: " << tournamentMode[index] << std::endl;
+                    word = "invalid";
+                    parsing = -1;
+                } else {
+                    parsing++;
+                }
+            } catch (const std::invalid_argument& ia){
+                std::cout << "You wrote: " << tournamentMode[index] << " instead of an integer between 10 and 50 inclusively" << std::endl;
+                word = "invalid";
+                parsing = -1;
             }
             break;
         default:
+        if(parsing == 9){
+            parsing = -1;
+
+        } else {
+            std::cout << "input invalid" << std::endl;
+            word = "invalid";
+        }
             break;
         }
     }
-    return word;
+    return tournamentMode;
 }
+
 void CommandProcessing::getCommand()
 {
     readCommand();
@@ -214,23 +421,262 @@ void FileCommandProcessorAdapter::readCommand()
 
     std::fstream file("commands.txt", std::ios::in);
     string word;
-
     file >> word;
-    word = tournamentMode(word);
-    saveCommand(word);
+    string* tournamentModeArray = new string[9];
+    tournamentModeArray = tournamentMode(word, tournamentModeArray);
+    saveCommand(tournamentModeArray[0]);
 }
-string FileCommandProcessorAdapter::tournamentMode(string word)
+
+string* FileCommandProcessorAdapter::tournamentMode(string word, string* tournamentMode)
 {
-    string tournamentMode[9];
-    std::stringstream ss(word);
-    int i = 0;
-    while (ss.good() && i < 9)
+    bool valid = true;
+    bool finish = false;
+    string initialWord = word;
+    int index = 0;
+    int parsing = 0;
+    string maps;
+    string delimiter = " -";
+    string delimiter2 = ", ";
+    while (parsing != -1)
     {
-        ss >> tournamentMode[i];
-        i++;
+        switch (parsing)
+        {
+        case 0:
+            tournamentMode[index] = word.substr(0, word.find(delimiter));
+            if (tournamentMode[index].compare("tournament") != 0)
+            {
+                word = "invalid";
+                std::cout << "input is invalid" << std::endl;
+                parsing = -1;
+                break;
+            }
+            word.erase(0, word.find(delimiter) + delimiter.length());
+            parsing++;
+            index++;
+            break;
+        case 1:
+            tournamentMode[index] = word[0];
+            if (tournamentMode[index] != "M")
+            {
+                word = "invalid";
+                std::cout << "input invalid, should be -M instead of -" << tournamentMode[index] << std::endl;
+                parsing = -1;
+            }
+            index++;
+            parsing++;
+            break;
+        case 2:
+            valid = true;
+            tournamentMode[index] = word.substr(2, word.find(delimiter));
+            maps = tournamentMode[index];
+            delimiter2 = ", ";
+            while (!finish)
+            {
+
+                if (maps.substr(0, maps.find(delimiter2)).compare("canada.map") == 0 || maps.substr(0, maps.find(delimiter2)).compare("europe.map") == 0)
+                {
+                    maps.erase(0, maps.find(delimiter2) + delimiter2.length());
+                    if (maps.find(delimiter2) == std::string::npos)
+                    {
+                        if (maps.compare("canada.map -") == 0 || maps.compare("europe.map -") == 0)
+                        {
+                            finish = true;
+                            valid = true;
+                        }
+                        else
+                        {
+                            word = "invalid";
+                            parsing = -1;
+                            std::cout << "input invalid, the maps are not loaded" << std::endl;
+                            valid = false;
+                            finish = true;
+                            break;
+                        }
+                    }
+                    valid = true;
+                }
+                else if (maps.find(delimiter2) == std::string::npos)
+                {
+                    if (maps.compare("canada.map -") == 0 || maps.compare("europe.map -") == 0)
+                    {
+                        finish = true;
+                        valid = true;
+                    }
+                    else
+                    {
+                        word = "invalid";
+                        parsing = -1;
+                        std::cout << "input invalid, the maps are not loaded" << std::endl;
+                        valid = false;
+                        finish = true;
+                        break;
+                    }
+                }
+                else
+                {
+                    std::cout << maps.substr(0, maps.find(delimiter2));
+                    word = "invalid";
+                    parsing = -1;
+                    std::cout << "input invalid, the maps are not loaded" << std::endl;
+                    valid = false;
+                    break;
+                }
+                if (valid)
+                {
+                    parsing++;
+                    index++;
+                    word.erase(0, word.find(delimiter) + delimiter.length());
+                    finish = true;
+                }
+            }
+            break;
+        case 3:
+            tournamentMode[index] = word[0];
+            if (tournamentMode[index] != "P")
+            {
+                word = "invalid";
+                std::cout << "input invalid, should be -P instead of -" << tournamentMode[index] << std::endl;
+                parsing = -1;
+            }
+            index++;
+            parsing++;
+            break;
+        case 4:
+            finish = false;
+            valid = true;
+            tournamentMode[index] = word.substr(2, word.find(delimiter));
+            maps = tournamentMode[index];
+            delimiter2 = ", ";
+            while (!finish)
+            {
+                if (maps.substr(0, maps.find(delimiter2)).compare("Aggressive") == 0 || maps.substr(0, maps.find(delimiter2)).compare("Benevolant") == 0 || maps.substr(0, maps.find(delimiter2)).compare("Neutral") == 0 || maps.substr(0, maps.find(delimiter2)).compare("Cheater") == 0)
+                {
+                    maps.erase(0, maps.find(delimiter2) + delimiter2.length());
+                    if (maps.find(delimiter2) == std::string::npos)
+                    {
+                        if (maps.compare("Aggressive -") == 0 || maps.compare("Benevolant -") == 0 || maps.compare("Neutral -") == 0 || maps.compare("Cheater -") == 0)
+                        {
+                            finish = true;
+                            valid = true;
+                        }
+                        else
+                        {
+                            word = "invalid";
+                            parsing = -1;
+                            std::cout << "input invalid, " << tournamentMode[index] << " is not a player strategy" << std::endl;
+                            valid = false;
+                            finish = true;
+                            break;
+                        }
+                    }
+                    valid = true;
+                }
+                else if (maps.find(delimiter2) == std::string::npos)
+                {
+                    if (maps.compare("Aggressive -") == 0 || maps.compare("Benevolant -") == 0 || maps.compare("Neutral -") == 0 || maps.compare("Cheater -") == 0)
+                    {
+                        finish = true;
+                        valid = true;
+                    }
+                    else
+                    {
+                        word = "invalid";
+                        parsing = -1;
+                        std::cout << "input invalid, " << tournamentMode[index] << " is not a player strategy" << std::endl;
+                        valid = false;
+                        finish = true;
+                        break;
+                    }
+                }
+                else
+                {
+                    std::cout << maps.substr(0, maps.find(delimiter2));
+                    word = "invalid";
+                    parsing = -1;
+                    std::cout << "input invalid, " << tournamentMode[index] << " is not a player strategy" << std::endl;
+                    valid = false;
+                    break;
+                }
+                if (valid)
+                {
+                    parsing++;
+                    index++;
+                    word.erase(0, word.find(delimiter) + delimiter.length());
+                    finish = true;
+                }
+            }
+            break;
+        case 5:
+            tournamentMode[index] = word[0];
+            if (tournamentMode[index] != "G")
+            {
+                word = "invalid";
+                std::cout << "input invalid, should be -G instead of -" << tournamentMode[index] << std::endl;
+                parsing = -1;
+            }
+            index++;
+            parsing++;
+            break;
+        case 6:
+            tournamentMode[index] = word.substr(2, word.find(delimiter));
+            try{
+                if(stoi(tournamentMode[index]) < 1 || stoi(tournamentMode[index]) > 5){
+                    std::cout << "Tournament mode requires minimum 1 game and maximum 5 games. You entered: " << tournamentMode[index] << std::endl;
+                    word = "invalid";
+                    parsing = -1;
+                } else {
+                    parsing++;
+                    index++;
+                    word.erase(0, word.find(delimiter) + delimiter.length());
+                }
+            } catch (const std::invalid_argument& ia){
+                std::cout << "You wrote: " << tournamentMode[index] << " instead of an integer between 1 and 5 inclusively" << std::endl;
+                word = "invalid";
+                parsing = -1;
+            }
+            break;
+        case 7: 
+            tournamentMode[index] = word[0];
+            if (tournamentMode[index] != "D")
+            {
+                word = "invalid";
+                std::cout << "input invalid, should be -D instead of -" << tournamentMode[index] << std::endl;
+                parsing = -1;
+            }
+            index++;
+            parsing++;
+            break;
+            break;
+        case 8:
+            tournamentMode[index] = word.substr(2, word.find(delimiter));
+            try{
+                if(stoi(tournamentMode[index]) < 10 || stoi(tournamentMode[index]) > 50){
+                    std::cout << "Tournament mode requires minimum 10 turns and maximum 50 turns. You entered: " << tournamentMode[index] << std::endl;
+                    word = "invalid";
+                    parsing = -1;
+                } else {
+                    parsing++;
+                }
+            } catch (const std::invalid_argument& ia){
+                std::cout << "You wrote: " << tournamentMode[index] << " instead of an integer between 10 and 50 inclusively" << std::endl;
+                word = "invalid";
+                parsing = -1;
+            }
+            break;
+        default:
+        if(parsing == 9){
+            parsing = -1;
+
+        } else {
+            std::cout << "input invalid" << std::endl;
+            word = "invalid";
+        }
+            break;
+        }
     }
-    return word;
+    return tournamentMode;
 }
+
 void FileCommandProcessorAdapter::getCommand()
 {
     readCommand();

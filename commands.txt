@@ -1,1 +1,1 @@
-loadmap
+tournament -M canada.map -P Aggressive -G 4 -D 30

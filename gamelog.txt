@@ -48,3 +48,41 @@ Command saved: D.
 Command saved: D.
 Command saved: M dfs -D.
 Command saved: F sdf -G.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: P.
+Command saved: P.
+Command saved: invalid.
+Command saved: P.
+Command saved: invalid.
+Command saved: D .
+Command saved: invalid.
+Command saved: invalid.
+Command saved: G.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: invalid.
+Command saved: tournament.
+Command read from file: tournament.
+Command read from file: tournament.
+Command read from file: tournament.
+Command read from file: tournament.

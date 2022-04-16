@@ -4,6 +4,7 @@
 #include <iostream>
 #include <queue>
 #include "LoggingObserver.h"
+#include <string>
 #include <sstream>
 
 using std::queue;
@@ -34,7 +35,7 @@ public:
     string stringToLog() override;
     void Notify(ILoggable *) override;
 protected:
-    virtual string tournamentMode(string);
+    virtual string* tournamentMode(string, string*);
     virtual void readCommand();
     void saveCommand(string);
     queue<Command*> commandColl;
@@ -50,6 +51,6 @@ public:
     string stringToLog() override;
     void Notify(ILoggable *) override;
 private:
-    virtual string tournamentMode(string);
+    virtual string* tournamentMode(string, string*);
     virtual void readCommand();
 };
