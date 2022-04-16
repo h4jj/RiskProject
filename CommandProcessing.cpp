@@ -300,7 +300,22 @@ string* CommandProcessing::tournamentMode(string word, string* tournamentMode)
         default:
         if(parsing == 9){
             parsing = -1;
-
+            string m, p, g, d;
+            std::ofstream file ("gamelog.txt", std::fstream::app);
+            if(file.is_open()){
+                m = "M: " + tournamentMode[2].substr(0, tournamentMode[2].find(" ")) + "\n";
+                p = "P: " + tournamentMode[4].substr(0, tournamentMode[4].find(" ")) + "\n";
+                g = "G: " + tournamentMode[6].substr(0, tournamentMode[6].find(" ")) + "\n";
+                d = "D: " + tournamentMode[8].substr(0, tournamentMode[8].find(" ")) + "\n";
+                file << "Tournament Mode\n";
+                file << m;
+                file << p;
+                file << g;
+                file << d;
+            } else{
+                std::cout << "Couldn't access file gamelog.txt" << std::endl;
+            }
+            file.close();
         } else {
             std::cout << "input invalid" << std::endl;
             word = "invalid";
@@ -670,7 +685,22 @@ string* FileCommandProcessorAdapter::tournamentMode(string word, string* tournam
         default:
         if(parsing == 9){
             parsing = -1;
-
+            string m, p, g, d;
+            std::ofstream file ("gamelog.txt", std::fstream::app);
+            if(file.is_open()){
+                m = "M: " + tournamentMode[2].substr(0, tournamentMode[2].find(" ")) + "\n";
+                p = "P: " + tournamentMode[4].substr(0, tournamentMode[4].find(" ")) + "\n";
+                g = "G: " + tournamentMode[6].substr(0, tournamentMode[6].find(" ")) + "\n";
+                d = "D: " + tournamentMode[8].substr(0, tournamentMode[8].find(" ")) + "\n";
+                file << "Tournament Mode\n";
+                file << m;
+                file << p;
+                file << g;
+                file << d;
+            } else{
+                std::cout << "Couldn't access file gamelog.txt" << std::endl;
+            }
+            file.close();
         } else {
             std::cout << "input invalid" << std::endl;
             word = "invalid";

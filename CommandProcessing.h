@@ -31,16 +31,16 @@ public:
     virtual void getCommand();
     void validate(Command&, State);
     Command* popCommand();
-    
+    string returnTournamentPara();
     string stringToLog() override;
     void Notify(ILoggable *) override;
 protected:
-    virtual string* tournamentMode(string, string*);
     virtual void readCommand();
     void saveCommand(string);
     queue<Command*> commandColl;
 private:
     string* tournamentModeArray;
+    virtual string* tournamentMode(string, string*);
 };
 
 class FileCommandProcessorAdapter : public CommandProcessing{
@@ -50,6 +50,7 @@ public:
     FileCommandProcessorAdapter(const FileCommandProcessorAdapter&);
     FileCommandProcessorAdapter& operator=(const FileCommandProcessorAdapter&);
     virtual void getCommand();
+    string returnTournamentPara();
     string stringToLog() override;
     void Notify(ILoggable *) override;
 private:

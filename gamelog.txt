@@ -1,95 +1,20 @@
-<<<<<<< HEAD
-Command saved: loadmap.
+Command read from file: tournament.
+Command read from file: tournament.
+Tournament Mode
+M: canada.map -
+P: Aggressive -
+G: 4 -
+D: 30
 Command saved: tournament.
+Tournament Mode
+M: canada.map
+P: Aggressive
+G: 4
+D: 30
 Command saved: tournament.
-Command saved: tournament.
-Command saved: tournament.
-Command saved: tournament.
-Command saved: .
-Command saved: tournament o o o o o o o o.
-Command saved: tournament o o o o o o o o.
-Command saved: tournament o o o o o o o o.
-Command saved: tournament o o o o o o o.
-Command saved: tournament o o o o o o o o o.
-=======
-<<<<<<< HEAD
-Order added to the order list: 1.
-Order added to the order list: 2.
-Order added to the order list: 3.
-Order added to the order list: 4.
-Order added to the order list: 5.
-Order added to the order list: 6.
-Deploy order executed.
-Advance order executed.
-Bomb order executed.
-Blockafe order executed.
-Airlift order executed.
-Negotiate order executed.
-Current state: START.
-Command: loadmap.
-Command: tournament.
-Command: tournament.
-Command: tournament.
-Command: tournament.
-Command: tournament.
-Command: sdf.
-=======
->>>>>>> bc12fe929d284fbf4b0fbbdb0484beeeb86f4f21
->>>>>>> c8723da4846d4ac2c680f76b377937ca83d183c1
-Command saved: tournament -M 1 -P Neutral -G 2 -D 10.
-Command saved: tournament -M 1 -P Neutral -G 2 -D 10.
-Command saved: tournament -M 3 -P Neutral -G 4 -D 40.
-Command saved: tournament -M 3 -P Neutral -G 4 -D 40.
-Command saved: tournament -K.
-Command saved: l ejsfkjdncd "c:\Users\jet20\RiskProject\" ; if ($?) { g++ CommandProcessorDriver.cpp -o CommandProcessorDriver } ; if ($?) { .\CommandProcessorDriver }.
-Command saved: sdfsdf.
-Command saved: .
-Command saved: D.
-Command saved: D.
-Command saved: M dfs -D.
-Command saved: F sdf -G.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: P.
-Command saved: P.
-Command saved: invalid.
-Command saved: P.
-Command saved: invalid.
-Command saved: D .
-Command saved: invalid.
-Command saved: invalid.
-Command saved: G.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: invalid.
-Command saved: tournament.
-Command read from file: tournament.
-Command read from file: tournament.
-Command read from file: tournament.
-Command read from file: tournament.
-Command read from file: tournament.
-Command saved: f.
-Command read from file: tournament.
-Command read from file: tournament.
-Command read from file: tournament.
-Command saved: tournament.
+Tournament Mode
+M: canada.map
+P: Aggressive
+G: 4
+D: 30
 Command read from file: tournament.
