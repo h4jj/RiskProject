@@ -1,6 +1,7 @@
 #pragma once
 #include "Player.h"
 #include "Map.h"
+#include<bits/stdc++.h>
 #include <random>
 
 enum class State {START,MAP_LOADED,MAP_VALIDATED,PLAYERS_ADDED,ASSIGN_REIN,ISSUE_ORDERS,EXEC_ORDERS,WIN};

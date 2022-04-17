@@ -434,7 +434,7 @@ void Advance::execute() {
 
             if(terr2->getArmyCount() == 0) {
                 std::cout << "Player: " << src->name << " has conquered " << terr2->getCountry() << " and now owns it" << std::endl;
-                terr1->setArmyCount(terr1->getArmyCount() - armyCount);
+                terr1->setArmyCount(armyCount);
                 std::cout << "Current troops on " << terr1->getCountry() << " are: " << terr1->getArmyCount() << std::endl;
                 std::cout << "Current troops on " << terr2->getCountry() << " are: " << terr2->getArmyCount() << std::endl;
                 src->territories.push_back(terr2);

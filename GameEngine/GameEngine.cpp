@@ -123,6 +123,7 @@ void GameEngine::pickMap() {
 }
 
 void GameEngine::reinforcementPhase() {
+
     for(const auto& player : Players) {
 
         //1- check if player owns entire continent        
@@ -194,6 +195,10 @@ void GameEngine::executeOrdersPhase() {
 void GameEngine::mainGameLoop() {
     std::cout << "Entering main game loop..." << std::endl;
 
+    if(state == State::WIN) {
+        return;
+    }
+
     reinforcementPhase();
     issueOrdersPhase();
     executeOrdersPhase();
@@ -212,7 +217,7 @@ void GameEngine::mainGameLoop() {
         Players.erase(Players.begin() + counter);
     }
     if(Players.size() == 1) {
-        State::WIN;
+        state = State::WIN;
     }
 }
 
@@ -281,13 +286,55 @@ void GameEngine::takeInput() {
                             std::cout << "You cannot add anymore players, please move onto the next game state" << std::endl;
                             break;
                         }
-                        std::string name;
+                        std::string name, playerType;
                         std::cout << "Input name for player: "<<std::endl;
                         std::cout << "> ";
                         std::cin >> name;
 
+                        std::cout << "What kind of player do you want this to be?" << std::endl;
+                        std::cout << "1) Human\n";
+                        std::cout << "2) Aggressive\n";
+                        std::cout << "3) Benevolent\n";
+                        std::cout << "4) Neutral\n";
+                        std::cout << "5) Cheater\n" << std::endl;
+
+                        std::cout << "> ";
+                        std::cin >> playerType;
+
                         Player* p = new Player(name);
                         p->map = this->map;
+
+                        std::transform(playerType.begin(), playerType.end(), playerType.begin(), ::toupper);
+
+                        if(playerType == "HUMAN") {
+                            HumanPlayerStrategy* hps = new HumanPlayerStrategy();
+                            p->ps = hps;
+                            hps->p = p;
+                            std::cout << "Human Player Strategy has been selected" << std::endl;
+                        }
+                        else if(playerType == "AGGRESSIVE") {
+                            AggressivePlayerStrategy* aps = new AggressivePlayerStrategy();
+                            p->ps = aps;
+                            aps->p = p;
+                            std::cout << "Aggressive Player Strategy has been selected" << std::endl;
+                        }
+                        else if(playerType == "BENEVOLENT") {
+                            BenevolentPlayerStrategy* bps = new BenevolentPlayerStrategy();
+                            p->ps = bps;
+                            bps->p = p;
+                            std::cout << "Benevolent Player Strategy has been selected" << std::endl;
+                        }
+                        else if(playerType == "NEUTRAL") {
+                            NeutralPlayerStrategy* nps = new NeutralPlayerStrategy();
+                            p->ps = nps;
+                            nps->p = p;
+                            std::cout << "Neutral Player Strategy has been selected" << std::endl;
+                        }
+                        else if(playerType == "CHEATER") {
+
+                        }
+
+                        p->gEng = this;
                         this->Players.push_back(p);
 
                     }
