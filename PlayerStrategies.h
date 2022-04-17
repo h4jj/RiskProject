@@ -27,6 +27,7 @@ class AggressivePlayerStrategy : public PlayerStrategy{
 public: 
     virtual ~AggressivePlayerStrategy();
     virtual void issueOrder();
+    std::vector<Territory*> toAttackCountry(Territory*);
     virtual std::vector<Territory*> toAttack();
     virtual std::vector<Territory*> toDefend();
 };
@@ -46,4 +47,3 @@ public:
     virtual std::vector<Territory*> toAttack();
     virtual std::vector<Territory*> toDefend();
 };
-
