@@ -10,7 +10,7 @@
 using std::queue;
 using std::string;
 
-enum class State {START,MAP_LOADED,MAP_VALIDATED,PLAYERS_ADDED,ASSIGN_REIN,ISSUE_ORDERS,EXEC_ORDERS,WIN};
+enum class StateCommand {START,MAP_LOADED,MAP_VALIDATED,PLAYERS_ADDED,ASSIGN_REIN,ISSUE_ORDERS,EXEC_ORDERS,WIN};
 
 class Command : public Subject, public ILoggable {
 public:
@@ -29,7 +29,7 @@ public:
     CommandProcessing(const CommandProcessing&);
     CommandProcessing& operator=(const CommandProcessing&);
     virtual void getCommand();
-    void validate(Command&, State);
+    void validate(Command&, StateCommand);
     Command* popCommand();
     string* returnTournamentPara();
     string stringToLog() override;

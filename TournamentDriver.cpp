@@ -2,6 +2,7 @@
 #include "CommandProcessing.cpp"
 #include "GameEngine.cpp"
 #include "LogObserver.cpp"
+#include "PlayerStrategies.cpp"
 
 int main() {
 
@@ -17,7 +18,7 @@ int main() {
             CommandProcessing object;
             object.getCommand();
             Command* cmd = object.popCommand();
-            object.validate(*cmd, State::MAP_LOADED);
+            object.validate(*cmd, StateCommand::MAP_LOADED);
             std::cout << "Command Effect: " << cmd->effect << std::endl;
             if(cmd->effect.compare("tournament")){
                 GameEngine ge;
@@ -28,7 +29,7 @@ int main() {
             FileCommandProcessorAdapter obj;
             obj.getCommand();
             Command* cmd = obj.popCommand();
-            obj.validate(*cmd, State::MAP_LOADED);
+            obj.validate(*cmd, StateCommand::MAP_LOADED);
             std::cout << "Command Effect: " << cmd->effect << std::endl;
             if(cmd->effect.compare("tournament")){
                 GameEngine ge;

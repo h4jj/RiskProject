@@ -44,3 +44,27 @@ P: Aggressive,
 G: 4
 D: 30
 Command read from file: tournament.
+Tournament Mode
+M: canada.map
+P: Aggressive,
+G: 4
+D: 30
+Command read from file: tournament.
+Tournament Mode
+M: canada.map
+P: Aggressive,
+G: 4
+D: 30
+Command read from file: tournament.
+Tournament Mode
+M: canada.map
+P: Aggressive,
+G: 4
+D: 30
+Command read from file: tournament.
+Tournament Mode
+M: canada.map
+P: Aggressive,
+G: 4
+D: 30
+Command saved: tournament.

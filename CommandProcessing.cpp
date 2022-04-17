@@ -360,12 +360,12 @@ Command *CommandProcessing::popCommand()
     return cmd;
 }
 
-void CommandProcessing::validate(Command &cmd, State state)
+void CommandProcessing::validate(Command &cmd, StateCommand state)
 {
     std::cout << "Current state is: MAP LOADED" << std::endl;
     switch (state)
     {
-    case State::START:
+    case StateCommand::START:
     {
         if (cmd.command != "loadmap" || cmd.command != "tournament")
         {
@@ -378,7 +378,7 @@ void CommandProcessing::validate(Command &cmd, State state)
             break;
         }
     }
-    case State::MAP_LOADED:
+    case StateCommand::MAP_LOADED:
     {
         if (cmd.command != "loadmap" || cmd.command != "tournament" || cmd.command != "validatemap")
         {
@@ -391,7 +391,7 @@ void CommandProcessing::validate(Command &cmd, State state)
             break;
         }
     }
-    case State::MAP_VALIDATED:
+    case StateCommand::MAP_VALIDATED:
     {
         if (cmd.command != "addplayer")
         {
@@ -404,7 +404,7 @@ void CommandProcessing::validate(Command &cmd, State state)
             break;
         }
     }
-    case State::PLAYERS_ADDED:
+    case StateCommand::PLAYERS_ADDED:
     {
         if (cmd.command != "addplayer" && cmd.command != "gamestart")
         {
@@ -417,7 +417,7 @@ void CommandProcessing::validate(Command &cmd, State state)
             break;
         }
     }
-    case State::WIN:
+    case StateCommand::WIN:
     {
         if (cmd.command != "replay" && cmd.command != "quit")
         {
@@ -708,7 +708,6 @@ string* FileCommandProcessorAdapter::tournamentMode(string word, string* tournam
             }
             index++;
             parsing++;
-            break;
             break;
         case 8:
             tournamentMode[index] = word.substr(2, word.find(delimiter));

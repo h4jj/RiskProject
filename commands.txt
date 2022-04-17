@@ -1,1 +1,1 @@
-tournament -M canada.map -P Aggressive, Neutral -G 4 -D 30
+tournament -M canada.map -P Aggressive, Benevolant -G 4 -D 30
