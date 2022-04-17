@@ -107,41 +107,146 @@ void GameEngine::pickMap() {
     }
     else {
         std::cout << "Incorrect input please try again" << std::endl;
+        return;
     }
+
+    this->map->buildContinentVector();
+    std::cout << "Successfully built continent vector, looping over it now: \n";
+
+    for(auto con : this->map->continentVector) {
+        std::cout << "Continent: " << con.continent_name << " , size: " << con.territories.size() << '\n';
+        for(const auto terr : con.territories) {
+            std::cout << terr->getCountry() << " ";
+        }
+        std::cout << '\n';
+    } 
 }
 
 void GameEngine::reinforcementPhase() {
-    
+
+    for(const auto& player : Players) {
+
+        //1- check if player owns entire continent        
+
+        for(const auto con : this->map->continentVector) {
+            int counter = 0;
+            for(const auto terr : con.territories) {
+                for(const auto terrPlayer : player->territories) {
+                    if(terr->getCountry() == terrPlayer->getCountry()) {
+                        counter++;
+                    }
+                }
+            }
+
+            if(counter == con.territories.size()) {
+                player->reinforcementPool += con.control_bonus;
+            }
+
+            counter = 0;
+        }
+
+        if(player->territories.size() <= 9) {
+            player->reinforcementPool += 3;
+        }
+        else {
+            player->reinforcementPool += floor(player->territories.size() / 3);
+        }
+    }
+
 }
 void GameEngine::issueOrdersPhase() {
-
+    for(const auto& player : Players) {
+        std::cout << "ISSUING ORDER FOR PLAYER: " << player->name << std::endl;
+        player->issueOrder(player->ps);
+    }
 }
+
 void GameEngine::executeOrdersPhase() {
+    std::cout << "Executing orders now: " << std::endl;
+    int counter = 0;
+    bool empty = false;
+
+    while(!empty) {
+        for(const auto p : Players) {
+            if(p->orderListObject->orderQueue.size() != 0) {
+                std::cout << "TRYING TO ACCESS FRONT ORDER" << std::endl;
+                Order* order = p->orderListObject->orderQueue.front();
+                p->orderListObject->orderQueue.pop();
+                std::cout << "POPPED ORDER AND ATTEMPTING TO EXEC" << std::endl;
+                order->execute();
+                std::cout << "EXECUTED ORDER" << std::endl;
+            }
+        }
+        std::cout << "LEAVING EXECUTE ORDERS PHASE NOW" << std::endl;
+        break;
+        // for(const auto p : Players) {
+        //     if(p->orderListObject->orderQueue.size() == 0) {
+        //         empty = true;
+        //     }
+        //     else {
+        //         empty = false;
+        //         break;
+        //     }
+        // }   
+    }
+}
+
+void GameEngine::tournamentGameLoop(std::string* para){
+    std::string m, p;//m and p are used to modify the maps and the player strategies respectively without loosing the originals (para)
+    int g = 0, d = 0;//g and d are counters for games and turns respectively
+    m = para[0];
+    p = para[1];
+    int numMaps = 0;
+    int counter = 0;
+    std::string delimiter = ", ";
+    while(m.find(delimiter) != std::string::npos){
+        m.erase(0, m.find(delimiter) + delimiter.length());
+        counter++;
+    }
+    m = para[0];
+    numMaps = counter;
+    std::string *maps = new std::string[numMaps];
+    counter = 0;
+    while(counter != numMaps){
+        maps[counter] = m.substr(0, m.find(delimiter));
+        m.erase(0, m.find(delimiter) + delimiter.length());
+        counter++;
+    }
+    counter = 0;
+    while(counter != numMaps){
+        while(g != stoi(para[2])){
+            
+        }
+    }
 
 }
-void tournamentGameLoop(std::string* para){
-    std::string m = para[0];
-    std::string p = para[1];
-    std::string g = para[2];
-    std::string d = para[3];
 
-
-}
 void GameEngine::mainGameLoop() {
     std::cout << "Entering main game loop..." << std::endl;
-    while(true) {
-        std::cout << "Player count: " << this->Players.size() << std::endl;
-        for(const auto& player : this->Players) {
-            // reinforcementPhase();
-            std::cout << player->name << " has " << player->territories.size() << " territories" << std::endl;
+
+    if(state == State::WIN) {
+        return;
+    }
+
+    reinforcementPhase();
+    issueOrdersPhase();
+    executeOrdersPhase();
+
+    int counter = 0;
+    bool flag = false;
+    for(const auto p : Players) {
+        if(p->territories.size() == 0) {
+            flag = true;
+            break;
         }
-        exit(0);
-        // for(const auto& player : this->Players) {
-        //     issueOrdersPhase();
-        // }   
-        // for(const auto& player : this->Players) {
-        //     executeOrdersPhase();
-        // }      
+        counter++;
+    }
+
+    if(flag){
+        Players.erase(Players.begin() + counter);
+    }
+    if(Players.size() == 1) {
+        state = State::WIN;
     }
 }
 
@@ -210,12 +315,55 @@ void GameEngine::takeInput() {
                             std::cout << "You cannot add anymore players, please move onto the next game state" << std::endl;
                             break;
                         }
-                        std::string name;
+                        std::string name, playerType;
                         std::cout << "Input name for player: "<<std::endl;
                         std::cout << "> ";
                         std::cin >> name;
 
+                        std::cout << "What kind of player do you want this to be?" << std::endl;
+                        std::cout << "1) Human\n";
+                        std::cout << "2) Aggressive\n";
+                        std::cout << "3) Benevolent\n";
+                        std::cout << "4) Neutral\n";
+                        std::cout << "5) Cheater\n" << std::endl;
+
+                        std::cout << "> ";
+                        std::cin >> playerType;
+
                         Player* p = new Player(name);
+                        p->map = this->map;
+
+                        std::transform(playerType.begin(), playerType.end(), playerType.begin(), ::toupper);
+
+                        if(playerType == "HUMAN") {
+                            HumanPlayerStrategy* hps = new HumanPlayerStrategy();
+                            p->ps = hps;
+                            hps->p = p;
+                            std::cout << "Human Player Strategy has been selected" << std::endl;
+                        }
+                        else if(playerType == "AGGRESSIVE") {
+                            AggressivePlayerStrategy* aps = new AggressivePlayerStrategy();
+                            p->ps = aps;
+                            aps->p = p;
+                            std::cout << "Aggressive Player Strategy has been selected" << std::endl;
+                        }
+                        else if(playerType == "BENEVOLENT") {
+                            BenevolentPlayerStrategy* bps = new BenevolentPlayerStrategy();
+                            p->ps = bps;
+                            bps->p = p;
+                            std::cout << "Benevolent Player Strategy has been selected" << std::endl;
+                        }
+                        else if(playerType == "NEUTRAL") {
+                            NeutralPlayerStrategy* nps = new NeutralPlayerStrategy();
+                            p->ps = nps;
+                            nps->p = p;
+                            std::cout << "Neutral Player Strategy has been selected" << std::endl;
+                        }
+                        else if(playerType == "CHEATER") {
+
+                        }
+
+                        p->gEng = this;
                         this->Players.push_back(p);
 
                     }
@@ -272,8 +420,8 @@ void GameEngine::takeInput() {
                         for(auto& player : this->Players) {
                             deck->draw(player->hand);
                             deck->draw(player->hand);
-                            player->armyCount = 50;
-                            std::cout << "Player " << player->name << " army count: " << player->armyCount << std::endl;
+                            player->reinforcementPool = 50;
+                            std::cout << "Player " << player->name << " army count: " << player->reinforcementPool << std::endl;
                         }
                         this->state = State::ASSIGN_REIN;
                         this->phase = Phase::PLAY;
@@ -290,86 +438,106 @@ void GameEngine::takeInput() {
         }
 
         case Phase::PLAY: {
-            // mainGameLoop();
-            exit(0);
-            break;
+            while(state != State::WIN) {
+                mainGameLoop();
+            }
+            std::cout << "Player: " << Players.at(0)->name << " has won the game!" << std::endl;
+            std::cout << "Would you like to play again? (y/n)" <<std::endl;
+            char ans;
+            std::cout << "> ";
+            std::cin >> ans;
+
+            if(ans == 'y') {
+                state = State::START;
+                phase = Phase::STARTUP;
+            }
+            else {
+                std::cout << "Thanks for playing, exiting." << std::endl;
+                exit(0);
+            }
         }
 
     }
-        // switch(this->state) {
-        //     case State::ASSIGN_REIN: {
-        //         if(input.compare("IssueOrder") == 0) {
-        //             this->state = State::ISSUE_ORDERS;
-        //         }
-        //         else {
-        //             std::cout << "The only available command in this state is IssueOrder" << std::endl;
-        //         }
-
-        //         break;
-        //     }
-
-        //     case State::ISSUE_ORDERS: {
-
-        //         if(input.compare("IssueOrder") == 0) {
-        //             std::cout << "Issuing more Orders" << std::endl;
-        //         }
-        //         else if(input.compare("EndIssueOrder") == 0) {
-        //             std::cout << "Ending Issue Orders" << std::endl;
-        //             this->state = State::EXEC_ORDERS;
-        //         }
-        //         else {
-        //             std::cout << "The only available commands are - IssueOrder and EndIssueOrder" << std::endl;
-        //         }
-
-        //         break;
-        //     }
-
-        //     case State::EXEC_ORDERS: {
-
-        //         if(input.compare("ExecuteOrder") == 0){
-        //             std::cout << "Executing Order" << std::endl;
-        //         }
-        //         else if(input.compare("EndExecuteOrder") == 0) {
-        //             std::cout << "Ending Order execution" << std::endl;
-        //             this->state = State::ASSIGN_REIN;
-        //         }
-        //         else if(input.compare("Win") == 0) {
-        //             std::cout << "Congrats you won!" << std::endl;
-        //             this->state = State::WIN;
-        //         }
-        //         else {
-        //             std::cout << "Incorrect input please try again" << std::endl;
-        //         }
-
-        //         break;
-        //     }
-
-        //     case State::WIN: {
-        //         if(input.compare("Play") == 0) {
-        //             std::cout << "Going back to start state" << std::endl;
-        //             for(auto& p : this->Players) {
-        //                 delete p;
-        //                 p = NULL;
-        //             }
-        //             delete this->map;
-        //             this->map = nullptr;
-        //             this->state = State::START;
-        //         }
-        //         else if(input.compare("End") == 0) {
-        //             for(auto& p : this->Players) {
-        //                 delete p;
-        //                 p = NULL;
-        //             }
-        //             delete this->map;
-        //             std::cout << "Exiting Game now" << std::endl;
-        //             exit(0);
-        //         }
-        //         else{
-        //             std::cout << "Incorrect input please try again" << std::endl;
-        //         }
-        //     }
-        // }
 }
+
+// void GameEngine::takeInputTest() {
+    
+//     MapLoader mapLoader;
+
+//     this->map = mapLoader.readMap("canada.map");
+//     this->map->validate();
+    
+//     Player* p1 = new Player("Ahmad");
+//     Player* p2 = new Player("Mostafa");
+//     p1->map = this->map;
+//     p2->map = this->map;
+//     p1->gEng = this;
+//     p2->gEng = this;
+//     this->Players.push_back(p1);
+//     this->Players.push_back(p2);
+
+//     int counter = 0;
+//     // equally assign territories to players
+//     // both map and territory share same pointers now
+//     std::cout << "Length of nodes: " << this->map->Nodes.size() << std::endl;
+
+//     for(const auto t : map->Nodes) {
+//         // std::cout << "Player " << *(this->Players.at(counter % this->Players.size())->name) << " now owns " << t->getCountry() << " which is located in " << t->getContinent() << std::endl;
+//         Players.at(counter % Players.size())->territories.push_back(t);    
+//         counter++;
+//     }
+
+//     for(const auto& player: Players) {
+//         std::cout << "Player " << player->name << " owns: " << endl;
+//         for(const auto& t : player->territories) {
+//             std::cout << t->getCountry() << " , armyCount: " << t->getArmyCount();
+//         }
+//         std::cout << std::endl << std::endl; 
+//     }
+//     // exit(0);
+
+//     // deck created
+//     Deck* deck = new Deck();
+
+//     // initialize each player with 50 armies
+//     for(auto& player : this->Players) {
+//         deck->draw(player->hand);
+//         deck->draw(player->hand);
+//         player->reinforcementPool = 50;
+//         std::cout << "Player " << player->name << " army count: " << player->reinforcementPool << std::endl;
+//     }
+//     this->state = State::ASSIGN_REIN;
+//     this->phase = Phase::PLAY;
+
+//     while(state != State::WIN) {
+//         mainGameLoop();
+//     }
+//     std::cout << "Player: " << Players.at(0)->name << " has won the game!" << std::endl;
+//     std::cout << "Would you like to play again? (y/n)" <<std::endl;
+//     char ans;
+//     std::cout << "> ";
+//     std::cin >> ans;
+
+//     if(ans == 'y') {
+//         state = State::START;
+//         phase = Phase::STARTUP;
+//     }
+//     else {
+//         std::cout << "Thanks for playing, exiting." << std::endl;
+//         exit(0);
+//     }
+    
+
+// }
+
+// void GameEngine::startupPhaseTest() {
+
+//     // main - menu
+//     while(true) {
+//         takeInputTest();
+//     }
+// }
+
 
 void GameEngine::startupPhase() {
 
@@ -379,4 +547,3 @@ void GameEngine::startupPhase() {
         takeInput();
     }
 }
-

@@ -1,6 +1,7 @@
 #pragma once
 #include "Player.h"
 #include "Map.h"
+#include <bits/stdc++.h>
 #include <random>
 
 enum class State {START,MAP_LOADED,MAP_VALIDATED,PLAYERS_ADDED,ASSIGN_REIN,ISSUE_ORDERS,EXEC_ORDERS,WIN};
@@ -11,16 +12,18 @@ public:
     GameEngine();
     ~GameEngine();
     void startupPhase();
+    void startupPhaseTest();
     void showMenu();
     void takeInput();
+    void takeInputTest();
     void changeState();
     void showAvailableMaps();
     void pickMap();
     void mainGameLoop();
-    void tournamentGameLoop(std::string*);
     void reinforcementPhase();
     void issueOrdersPhase();
     void executeOrdersPhase();
+    void tournamentGameLoop(std::string*);
     GameEngine& operator=(const GameEngine&);
     GameEngine(const GameEngine&);
 public:
@@ -29,4 +32,5 @@ public:
     State state = State::START;
     Map* map = nullptr;
     std::vector<Player*> Players;
+    Player* neutralPlayer;
 };

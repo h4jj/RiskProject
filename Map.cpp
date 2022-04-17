@@ -50,6 +50,24 @@ Map::~Map() {
     std::cout << "Map object destroyed" << std::endl;
 }
 
+void Map::buildContinentVector() {
+
+    for(const auto con : continents) {
+        Continent object = {};
+        object.continent_name = con.second;
+        continentVector.push_back(object);
+    }
+
+    for(const auto terr : Nodes) {
+        std::string continent_name = terr->getContinent();
+        for(auto& con : continentVector) {
+            if(con.continent_name == continent_name) {
+                con.territories.push_back(terr);
+            }    
+        }
+    }
+}
+
 bool Map::validate() {
 
     // 1 - Check map is a connected graph
@@ -138,6 +156,9 @@ Map* MapLoader::readMap(std::string filepath) {
     if(!foundContinent) {
         std::cout << "File has invalid format - Unable to continue - returning nullptr" << std::endl;
         return nullptr;
+    }
+    else {
+        mapObject->continents = Continents;
     }
 
     // 2 - link each country to a continent and create Territory objects

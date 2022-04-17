@@ -30,6 +30,10 @@ int main() {
             Command* cmd = obj.popCommand();
             obj.validate(*cmd, State::MAP_LOADED);
             std::cout << "Command Effect: " << cmd->effect << std::endl;
+            if(cmd->effect.compare("tournament")){
+                GameEngine ge;
+                ge.tournamentGameLoop(obj.returnTournamentPara());
+            }
         }
         else if(word == "quit") {
             break;
