@@ -307,6 +307,8 @@ void GameEngine::tournamentGameLoop(std::string *para)
         counter++;
     }
 
+    counter = 0;
+
     while (counter != numMaps)
     {
         MapLoader maploader;
@@ -397,7 +399,9 @@ void GameEngine::tournamentGameLoop(std::string *para)
             {
                 state = State::WIN;
             }
+            g++;
         }
+        counter++;
     }
 }
 

@@ -15,7 +15,7 @@ int main() {
             CommandProcessing object;
             object.getCommand();
             Command* cmd = object.popCommand();
-            object.validate(*cmd, State::MAP_LOADED);
+            object.validate(*cmd, StateCommand::MAP_LOADED);
             std::cout << "Command Effect: " << cmd->effect << std::endl;
             
         }
@@ -23,7 +23,7 @@ int main() {
             FileCommandProcessorAdapter obj;
             obj.getCommand();
             Command* cmd = obj.popCommand();
-            obj.validate(*cmd, State::MAP_LOADED);
+            obj.validate(*cmd, StateCommand::MAP_LOADED);
             std::cout << "Command Effect: " << cmd->effect << std::endl;
         }
         else if(word == "quit") {

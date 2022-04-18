@@ -40,7 +40,7 @@ protected:
     queue<Command*> commandColl;
 private:
     string* tournamentModeArray;
-    virtual string* tournamentMode(string, string*);
+    virtual void tournamentMode(string);
     string* tournamentPara;
 };
 
@@ -55,7 +55,7 @@ public:
     string stringToLog() override;
     void Notify(ILoggable *) override;
 private:
-    virtual string* tournamentMode(string, string*);
+    virtual void tournamentMode(string);
     virtual void readCommand();
     string* tournamentModeArray;
     string* tournamentPara;
