@@ -1,7 +1,11 @@
 #pragma once
 #include "Player.h"
 #include "Map.h"
+<<<<<<< HEAD:GameEngine.h
 #include <bits/stdc++.h>
+=======
+#include<bits/stdc++.h>
+>>>>>>> 37e9161ac29a5191886c6c93d61726f2425bd354:GameEngine/GameEngine.h
 #include <random>
 
 enum class State {START,MAP_LOADED,MAP_VALIDATED,PLAYERS_ADDED,ASSIGN_REIN,ISSUE_ORDERS,EXEC_ORDERS,WIN};
@@ -33,4 +37,8 @@ public:
     Map* map = nullptr;
     std::vector<Player*> Players;
     Player* neutralPlayer;
+<<<<<<< HEAD:GameEngine.h
 };
+=======
+};
+>>>>>>> 37e9161ac29a5191886c6c93d61726f2425bd354:GameEngine/GameEngine.h
