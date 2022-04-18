@@ -315,6 +315,74 @@ void HumanPlayerStrategy::issueOrder() {
 }
 
 void BenevolentPlayerStrategy::issueOrder() {
+    std::cout << "\n\n\n" << std::endl;
+    std::cout << "Player: " << p->name << "'s turn - Benevolent Player mode" << std::endl;
+    std::vector<Territory*> toDefendVect = p->toDefend(this);
+    // std::vector<Territory*> toAttackVect = p->toAttack(this);
+    std::vector<Deploy*> deployVect;
+
+    static int counter = 0;
+
+    std::cout << "Player " << p->name<<"'s troops in reinforcement pool: " <<p->reinforcementPool << std::endl;
+
+    Territory* terr = nullptr;
+    bool firstRound = true;
+    
+    for(const auto _terr : toDefendVect) {
+        if(_terr->getArmyCount() != 0) {
+            terr = _terr;
+            firstRound = false;
+            break;
+        }
+    }
+
+    if(firstRound) {
+        terr = toDefendVect.at(0);
+    }
+    
+    Deploy* order = new Deploy();
+    order->armyCount = p->reinforcementPool;
+    p->reinforcementPool = 0;
+    order->player = p;
+    order->territory = terr->getCountry();
+    p->orderListObject->orderQueue.push(order);
+    deployVect.push_back(order);
+
+    std::cout << "Deploy order successfully added to order queue" << std::endl;
+
+
+    Territory* homeTerr = terr;
+    Territory* decisionDefend = nullptr;
+
+    std::vector<Territory*> adjacentTerrsDefendable;
+
+    for(const auto pair : p->map->Edges) {
+        bool inValid = false;
+        if(pair->AdjacencyEdges.first->getCountry() == homeTerr->getCountry()) {
+            for(const auto item : p->territories) {
+                if(item->getCountry() == pair->AdjacencyEdges.second->getCountry()) {
+                    adjacentTerrsDefendable.push_back(pair->AdjacencyEdges.second);
+                    inValid = true;
+                    break;
+                }
+            }
+        }
+        else if(pair->AdjacencyEdges.second->getCountry() == homeTerr->getCountry()) {
+            for(const auto item : p->territories) {
+                if(item->getCountry() == pair->AdjacencyEdges.first->getCountry()) {
+                    adjacentTerrsDefendable.push_back(pair->AdjacencyEdges.first);
+                    inValid = true;
+                }
+            }
+        }
+    }
+    std::cout << endl;
+    std::cout << "Adjacent countries that you can attack: "<<std::endl;
+    printVect(adjacentTerrsAttackable);
+    std::cout << "\n\n" << std::endl;
+    std::cout << "Adjacent territories to defend" << std::endl;
+    printVect(adjacentTerrsDefendable);
+    std::cout << "\n\n" << std::endl;
 
 }
 
