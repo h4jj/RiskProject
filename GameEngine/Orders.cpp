@@ -341,7 +341,7 @@ void Deploy::execute() {
             return;
         }
 
-        t->setArmyCount(armyCount);
+        t->setArmyCount(t->getArmyCount() + armyCount);
         std::cout << armyCount << " troops deployed to " << t->getCountry() << std::endl;
         std::cout << "Total troops available on territory are: " << t->getArmyCount() << std::endl;
     }
@@ -392,14 +392,14 @@ void Advance::execute() {
                 break;
             }
         }
-        int tempValue = armyCount;
+        // int tempValue = armyCount;
         if(playerOwner) {
             terr1->setArmyCount(terr1->getArmyCount() - armyCount);
             terr2->setArmyCount(terr2->getArmyCount() + armyCount);
         }
         else {
 
-            
+            armyCount = terr1->getArmyCount();
             std::cout << "Attack between " << terr1->getCountry() << " and " << terr2->getCountry() << " is initiating" << std::endl;
             std::cout << "t1: " << terr1->getArmyCount() << std::endl;
             std::cout << "t2: " << terr2->getArmyCount() << std::endl;
@@ -438,18 +438,15 @@ void Advance::execute() {
                 std::cout << "Current troops on " << terr1->getCountry() << " are: " << terr1->getArmyCount() << std::endl;
                 std::cout << "Current troops on " << terr2->getCountry() << " are: " << terr2->getArmyCount() << std::endl;
                 src->territories.push_back(terr2);
-                
+                std::cout << "New size of territories for player " << src->name << " is: " << src->territories.size() << std::endl;
                 int index = 0;
 
                 target = nullptr;
 
-                for(const auto p : src->gEng->Players) {
+                for(const auto& p : src->gEng->Players) {
                     if(p->name == src->name) continue;
                     
-                    for(const auto t : p->territories) {
-                        std::cout << "SIZE OF TERRS: " << p->territories.size() << std::endl;
-                        std::cout << "t->getCountry: " << t->getCountry() << std::endl;
-                        std::cout << "terr2->getCountry: " << terr2->getCountry() << std::endl;
+                    for(const auto& t : p->territories) {
                         if(t->getCountry() == terr2->getCountry()) {
                             target = p;
                             std::cout << "Target player found: " << target->name << std::endl;
@@ -466,13 +463,49 @@ void Advance::execute() {
                 if(target != nullptr) {
                     std::cout << "Successfully erased territory from player vector" << std::endl;
                     target->territories.erase(target->territories.begin() + index);
+                    std::cout << "New size of territories vector for player " << target->name << " is: " << target->territories.size() << std::endl;
                 }
                 
                 std::cout << "Returning to reinforcement phase" << std::endl;
             }
             else {
                 std::cout << "Player: " << src->name << " was unable to conquer " << terr2->getCountry() << std::endl;
-                terr1->setArmyCount(terr1->getArmyCount() - tempValue);
+                terr1->setArmyCount(terr2->getArmyCount());
+                terr2->setArmyCount(0);
+
+                for(const auto& p : src->gEng->Players) {
+                    if(p->name == src->name) continue;
+
+                    for(const auto& t : p->territories) {
+                        if(t->getCountry() == terr2->getCountry()) {
+                            target = p;
+                            std::cout << "Target player found: " << target->name << std::endl;
+                            break;
+                        }
+                    }
+
+                    if(target != nullptr) {
+                        break;
+                    }
+                }
+                
+                if(target != nullptr) {
+                    target->territories.push_back(terr1);
+                    std::cout << "New size of territories vector for player " << target->name << " is: " << target->territories.size() << std::endl;
+                }
+
+                int indexCounter = 0;
+                for(const auto& t : src->territories) {
+                    if(t->getCountry() == terr1->getCountry()) {
+                        break;
+                    }
+                    indexCounter++;
+                }
+
+                src->territories.erase(src->territories.begin() + indexCounter);
+                std::cout << "New size of territories vector for player " << src->name << " is: " << src->territories.size() << std::endl;
+
+
                 std::cout << "Current troops on " << terr1->getCountry() << " are: " << terr1->getArmyCount() << std::endl;
                 std::cout << "Current troops on " << terr2->getCountry() << " are: " << terr2->getArmyCount() << std::endl;
             }

@@ -145,10 +145,10 @@ void GameEngine::reinforcementPhase() {
             counter = 0;
         }
 
-        if(player->territories.size() <= 9) {
+        if(player->territories.size() <= 11 && player->territories.size() > 0) {
             player->reinforcementPool += 3;
         }
-        else {
+        else if(player->territories.size() > 11) {
             player->reinforcementPool += floor(player->territories.size() / 3);
         }
     }
@@ -169,25 +169,21 @@ void GameEngine::executeOrdersPhase() {
     while(!empty) {
         for(const auto p : Players) {
             if(p->orderListObject->orderQueue.size() != 0) {
-                std::cout << "TRYING TO ACCESS FRONT ORDER" << std::endl;
                 Order* order = p->orderListObject->orderQueue.front();
                 p->orderListObject->orderQueue.pop();
-                std::cout << "POPPED ORDER AND ATTEMPTING TO EXEC" << std::endl;
                 order->execute();
-                std::cout << "EXECUTED ORDER" << std::endl;
             }
         }
-        std::cout << "LEAVING EXECUTE ORDERS PHASE NOW" << std::endl;
-        break;
-        // for(const auto p : Players) {
-        //     if(p->orderListObject->orderQueue.size() == 0) {
-        //         empty = true;
-        //     }
-        //     else {
-        //         empty = false;
-        //         break;
-        //     }
-        // }   
+
+        for(const auto p : Players) {
+            if(p->orderListObject->orderQueue.size() == 0) {
+                empty = true;
+            }
+            else {
+                empty = false;
+                break;
+            }
+        }   
     }
 }
 
@@ -362,27 +358,6 @@ void GameEngine::takeInput() {
                             }
                             std::cout << std::endl << std::endl; 
                         }
-                        std::vector<Player*> PlayersCopy = {};
-                        for(auto p : Players) {
-                            PlayersCopy.push_back(p);
-                        }
-                        std::vector<Player*> playerOrder;
-
-                        while(!PlayersCopy.empty()) {
-                            std::uniform_int_distribution<int> dist(0,PlayersCopy.size()-1);
-                            std::random_device rd;
-                            std::mt19937 generator(rd());
-                            int number = dist(generator);
-
-                            playerOrder.push_back(PlayersCopy.at(number));
-                            PlayersCopy.erase(PlayersCopy.begin() + number);
-                        }
-                        std::cout << "Player order is: " << std::endl;
-                        for(const auto& p : playerOrder) {
-                            std::cout << p->name << std::endl;
-                        }
-
-                        std::cout << std::endl << std::endl;
 
                         // deck created
                         Deck* deck = new Deck();
@@ -421,6 +396,16 @@ void GameEngine::takeInput() {
             if(ans == 'y') {
                 state = State::START;
                 phase = Phase::STARTUP;
+
+                delete this->map;
+                // delete neutralPlayer;
+                
+                for(auto& p : Players) {
+                    delete p;
+                }
+
+                this->map = nullptr;
+                neutralPlayer = nullptr;
             }
             else {
                 std::cout << "Thanks for playing, exiting." << std::endl;

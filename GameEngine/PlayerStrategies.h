@@ -1,5 +1,7 @@
 #pragma once
+#include "Player.h"
 #include <vector>
+
 
 class Player;
 class Territory;

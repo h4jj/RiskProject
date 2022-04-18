@@ -223,14 +223,14 @@ Map* MapLoader::readMap(std::string filepath) {
                 }
                 Edge* e = new Edge(mapObject->Nodes.at(countrySlot), mapObject->Nodes.at(stoi(var)-1));
  
-                for(auto& x : tempVect) {
-                    if(e->AdjacencyEdges.first->getCountry() == x->AdjacencyEdges.first->getCountry() || e->AdjacencyEdges.first->getCountry() == x->AdjacencyEdges.second->getCountry()) {
-                        if(e->AdjacencyEdges.second->getCountry() == x->AdjacencyEdges.first->getCountry() || e->AdjacencyEdges.second->getCountry() == x->AdjacencyEdges.second->getCountry()) {
-                            pushBack = false;
-                            break;
-                        }
-                    }
-                }
+                // for(auto& x : tempVect) {
+                //     if(e->AdjacencyEdges.first->getCountry() == x->AdjacencyEdges.first->getCountry() || e->AdjacencyEdges.first->getCountry() == x->AdjacencyEdges.second->getCountry()) {
+                //         if(e->AdjacencyEdges.second->getCountry() == x->AdjacencyEdges.first->getCountry() || e->AdjacencyEdges.second->getCountry() == x->AdjacencyEdges.second->getCountry()) {
+                //             pushBack = false;
+                //             break;
+                //         }
+                //     }
+                // }
 
                 if(pushBack) {
                     tempVect.push_back(e);

@@ -35,7 +35,7 @@ void HumanPlayerStrategy::issueOrder() {
         std::cin >> answer;
         Territory* terr = nullptr;
 
-        for(const auto _terr : toDefendVect) {
+        for(const auto& _terr : toDefendVect) {
             if(_terr->getCountry() == answer) {
                 terr = _terr;
                 break;
@@ -45,7 +45,7 @@ void HumanPlayerStrategy::issueOrder() {
         if(terr != nullptr) {
 
             while(true) {
-                std::cout << "Enter number of troops you wish to deploy to p territory: ";
+                std::cout << "Enter number of troops you wish to deploy to " << terr->getCountry() <<": ";
                 std::string answer;
                 std::cin >> answer;
 
@@ -107,6 +107,7 @@ void HumanPlayerStrategy::issueOrder() {
                         if(item->getCountry() == pair->AdjacencyEdges.second->getCountry()) {
                             adjacentTerrsDefendable.push_back(pair->AdjacencyEdges.second);
                             inValid = true;
+                            break;
                         }
                     }
 
@@ -164,10 +165,10 @@ void HumanPlayerStrategy::issueOrder() {
                 }
             }
 
-            int availableTroops =0;
+            int availableTroops = homeTerr->getArmyCount();
             for(const auto order : deployVect) {
                 if(order->territory == homeTerr->getCountry()) {
-                    availableTroops = order->armyCount;
+                    availableTroops += order->armyCount;
                     break;
                 }
             }
@@ -223,6 +224,10 @@ void HumanPlayerStrategy::issueOrder() {
                     }
                 }
             }
+        }
+        else {
+            std::cout << "Incorrect input please try again" << std::endl;
+            continue;
         }
         break;
     }
@@ -325,13 +330,13 @@ void AggressivePlayerStrategy::issueOrder() {
     std::vector<Territory*> toAttackVect = p->toAttack(this);
     std::vector<Deploy*> deployVect;
 
-    std::cout << "Issue deploy order on the following territories: " <<std::endl;
-    std::cout << "Current number of troops available: " << p->reinforcementPool << std::endl;
-    std::cout << "Reinforcement pool: " <<p->reinforcementPool << std::endl;
+    static int counter = 0;
+
+    std::cout << "Player " << p->name<<"'s troops in reinforcement pool: " <<p->reinforcementPool << std::endl;
 
     Territory* terr = nullptr;
     bool firstRound = true;
-
+    
     for(const auto _terr : toDefendVect) {
         if(_terr->getArmyCount() != 0) {
             terr = _terr;
@@ -356,22 +361,49 @@ void AggressivePlayerStrategy::issueOrder() {
 
 
     std::vector<Territory*> adjacentTerrsAttackable = this->toAttack();
-
-
     Territory* homeTerr = terr;
-    Territory* decisionAttack = this->toAttackCountry(terr).at(0) != nullptr ? this->toAttackCountry(terr).at(0) : nullptr;
+    Territory* decisionAttack = nullptr;
+    // printVect(toDefendVect);
+    // std::cout << "TodefendVect.size()" << toDefendVect.size() << std::endl;
+    if(this->toAttackCountry(homeTerr).size() > 0) {
+        // std::cout << "HERE1" << std::endl;
 
-    int availableTroops =0;
+        decisionAttack = this->toAttackCountry(homeTerr).at(0);
+        // std::cout << "DEcision ATTACK NOT NULLPTR " << decisionAttack->getCountry() << std::endl;
+    }
+    else {
+        // std::cout << "HERE2" << std::endl;
+        int randCounter = 0;
+        while(decisionAttack == nullptr) {
+            // std::cout << "COunter: " << counter << std::endl;
+            homeTerr = toDefendVect.at(counter % (toDefendVect.size()));
+            if(this->toAttackCountry(homeTerr).size() > 0) {
+                // std::cout << "PRINTING ATTACK VECT: " << std::endl;
+                // printVect(this->toAttackCountry(homeTerr));
+                decisionAttack = this->toAttackCountry(homeTerr).at(0);
+            }
+            // std::cout << "Terr: " << homeTerr->getCountry() << std::endl;
+            // std::cout << "SIZE: " << this->toAttackCountry(homeTerr).size() << std::endl;
+
+            randCounter++;
+            counter++; 
+
+            if(randCounter > toDefendVect.size()) exit(0);
+
+        }
+    }
+    // std::cout << "HERE3" << std::endl;
+    int availableTroops = terr->getArmyCount();
     for(const auto order : deployVect) {
         if(order->territory == homeTerr->getCountry()) {
-            availableTroops = order->armyCount;
+            availableTroops += order->armyCount;
             break;
         }
     }
 
     if(decisionAttack != nullptr) {
+        std::cout << "ISSUING ADVANCE ORDER" << std::endl;
         Advance* order = new Advance();
-
         for(const auto p : p->gEng->Players) {
             for(const auto t : p->territories) {
                 if(t == decisionAttack) {
@@ -380,7 +412,6 @@ void AggressivePlayerStrategy::issueOrder() {
                 }
             }
         }
-
         order->armyCount = availableTroops;
         order->src = p;
         order->edges = p->map->Edges;
